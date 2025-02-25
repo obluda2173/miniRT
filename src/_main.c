@@ -6,7 +6,7 @@
 /*   By: erian <erian@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 11:29:44 by erian             #+#    #+#             */
-/*   Updated: 2025/02/25 17:29:39 by erian            ###   ########.fr       */
+/*   Updated: 2025/02/25 18:18:15 by erian            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 #include "parsing.h"
 
 // allocating memory for data
-
 
 int main(int ac, char **av)
 {
@@ -35,3 +34,11 @@ int main(int ac, char **av)
 
 	return 0;
 }
+
+/*
+what I left on:
+
+fix the leaks if I pass " " in the .rt file
+check values on rgb and other values (like ration for example) given their values range
+
+*/

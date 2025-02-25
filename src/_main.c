@@ -6,14 +6,32 @@
 /*   By: erian <erian@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 11:29:44 by erian             #+#    #+#             */
-/*   Updated: 2025/02/25 11:39:10 by erian            ###   ########.fr       */
+/*   Updated: 2025/02/25 17:29:39 by erian            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
+#include "parsing.h"
 
-int main(void)
+// allocating memory for data
+
+
+int main(int ac, char **av)
 {
-    printf("started\n");
-    return 0;
+	t_data *data;
+
+	data = malloc(sizeof(t_data));
+	if (ac != 2)
+	{
+		ft_putstr_fd("Wrong number of arguments\n", STDERR_FILENO);
+		return (1);
+	}
+
+	parse(av[1], data);
+
+	printf("success!!!\n");
+
+	free_data(data);
+
+	return 0;
 }

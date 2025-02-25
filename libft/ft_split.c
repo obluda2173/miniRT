@@ -3,72 +3,93 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: erian <erian@student.42>                   +#+  +:+       +#+        */
+/*   By: erian <erian@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 13:44:19 by erian             #+#    #+#             */
-/*   Updated: 2024/08/06 15:43:00 by erian            ###   ########.fr       */
+/*   Updated: 2025/02/25 18:12:19 by erian            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-size_t	ft_count_char(char const *s, char c)
+char	*jump_sep(char *str, char sep)
 {
-	size_t	count;
+	while (*str && *str == sep)
+		str++;
+	return (str);
+}
+
+char	*jump_non_sep(char *str, char sep)
+{
+	while (*str && (*str != sep))
+		str++;
+	return (str);
+}
+
+int	count_words(char *str, char c)
+{
+	int	count;
 
 	count = 0;
-	while (*s && *s != c)
+	if (!*str)
+		return (0);
+	if (*str != c)
+		count++;
+	str = jump_non_sep(str, c);
+	str = jump_sep(str, c);
+	while (*str && (*str == c))
+		str++;
+	while (*str)
 	{
 		count++;
-		s++;
+		str = jump_non_sep(str, c);
+		str = jump_sep(str, c);
 	}
 	return (count);
 }
 
-size_t	ft_count_words(char const *s, char c)
+char	*extract_string(char *str, char *end_word, char **strs, size_t count)
 {
+	size_t	idx;
+
+	strs[count] = (char *)malloc(((end_word - str) + 1) * sizeof(char));
+	if (strs[count] == NULL)
+	{
+		idx = 0;
+		while (idx < count)
+			free(strs[idx++]);
+		free(strs);
+		return (NULL);
+	}
+	idx = 0;
+	while (str != end_word)
+		strs[count][idx++] = *str++;
+	strs[count][idx] = '\0';
+	return (strs[count]);
+}
+
+char	**ft_split(char *str, char c)
+{
+	char	**strs;
+	char	*end_word;
+	int		nbr_of_words;
 	size_t	count;
 
-	count = 0;
-	while (*s)
-	{
-		if (*s != c)
-		{
-			count++;
-			while (*s && *s != c)
-				s++;
-		}
-		else
-			s++;
-	}
-	return (count);
-}
-
-char	**ft_split(char const *s, char c)
-{
-	char	**str;
-	char	**start;
-	size_t	len;
-
-	str = malloc((ft_count_words(s, c) + 1) * sizeof(char *));
-	if (!str || !s)
+	nbr_of_words = count_words(str, c);
+	strs = (char **)malloc((nbr_of_words + 1) * sizeof(char *));
+	if (strs == NULL)
 		return (NULL);
-	start = str;
-	while (*s)
+	str = jump_sep(str, c);
+	count = 0;
+	while (nbr_of_words-- > 0)
 	{
-		if (*s != c)
-		{
-			len = ft_count_char(s, c);
-			*str = malloc((len + 1) * sizeof(char));
-			if (!*str)
-				return (NULL);
-			ft_strlcpy(*str, s, len + 1);
-			str++;
-			s += len;
-		}
-		else
-			s++;
+		end_word = jump_non_sep(str, c);
+		if (extract_string(str, end_word, strs, count) == NULL)
+			return (NULL);
+		str = jump_non_sep(str, c);
+		str = jump_sep(str, c);
+		count++;
 	}
-	*str = NULL;
-	return (start);
+	strs[count] = NULL;
+	return (strs);
 }

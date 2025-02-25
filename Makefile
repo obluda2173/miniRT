@@ -15,7 +15,7 @@ OBJ_DIR		=	obj
 SRCS        =   $(wildcard $(SRCS_DIR)/*.c)
 OBJS        =   $(patsubst $(SRCS_DIR)/%.c, $(OBJ_DIR)/%.o, $(SRCS))
 
-INC			=	-Ilibft -Iinc
+INC			=	-Ilibft -Iget_next_line -Iinc
 
 # Libraries
 LIBS		=	libft/libft.a \
@@ -60,15 +60,15 @@ clean:
 			@make --no-print-directory -sC libft clean
 			@make --no-print-directory -sC get_next_line clean
 			@make --no-print-directory -sC minilibx-linux clean
-			$(RM) obj
+			@$(RM) obj
 			$(S_OBJS)
 
 fclean:		clean
 			$(RM) $(NAME)
 			@make --no-print-directory -sC libft fclean
 			@make --no-print-directory -sC get_next_line fclean
-			$(RM) minilibx-linux/libmlx.a
-			$(RM) obj
+			@$(RM) minilibx-linux/libmlx.a
+			@$(RM) obj
 			$(S_NAME)
 
 re:			fclean all

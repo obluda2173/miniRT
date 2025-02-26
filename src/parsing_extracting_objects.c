@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_extracting_objects.c                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: erian <erian@student.42.fr>                +#+  +:+       +#+        */
+/*   By: erian <erian@student.42>                   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 16:20:12 by erian             #+#    #+#             */
-/*   Updated: 2025/02/25 17:47:51 by erian            ###   ########.fr       */
+/*   Updated: 2025/02/26 11:35:57 by erian            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,39 @@ size_t array_size(char **array)
     while (array[i])
         i++;
     return (i);
+}
+
+bool valid_number(char *str)
+{
+    size_t i;
+
+    i = 0;
+    while (str[i])
+    {
+        if (!ft_isdigit(str[i]) && str[i] != '.' && str[i] != ',' && str[i] != '-')
+            return (false);
+        i++;
+    }
+    return (true);
+}
+
+bool is_valid_line(char **split_line)
+{
+    if (array_size(split_line) == 0)
+        return (false);
+    if (ft_strcmp(split_line[0], "A") == 0 && array_size(split_line) == 3 && valid_number(split_line[1]) && valid_number(split_line[2]))
+        return (true);
+    if (ft_strcmp(split_line[0], "L") == 0 && array_size(split_line) == 4 && valid_number(split_line[1]) && valid_number(split_line[2]) && valid_number(split_line[3]))
+        return (true);
+    if (ft_strcmp(split_line[0], "C") == 0 && array_size(split_line) == 4 && valid_number(split_line[1]) && valid_number(split_line[2]) && valid_number(split_line[3]))
+        return (true);
+    if (ft_strcmp(split_line[0], "pl") == 0 && array_size(split_line) == 4 && valid_number(split_line[1]) && valid_number(split_line[2]) && valid_number(split_line[3]))
+        return (true);
+    if (ft_strcmp(split_line[0], "sp") == 0 && array_size(split_line) == 4 && valid_number(split_line[1]) && valid_number(split_line[2]) && valid_number(split_line[3]))
+        return (true);
+    if (ft_strcmp(split_line[0], "cy") == 0 && array_size(split_line) == 5 && valid_number(split_line[1]) && valid_number(split_line[2]) && valid_number(split_line[3]) && valid_number(split_line[4]))
+        return (true);
+    return (false);
 }
 
 t_color parse_color(char *str, t_data *data)
@@ -73,6 +106,12 @@ t_obj *extract_objs(int fd, t_data *data)
 
         if (array_size(split_line) > 0)
         {
+            if (!is_valid_line(split_line))
+            {
+                free_split(split_line);
+                free(line);
+                free_and_exit(data, "Error: Invalid line format\n");
+            }
             new_obj = malloc(sizeof(t_obj));
             if (!new_obj)
             {
@@ -80,7 +119,6 @@ t_obj *extract_objs(int fd, t_data *data)
                 free(line);
                 free_and_exit(data, "Error: Memory allocation failed\n");
             }
-
             if (ft_strcmp(split_line[0], "A") == 0)
                 new_obj->type = A_LIGHT, new_obj->obj = parse_a_light(split_line, data);
             else if (ft_strcmp(split_line[0], "L") == 0)

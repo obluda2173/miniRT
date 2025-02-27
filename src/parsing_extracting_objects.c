@@ -6,7 +6,7 @@
 /*   By: erian <erian@student.42>                   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 16:20:12 by erian             #+#    #+#             */
-/*   Updated: 2025/02/26 11:35:57 by erian            ###   ########.fr       */
+/*   Updated: 2025/02/27 19:13:42 by erian            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ size_t array_size(char **array)
     return (i);
 }
 
-bool valid_number(char *str)
+bool is_valid_number(char *str)
 {
     size_t i;
 
@@ -40,17 +40,17 @@ bool is_valid_line(char **split_line)
 {
     if (array_size(split_line) == 0)
         return (false);
-    if (ft_strcmp(split_line[0], "A") == 0 && array_size(split_line) == 3 && valid_number(split_line[1]) && valid_number(split_line[2]))
+    if (ft_strcmp(split_line[0], "A") == 0 && array_size(split_line) == 3 && is_valid_number(split_line[1]) && is_valid_number(split_line[2]))
         return (true);
-    if (ft_strcmp(split_line[0], "L") == 0 && array_size(split_line) == 4 && valid_number(split_line[1]) && valid_number(split_line[2]) && valid_number(split_line[3]))
+    if (ft_strcmp(split_line[0], "L") == 0 && array_size(split_line) == 4 && is_valid_number(split_line[1]) && is_valid_number(split_line[2]) && is_valid_number(split_line[3]))
         return (true);
-    if (ft_strcmp(split_line[0], "C") == 0 && array_size(split_line) == 4 && valid_number(split_line[1]) && valid_number(split_line[2]) && valid_number(split_line[3]))
+    if (ft_strcmp(split_line[0], "C") == 0 && array_size(split_line) == 4 && is_valid_number(split_line[1]) && is_valid_number(split_line[2]) && is_valid_number(split_line[3]))
         return (true);
-    if (ft_strcmp(split_line[0], "pl") == 0 && array_size(split_line) == 4 && valid_number(split_line[1]) && valid_number(split_line[2]) && valid_number(split_line[3]))
+    if (ft_strcmp(split_line[0], "pl") == 0 && array_size(split_line) == 4 && is_valid_number(split_line[1]) && is_valid_number(split_line[2]) && is_valid_number(split_line[3]))
         return (true);
-    if (ft_strcmp(split_line[0], "sp") == 0 && array_size(split_line) == 4 && valid_number(split_line[1]) && valid_number(split_line[2]) && valid_number(split_line[3]))
+    if (ft_strcmp(split_line[0], "sp") == 0 && array_size(split_line) == 4 && is_valid_number(split_line[1]) && is_valid_number(split_line[2]) && is_valid_number(split_line[3]))
         return (true);
-    if (ft_strcmp(split_line[0], "cy") == 0 && array_size(split_line) == 5 && valid_number(split_line[1]) && valid_number(split_line[2]) && valid_number(split_line[3]) && valid_number(split_line[4]))
+    if (ft_strcmp(split_line[0], "cy") == 0 && array_size(split_line) == 6 && is_valid_number(split_line[1]) && is_valid_number(split_line[2]) && is_valid_number(split_line[3]) && is_valid_number(split_line[4]) && is_valid_number(split_line[5]))
         return (true);
     return (false);
 }
@@ -67,6 +67,8 @@ t_color parse_color(char *str, t_data *data)
     color.r = ft_atoi(rgb[0]);
     color.g = ft_atoi(rgb[1]);
     color.b = ft_atoi(rgb[2]);
+    if (color.r < 0 || color.r > 255 || color.g < 0 || color.g > 255 || color.b < 0 || color.b > 255)
+        data->error = "Error: Invalid color range\n";
     free_split(rgb);
     return (color);
 }
@@ -87,62 +89,38 @@ t_vec parse_vector(char *str, t_data *data)
     return (vec);
 }
 
-t_obj *extract_objs(int fd, t_data *data)
+void extract_objs(int fd, t_data *data)
 {
     char *line;
     char **split_line;
-    t_obj *obj_lst = NULL;
-    t_obj *new_obj;
+    t_scene *scene = data->scene;
 
     line = get_next_line(fd);
     while (line)
     {
         split_line = ft_split(line, ' ');
-        if (!split_line)
-        {
-            free(line);
-            free_and_exit(data, "Error: Memory allocation failed\n");
-        }
-
-        if (array_size(split_line) > 0)
-        {
-            if (!is_valid_line(split_line))
-            {
-                free_split(split_line);
-                free(line);
-                free_and_exit(data, "Error: Invalid line format\n");
-            }
-            new_obj = malloc(sizeof(t_obj));
-            if (!new_obj)
-            {
-                free_split(split_line);
-                free(line);
-                free_and_exit(data, "Error: Memory allocation failed\n");
-            }
-            if (ft_strcmp(split_line[0], "A") == 0)
-                new_obj->type = A_LIGHT, new_obj->obj = parse_a_light(split_line, data);
-            else if (ft_strcmp(split_line[0], "L") == 0)
-                new_obj->type = S_LIGHT, new_obj->obj = parse_s_light(split_line, data);
-            else if (ft_strcmp(split_line[0], "C") == 0)
-                new_obj->type = CAMERA, new_obj->obj = parse_camera(split_line, data);
-            else if (ft_strcmp(split_line[0], "pl") == 0)
-                new_obj->type = PLANE, new_obj->obj = parse_plane(split_line, data);
-            else if (ft_strcmp(split_line[0], "sp") == 0)
-                new_obj->type = SPHERE, new_obj->obj = parse_sphere(split_line, data);
-            else if (ft_strcmp(split_line[0], "cy") == 0)
-                new_obj->type = CYLINDER, new_obj->obj = parse_cylinder(split_line, data);
-            else
-                free(new_obj), new_obj = NULL;
-
-            if (new_obj)
-            {
-                new_obj->next = obj_lst;
-                obj_lst = new_obj;
-            }
-        }
-        free_split(split_line);
         free(line);
+        if (!is_valid_line(split_line))
+        {
+            free_split(split_line);
+            data->error = "Error: Invalid line format\n";
+            break ;
+        }
+        if (ft_strcmp(split_line[0], "C") == 0)
+            scene->camera = parse_camera(split_line, data);
+        if (ft_strcmp(split_line[0], "A") == 0)
+            scene->a_light = parse_a_light(split_line, data);
+        if (ft_strcmp(split_line[0], "L") == 0)
+            ft_lstadd_back(&scene->light_lst, ft_lstnew(parse_s_light(split_line, data)));
+        if (ft_strcmp(split_line[0], "pl") == 0)
+            ft_lstadd_back(&scene->obj_lst, ft_lstnew(parse_plane(split_line, data)));
+        if (ft_strcmp(split_line[0], "sp") == 0)
+            ft_lstadd_back(&scene->obj_lst, ft_lstnew(parse_sphere(split_line, data)));
+        if (ft_strcmp(split_line[0], "cy") == 0)
+            ft_lstadd_back(&scene->obj_lst, ft_lstnew(parse_cylinder(split_line, data)));
+        free_split(split_line);
         line = get_next_line(fd);
     }
-    return obj_lst;
+    if (data->error)
+        free_and_exit(data, data->error);
 }

@@ -7,7 +7,7 @@ NAME		=	minirt
 CC			=	@cc
 RM			=	@rm -fr
 CCFLAGS		=	-Wall -Werror -Wextra -Iinclude/mlx
-MLXFLAGS	=	-L/usr/X11/lib -lX11 -lXext -Llibs/mlx_linux -lm
+MLXFLAGS	=	#-L/usr/X11/lib -lX11 -lXext -Llibs/mlx_linux -lm
 
 # Directories and source files
 SRCS_DIR    =   src
@@ -20,7 +20,7 @@ INC			=	-Ilibft -Iget_next_line -Iinc
 # Libraries
 LIBS		=	libft/libft.a \
 				get_next_line/gnl.a \
-				minilibx-linux/libmlx.a
+				#minilibx-linux/libmlx.a
 
 # **************************************************************************** #
 # COLOURS                                                                      #
@@ -43,9 +43,9 @@ S_NAME		=	@echo "$(CYAN)full clean completed$(COLOR)"
 all:		$(NAME)
 
 $(NAME):	$(OBJS)
-			@make -sC libft
+			@make bonus -sC libft
 			@make -sC get_next_line
-			@make --no-print-directory -sC minilibx-linux
+			#@make --no-print-directory -sC minilibx-linux
 			$(CC) $(CCFLAGS) $(OBJS) $(INC) $(LIBS) -o $(NAME) $(MLXFLAGS)
 			$(SUCCESS)
 
@@ -59,7 +59,7 @@ clean:
 			$(RM) $(OBJS)
 			@make --no-print-directory -sC libft clean
 			@make --no-print-directory -sC get_next_line clean
-			@make --no-print-directory -sC minilibx-linux clean
+			#@make --no-print-directory -sC minilibx-linux clean
 			@$(RM) obj
 			$(S_OBJS)
 

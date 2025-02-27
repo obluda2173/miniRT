@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   _main.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: erian <erian@student.42.fr>                +#+  +:+       +#+        */
+/*   By: erian <erian@student.42>                   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 11:29:44 by erian             #+#    #+#             */
-/*   Updated: 2025/02/25 18:18:15 by erian            ###   ########.fr       */
+/*   Updated: 2025/02/27 18:50:33 by erian            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,14 +19,15 @@ int main(int ac, char **av)
 {
 	t_data *data;
 
-	data = malloc(sizeof(t_data));
+	data = ft_calloc(sizeof(t_data), 1);
+	
 	if (ac != 2)
 	{
 		ft_putstr_fd("Wrong number of arguments\n", STDERR_FILENO);
 		return (1);
 	}
 
-	parse(av[1], data);
+	parse_scene(av[1], data);
 
 	printf("success!!!\n");
 
@@ -34,11 +35,3 @@ int main(int ac, char **av)
 
 	return 0;
 }
-
-/*
-what I left on:
-
-fix the leaks if I pass " " in the .rt file
-check values on rgb and other values (like ration for example) given their values range
-
-*/

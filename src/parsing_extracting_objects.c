@@ -6,7 +6,7 @@
 /*   By: erian <erian@student.42>                   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 16:20:12 by erian             #+#    #+#             */
-/*   Updated: 2025/02/27 19:13:42 by erian            ###   ########.fr       */
+/*   Updated: 2025/02/27 20:41:59 by erian            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,12 +24,13 @@ size_t array_size(char **array)
 
 bool is_valid_number(char *str)
 {
+    // (void)str;
     size_t i;
 
     i = 0;
     while (str[i])
     {
-        if (!ft_isdigit(str[i]) && str[i] != '.' && str[i] != ',' && str[i] != '-')
+        if (!ft_isdigit(str[i]) && str[i] != '.' && str[i] != ',' && str[i] != '-' && str[i] != '\n')
             return (false);
         i++;
     }
@@ -38,6 +39,9 @@ bool is_valid_number(char *str)
 
 bool is_valid_line(char **split_line)
 {
+    for (int i = 0; split_line[i]; i++)
+        printf("->%s\n", split_line[i]);
+    printf("%zu\n", array_size(split_line));
     if (array_size(split_line) == 0)
         return (false);
     if (ft_strcmp(split_line[0], "A") == 0 && array_size(split_line) == 3 && is_valid_number(split_line[1]) && is_valid_number(split_line[2]))
@@ -96,6 +100,7 @@ void extract_objs(int fd, t_data *data)
     t_scene *scene = data->scene;
 
     line = get_next_line(fd);
+    scene = malloc(sizeof(t_scene));
     while (line)
     {
         split_line = ft_split(line, ' ');

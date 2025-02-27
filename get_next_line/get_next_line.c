@@ -3,91 +3,136 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: erian <erian@student.42.fr>                +#+  +:+       +#+        */
+/*   By: erian <erian@student.42>                   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/09/09 17:37:54 by kfreyer           #+#    #+#             */
-/*   Updated: 2025/02/25 16:59:39 by erian            ###   ########.fr       */
+/*   Created: 2024/08/09 12:29:20 by erian             #+#    #+#             */
+/*   Updated: 2025/02/27 20:21:44 by erian            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-size_t	ft_strlen_kay(const char *s)
+void	polish_list(t_liste **list)
 {
-	size_t	count;
+	t_liste	*last_node;
+	t_liste	*clean_node;
+	int		i;
+	int		k;
+	char	*buf;
 
-	if (!s)
-		return (0);
-	count = 0;
-	while (s[count])
-		count++;
-	return (count);
+	buf = malloc(BUFFER_SIZE + 1);
+	clean_node = malloc(sizeof(t_liste));
+	if (!buf || !clean_node)
+		return ;
+	last_node = find_last_node(*list);
+	i = 0;
+	k = 0;
+	while (last_node->str_buf[i] && last_node->str_buf[i] != '\n')
+		++i;
+	while (last_node->str_buf[i] && last_node->str_buf[++i])
+		buf[k++] = last_node->str_buf[i];
+	buf[k] = '\0';
+	clean_node->str_buf = buf;
+	clean_node->next = NULL;
+	dealloc(list, clean_node, buf);
 }
 
-char	*crud_stash(t_op op, char *new_stash, int fd)
+char	*get_line_cstm(t_liste *list)
 {
-	static char	*stash[MAX_FD];
-	char		*tmp;
+	int		str_len;
+	char	*next_str;
 
-	if (op == GET_STASH)
-		return (ft_strdup(stash[fd]));
-	if (op == SET_STASH)
-		tmp = ft_strdup(new_stash);
-	if (op == UPDATE_STASH)
-		tmp = ft_strjoin(stash[fd], new_stash);
-	free(stash[fd]);
-	stash[fd] = tmp;
-	return (NULL);
-
+	if (!list)
+		return (NULL);
+	str_len = len_to_new_line(list);
+	next_str = malloc(str_len + 1);
+	if (!next_str)
+		return (NULL);
+	copy_str(list, next_str);
+	return (next_str);
 }
 
-char	*truncate_stash(int fd)
+void	append(t_liste **list, char *buf)
 {
-	char	*cur_stash;
-	char	*ret;
-	size_t	count;
+	t_liste	*new_node;
+	t_liste	*last_node;
 
-	cur_stash = crud_stash(GET_STASH, NULL, fd);
-	count = 0;
-	if (!cur_stash)
-		return (cur_stash);
-	while (count < ft_strlen_kay(cur_stash))
+	last_node = find_last_node(*list);
+	new_node = malloc(sizeof(t_liste));
+	if (!new_node)
+		return ;
+	if (!last_node)
+		*list = new_node;
+	else
+		last_node->next = new_node;
+	new_node->str_buf = buf;
+	new_node->next = NULL;
+}
+
+void	create_list(t_liste **list, int fd)
+{
+	int		char_read;	
+	char	*buf;
+
+	while (!found_new_line(*list))
 	{
-		if (cur_stash[count++] == '\n')
+		buf = malloc(BUFFER_SIZE + 1);
+		if (!buf)
+			return ;
+		char_read = read(fd, buf, BUFFER_SIZE);
+		if (!char_read)
 		{
-			ret = ft_substr(cur_stash, 0, count);
-			if (count == ft_strlen_kay(cur_stash))
-				crud_stash(SET_STASH, NULL, fd);
-			else
-				crud_stash(SET_STASH, cur_stash + count, fd);
-			free(cur_stash);
-			return (ret);
+			free(buf);
+			return ;
 		}
+		buf[char_read] = '\0';
+		append(list, buf);
 	}
-	crud_stash(SET_STASH, NULL, fd);
-	return (cur_stash);
 }
 
 char	*get_next_line(int fd)
 {
-	char		*buffer;
-	long int	bytes_read;
+	static t_liste	*list = NULL;
+	char			*next_line;
 
-	buffer = (char *)malloc(BUFFER_SIZE + 1);
-	if (!buffer)
+	if (fd < 0 || BUFFER_SIZE <= 0 || read(fd, &next_line, 0) < 0)
 		return (NULL);
-	bytes_read = read(fd, buffer, BUFFER_SIZE);
-	while (bytes_read > 0)
-	{
-		buffer[bytes_read] = '\0';
-		crud_stash(UPDATE_STASH, buffer, fd);
-		if (ft_strchr(buffer, '\n'))
-			break ;
-		bytes_read = read(fd, buffer, BUFFER_SIZE);
-	}
-	free(buffer);
-	buffer = NULL;
-	if (bytes_read < 0)
-		return (crud_stash(SET_STASH, NULL, fd));
-	return (truncate_stash(fd));
+	create_list(&list, fd);
+	if (!list)
+		return (NULL);
+	next_line = get_line_cstm(list);
+	polish_list(&list);
+	return (next_line);
 }
+
+// int main(void)
+// {
+// 	char	*line;
+// 	int		fd = open("file.txt", O_RDONLY);
+
+// 	if (fd < 0)
+// 		printf("File was not open.\n");
+
+// 	line = get_next_line(-1);
+// 	printf("fd = -1: %s\n", line);
+// 	free(line);
+
+// 	line = get_next_line(fd);
+// 	printf("Line 1: %s", line);
+// 	free(line);
+
+// 	line = get_next_line(fd);
+// 	printf("Line 2: %s", line);
+// 	free(line);
+
+// 	line = get_next_line(fd);
+// 	printf("Line 3: %s", line);
+// 	free(line);
+
+// 	line = get_next_line(fd);
+// 	printf("Line 4: %s", line);
+// 	free(line);
+
+// 	close(fd);
+// 	return (0);
+// }

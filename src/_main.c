@@ -3,17 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   _main.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: erian <erian@student.42>                   +#+  +:+       +#+        */
+/*   By: erian <erian@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 11:29:44 by erian             #+#    #+#             */
-/*   Updated: 2025/02/27 18:50:33 by erian            ###   ########.fr       */
+/*   Updated: 2025/02/28 12:33:47 by erian            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 #include "parsing.h"
-
-// allocating memory for data
 
 int main(int ac, char **av)
 {

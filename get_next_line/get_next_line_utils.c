@@ -3,104 +3,102 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line_utils.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: erian <erian@student.42>                   +#+  +:+       +#+        */
+/*   By: erian <erian@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 0202/04/08 22:02:11 by erian             #+#    #+#             */
-/*   Updated: 2025/02/27 20:22:10 by erian            ###   ########.fr       */
+/*   Created: 2024/09/09 17:37:54 by kfreyer           #+#    #+#             */
+/*   Updated: 2025/02/28 12:28:20 by erian            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-int	found_new_line(t_liste *list)
+size_t	ft_strlen_kay(const char *s)
 {
-	int	i;
+	size_t	count;
 
-	if (!list)
+	if (!s)
 		return (0);
-	while (list)
-	{
-		i = -1;
-		while (list->str_buf[++i] && i < BUFFER_SIZE)
-			if (list->str_buf[i] == '\n')
-				return (1);
-		list = list->next;
-	}
-	return (0);
-}
-
-t_liste	*find_last_node(t_liste *list)
-{
-	if (!list)
-		return (NULL);
-	while (list->next)
-		list = list->next;
-	return (list);
-}
-
-int	len_to_new_line(t_liste *list)
-{
-	int	count;
-	int	i;
-
 	count = 0;
-	while (list)
-	{
-		i = 0;
-		while (list->str_buf[i])
-		{
-			if (list->str_buf[i] == '\n')
-				return (count + i + 1);
-			i++;
-		}
-		list = list->next;
-		count += i;
-	}
+	while (s[count])
+		count++;
 	return (count);
 }
 
-void	copy_str(t_liste *list, char *str)
+char	*crud_stash(t_op op, char *new_stash, int fd)
 {
-	int	i;
-	int	k;
+	static char	*stash[MAX_FD];
+	char		*tmp;
 
-	k = 0;
-	while (list)
+	if (op == GET_STASH)
+		return (ft_strdup_kay(stash[fd]));
+	if (op == SET_STASH)
+		tmp = ft_strdup_kay(new_stash);
+	if (op == UPDATE_STASH)
+		tmp = ft_strjoin_kay(stash[fd], new_stash);
+	else if (op == FREE_STASH)
 	{
-		i = 0;
-		while (list->str_buf[i])
-		{
-			str[k++] = list->str_buf[i];
-			if (list->str_buf[i++] == '\n')
-			{
-				str[k] = '\0';
-				return ;
-			}
-		}
-		list = list->next;
+		free(stash[fd]);
+		stash[fd] = NULL;
+		return (NULL);
 	}
-	str[k] = '\0';
+	free(stash[fd]);
+	stash[fd] = tmp;
+	return (NULL);
+
 }
 
-void	dealloc(t_liste **list, t_liste *clear_node, char *buf)
+char	*truncate_stash(int fd)
 {
-	t_liste	*tmp;
+	char	*cur_stash;
+	char	*ret;
+	size_t	count;
 
-	if (!*list)
-		return ;
-	while (*list)
+	cur_stash = crud_stash(GET_STASH, NULL, fd);
+	count = 0;
+	if (!cur_stash)
+		return (cur_stash);
+	while (count < ft_strlen_kay(cur_stash))
 	{
-		tmp = (*list)->next;
-		free((*list)->str_buf);
-		free(*list);
-		*list = tmp;
+		if (cur_stash[count++] == '\n')
+		{
+			ret = ft_substr_kay(cur_stash, 0, count);
+			if (count == ft_strlen_kay(cur_stash))
+				crud_stash(SET_STASH, NULL, fd);
+			else
+				crud_stash(SET_STASH, cur_stash + count, fd);
+			free(cur_stash);
+			return (ret);
+		}
 	}
-	*list = NULL;
-	if (clear_node->str_buf[0])
-		*list = clear_node;
-	else
+	crud_stash(SET_STASH, NULL, fd);
+	return (cur_stash);
+}
+
+char	*get_next_line(int fd)
+{
+	char		*buffer;
+	long int	bytes_read;
+
+	buffer = (char *)malloc(BUFFER_SIZE + 1);
+	if (!buffer)
+		return (NULL);
+	bytes_read = read(fd, buffer, BUFFER_SIZE);
+	while (bytes_read > 0)
 	{
-		free(buf);
-		free(clear_node);
+		buffer[bytes_read] = '\0';
+		crud_stash(UPDATE_STASH, buffer, fd);
+		if (ft_strchr_kay(buffer, '\n'))
+			break ;
+		bytes_read = read(fd, buffer, BUFFER_SIZE);
 	}
+	free(buffer);
+	buffer = NULL;
+	if (bytes_read < 0)
+		return (crud_stash(FREE_STASH, NULL, fd));
+	return (truncate_stash(fd));
+}
+
+void	free_stash(int fd)
+{
+	crud_stash(FREE_STASH, NULL, fd);
 }

@@ -3,136 +3,122 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: erian <erian@student.42>                   +#+  +:+       +#+        */
+/*   By: erian <erian@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/08/09 12:29:20 by erian             #+#    #+#             */
-/*   Updated: 2025/02/27 20:21:44 by erian            ###   ########.fr       */
+/*   Created: 2024/09/09 17:50:49 by kfreyer           #+#    #+#             */
+/*   Updated: 2025/02/28 12:08:36 by erian            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-void	polish_list(t_liste **list)
+char	*ft_strdup_kay(const char *s)
 {
-	t_liste	*last_node;
-	t_liste	*clean_node;
-	int		i;
-	int		k;
-	char	*buf;
+	char	*res_o;
+	char	*res;
+	int		len;
 
-	buf = malloc(BUFFER_SIZE + 1);
-	clean_node = malloc(sizeof(t_liste));
-	if (!buf || !clean_node)
-		return ;
-	last_node = find_last_node(*list);
-	i = 0;
-	k = 0;
-	while (last_node->str_buf[i] && last_node->str_buf[i] != '\n')
-		++i;
-	while (last_node->str_buf[i] && last_node->str_buf[++i])
-		buf[k++] = last_node->str_buf[i];
-	buf[k] = '\0';
-	clean_node->str_buf = buf;
-	clean_node->next = NULL;
-	dealloc(list, clean_node, buf);
+	if (!s)
+		return NULL;
+	len = ft_strlen_kay(s);
+	res = malloc((len + 1) * sizeof(char));
+	if (!res)
+		return NULL;
+	res_o = res;
+	while (*s)
+		*res++ = *s++;
+	*res = '\0';
+	return (res_o);
 }
 
-char	*get_line_cstm(t_liste *list)
+size_t	ft_strlcat_kay(char *dst, const char *src, size_t size)
 {
-	int		str_len;
-	char	*next_str;
+	char		*d;
+	const char	*s;
+	size_t		dlen;
+	size_t		n;
 
-	if (!list)
-		return (NULL);
-	str_len = len_to_new_line(list);
-	next_str = malloc(str_len + 1);
-	if (!next_str)
-		return (NULL);
-	copy_str(list, next_str);
-	return (next_str);
-}
-
-void	append(t_liste **list, char *buf)
-{
-	t_liste	*new_node;
-	t_liste	*last_node;
-
-	last_node = find_last_node(*list);
-	new_node = malloc(sizeof(t_liste));
-	if (!new_node)
-		return ;
-	if (!last_node)
-		*list = new_node;
-	else
-		last_node->next = new_node;
-	new_node->str_buf = buf;
-	new_node->next = NULL;
-}
-
-void	create_list(t_liste **list, int fd)
-{
-	int		char_read;	
-	char	*buf;
-
-	while (!found_new_line(*list))
+	n = size;
+	d = dst;
+	while (*d && n-- != 0)
+		d++;
+	dlen = d - dst;
+	n = size - dlen;
+	if (n == 0)
+		return (ft_strlen_kay(src) + dlen);
+	s = src;
+	while (*s)
 	{
-		buf = malloc(BUFFER_SIZE + 1);
-		if (!buf)
-			return ;
-		char_read = read(fd, buf, BUFFER_SIZE);
-		if (!char_read)
+		if (n != 1)
 		{
-			free(buf);
-			return ;
+			*d++ = *s;
+			n--;
 		}
-		buf[char_read] = '\0';
-		append(list, buf);
+		s++;
 	}
+	*d = '\0';
+	return (dlen + (s - src));
 }
 
-char	*get_next_line(int fd)
+char	*ft_strjoin_kay(char const *s1, char const *s2)
 {
-	static t_liste	*list = NULL;
-	char			*next_line;
+	char	*res;
+	size_t	size;
 
-	if (fd < 0 || BUFFER_SIZE <= 0 || read(fd, &next_line, 0) < 0)
+	if (!s1 && !s2)
 		return (NULL);
-	create_list(&list, fd);
-	if (!list)
+	if (!s1)
+		return (ft_strdup_kay(s2));
+	if (!s2)
+		return (ft_strdup_kay(s1));
+	size = ft_strlen_kay(s1) + ft_strlen_kay(s2) + 1;
+	res = (char *)malloc((size) * sizeof(char));
+	if (!res)
 		return (NULL);
-	next_line = get_line_cstm(list);
-	polish_list(&list);
-	return (next_line);
+	*res = '\0';
+	ft_strlcat_kay(res, s1, size);
+	ft_strlcat_kay(res, s2, size);
+	return (res);
 }
 
-// int main(void)
-// {
-// 	char	*line;
-// 	int		fd = open("file.txt", O_RDONLY);
+char	*ft_strchr_kay(const char *s, int c)
+{
+	while (*s)
+	{
+		if (*s == (unsigned char)c)
+			return ((char *)s);
+		s++;
+	}
+	if ((unsigned char)c == '\0')
+		return ((char *)s);
+	return (NULL);
+}
 
-// 	if (fd < 0)
-// 		printf("File was not open.\n");
+char	*ft_substr_kay(char const *s, unsigned int start, size_t len)
+{
+	size_t	len_s;
+	size_t	count;
+	char	*new;
 
-// 	line = get_next_line(-1);
-// 	printf("fd = -1: %s\n", line);
-// 	free(line);
-
-// 	line = get_next_line(fd);
-// 	printf("Line 1: %s", line);
-// 	free(line);
-
-// 	line = get_next_line(fd);
-// 	printf("Line 2: %s", line);
-// 	free(line);
-
-// 	line = get_next_line(fd);
-// 	printf("Line 3: %s", line);
-// 	free(line);
-
-// 	line = get_next_line(fd);
-// 	printf("Line 4: %s", line);
-// 	free(line);
-
-// 	close(fd);
-// 	return (0);
-// }
+	if (!s)
+		return (NULL);
+	len_s = ft_strlen_kay(s);
+	if (start >= len_s)
+	{
+		new = (char *)malloc(1);
+		if (!new)
+			return (NULL);
+		*new = '\0';
+		return (new);
+	}
+	if ((len_s - start) < len)
+		len = len_s - start;
+	new = (char *)malloc(sizeof(char) * (len + 1));
+	if (!new)
+		return (NULL);
+	count = 0;
+	while (count < len)
+		new[count++] = s[start++];
+	new[count] = '\0';
+	return (new);
+}

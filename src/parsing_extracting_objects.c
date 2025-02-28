@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_extracting_objects.c                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: erian <erian@student.42>                   +#+  +:+       +#+        */
+/*   By: erian <erian@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 16:20:12 by erian             #+#    #+#             */
-/*   Updated: 2025/02/27 20:41:59 by erian            ###   ########.fr       */
+/*   Updated: 2025/02/28 12:32:27 by erian            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,6 @@ size_t array_size(char **array)
 
 bool is_valid_number(char *str)
 {
-    // (void)str;
     size_t i;
 
     i = 0;
@@ -39,8 +38,6 @@ bool is_valid_number(char *str)
 
 bool is_valid_line(char **split_line)
 {
-    for (int i = 0; split_line[i]; i++)
-        printf("->%s\n", split_line[i]);
     printf("%zu\n", array_size(split_line));
     if (array_size(split_line) == 0)
         return (false);
@@ -100,7 +97,16 @@ void extract_objs(int fd, t_data *data)
     t_scene *scene = data->scene;
 
     line = get_next_line(fd);
+
     scene = malloc(sizeof(t_scene));
+    if (!scene)
+        free_and_exit(data, "Error: Memory allocation failed\n");
+    scene->camera = NULL;
+    scene->a_light = NULL;
+    scene->light_lst = NULL;
+    scene->obj_lst = NULL;
+    data->scene = scene;
+
     while (line)
     {
         split_line = ft_split(line, ' ');
@@ -127,5 +133,8 @@ void extract_objs(int fd, t_data *data)
         line = get_next_line(fd);
     }
     if (data->error)
+    {
+        free_stash(fd);
         free_and_exit(data, data->error);
+    }
 }

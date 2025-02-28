@@ -3,46 +3,45 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.h                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: erian <erian@student.42>                   +#+  +:+       +#+        */
+/*   By: erian <erian@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/08/09 12:33:05 by erian             #+#    #+#             */
-/*   Updated: 2025/02/27 20:22:29 by erian            ###   ########.fr       */
+/*   Created: 2024/09/09 17:38:08 by kfreyer           #+#    #+#             */
+/*   Updated: 2025/02/28 12:30:22 by erian            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef GET_NEXT_LINE_H
 # define GET_NEXT_LINE_H
 
-# ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 10
-# endif 
-
-# include <unistd.h>
+# include <stdbool.h>
 # include <stdlib.h>
-# include <fcntl.h>
-# include <stdio.h>
+# include <unistd.h>
 
-typedef struct s_liste
+# ifndef BUFFER_SIZE
+#  define BUFFER_SIZE 32
+# endif
+
+#  define MAX_FD 1024
+
+/* type definitions */
+typedef enum _OP
 {
-	char			*str_buf;
-	struct s_liste	*next;
-}	t_liste;
+	GET_STASH = 0,
+	SET_STASH,
+	UPDATE_STASH,
+	DELETE_STASH,
+	FREE_STASH
+}		t_op;
 
-/* ************************************************************************** */
-/* get_next_line_utils                                                      * */
-/* ************************************************************************** */
-int		found_new_line(t_liste *list);
-int		len_to_new_line(t_liste *list);
-void	copy_str(t_liste *list, char *str);
-void	dealloc(t_liste **list, t_liste *clear_node, char *buf);
-t_liste	*find_last_node(t_liste *list);
-/* ************************************************************************** */
-/* get_next_line                                                            * */
-/* ************************************************************************** */
-void	polish_list(t_liste **list);
-void	append(t_liste **list, char *buf);
-void	create_list(t_liste **list, int fd);
-char	*get_next_line(int fd);
-char	*get_line_cstm(t_liste *list);
+char *get_next_line(int fd);
+size_t	ft_strlen_kay(const char *s);
+char	*ft_strdup_kay(const char *s);
+char	*ft_get_empty_str(size_t n);
+size_t	ft_strlcat_kay(char *dst, const char *src, size_t size);
+void	*ft_memcpy_kay(void *dest, const void *src, size_t n);
+char	*ft_strjoin_kay(char const *s1, char const *s2);
+char	*ft_strchr_kay(const char *s, int c);
+char	*ft_substr_kay(char const *s, unsigned int start, size_t len);
+void	free_stash(int fd);
 
-#endif
+# endif

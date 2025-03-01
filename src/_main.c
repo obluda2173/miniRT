@@ -6,13 +6,11 @@
 /*   By: erian <erian@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 11:29:44 by erian             #+#    #+#             */
-/*   Updated: 2025/03/01 14:36:56 by erian            ###   ########.fr       */
+/*   Updated: 2025/03/01 15:58:23 by erian            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
-#include "parsing.h"
-#include "graphics.h"
 
 int main(int ac, char **av)
 {

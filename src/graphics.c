@@ -6,15 +6,11 @@
 /*   By: erian <erian@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/01 09:37:01 by erian             #+#    #+#             */
-/*   Updated: 2025/03/01 13:52:22 by erian            ###   ########.fr       */
+/*   Updated: 2025/03/01 16:06:59 by erian            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minirt.h"
 #include "graphics.h"
-#include "utils.h"
-
-#define ESC 65307
 
 int	key_hook(int keycode, t_data *data)
 {

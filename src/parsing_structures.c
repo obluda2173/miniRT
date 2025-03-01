@@ -6,39 +6,33 @@
 /*   By: erian <erian@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 16:25:00 by erian             #+#    #+#             */
-/*   Updated: 2025/03/01 13:47:36 by erian            ###   ########.fr       */
+/*   Updated: 2025/03/01 16:02:37 by erian            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parsing.h"
 
-void *get_specific_obj(t_list *obj_lst, t_obj_type type)
+void	*get_specific_obj(t_list *obj_lst, t_obj_type type)
 {
-    t_list *tmp_obj_lst;
-	
+	t_list	*tmp_obj_lst;
+
 	tmp_obj_lst = obj_lst;
-    while (tmp_obj_lst)
-    {
-        t_obj *obj = (t_obj *)tmp_obj_lst->content;
-        if (obj->type == type)
-            return obj->specific_obj;
-        tmp_obj_lst = tmp_obj_lst->next;
-    }
-    return (NULL);
+	while (tmp_obj_lst)
+	{
+		t_obj *obj = (t_obj *)tmp_obj_lst->content;
+		if (obj->type == type)
+			return obj->specific_obj;
+		tmp_obj_lst = tmp_obj_lst->next;
+	}
+	return (NULL);
 }
 
 t_obj_type get_obj_type(t_list *obj_lst)
 {
-	t_obj *obj;
+	t_obj	*obj;
 
-    if (!obj_lst || !obj_lst->content)
-	{
-        return (UNDEFINED);
-
-	}
-	
 	obj = (t_obj *)obj_lst->content;
-    return obj->type;
+	return (obj->type);
 }
 
 t_cam	*parse_camera(char **split_line, t_data *data)
@@ -83,7 +77,7 @@ t_s_light	*parse_s_light(char **split_line, t_data *data)
 	return (s_light);
 }
 
-t_obj *parse_plane(char **split_line, t_data *data)
+t_obj	*parse_plane(char **split_line, t_data *data)
 {
 	t_plane	*plane;
 	t_obj	*obj;
@@ -106,7 +100,7 @@ t_obj *parse_plane(char **split_line, t_data *data)
 	return (obj);
 }
 
-t_obj *parse_sphere(char **split_line, t_data *data)
+t_obj	*parse_sphere(char **split_line, t_data *data)
 {
 	t_sphere	*sphere;
 	t_obj		*obj;

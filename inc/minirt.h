@@ -6,7 +6,7 @@
 /*   By: erian <erian@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 11:30:51 by erian             #+#    #+#             */
-/*   Updated: 2025/03/01 11:12:08 by erian            ###   ########.fr       */
+/*   Updated: 2025/03/01 15:58:07 by erian            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,22 +15,16 @@
 
 # include <mlx.h>
 # include <math.h>
-// # include <cmath>
 # include <stdio.h>
 # include <unistd.h>
 # include <stdbool.h>
 
 # include "data.h"
+# include "utils.h"
 # include "libft.h"
 # include "parsing.h"
+# include "graphics.h"
 # include "structures.h"
-
-
-# define WIN_WIDTH 1024
-# define WIN_HEIGHT 720
-
-// Initialization
-void free_data(t_data *data);
-void free_and_exit(t_data *data, char *error_msg);
+# include "operations.h"
 
 #endif

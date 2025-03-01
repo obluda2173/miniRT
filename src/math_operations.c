@@ -6,12 +6,11 @@
 /*   By: erian <erian@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/01 11:05:53 by erian             #+#    #+#             */
-/*   Updated: 2025/03/01 14:13:22 by erian            ###   ########.fr       */
+/*   Updated: 2025/03/01 16:07:30 by erian            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "operations.h"
-#include "structures.h"
 
 t_vec	vec(double x, double y, double z)
 {

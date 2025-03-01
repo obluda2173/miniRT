@@ -6,15 +6,11 @@
 /*   By: erian <erian@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/01 10:51:38 by erian             #+#    #+#             */
-/*   Updated: 2025/03/01 15:43:23 by erian            ###   ########.fr       */
+/*   Updated: 2025/03/01 15:59:53 by erian            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "data.h"
 #include "minirt.h"
-#include "operations.h"
-
-#define EPSILON 1e-6
 
 t_ray	generate_ray(t_cam *camera, int x, int y)
 {

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: erian <erian@student.42>                   +#+  +:+       +#+        */
+/*   By: erian <erian@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 11:43:48 by erian             #+#    #+#             */
-/*   Updated: 2025/02/27 19:10:10 by erian            ###   ########.fr       */
+/*   Updated: 2025/03/01 15:52:30 by erian            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,16 +28,12 @@ void parse_scene(char *filename, t_data *data)
 
 	if (!is_valid_filename(filename))
 		exit(EXIT_FAILURE);
-	
 	fd = open(filename, O_RDONLY);
-
 	if (fd < 0)
 	{
 		ft_putstr_fd("Error: Cannot open file\n", STDERR_FILENO);
 		exit(EXIT_FAILURE);
 	}
-
 	extract_objs(fd, data);
-	
 	close(fd);
 }

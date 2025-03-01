@@ -6,7 +6,7 @@
 /*   By: erian <erian@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/01 11:05:53 by erian             #+#    #+#             */
-/*   Updated: 2025/03/01 13:02:55 by erian            ###   ########.fr       */
+/*   Updated: 2025/03/01 14:13:22 by erian            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,16 @@ t_vec sub(t_vec v1, t_vec v2)
 double	dot(t_vec v1, t_vec v2)
 {
 	return (v1.x * v2.x + v1.y * v2.y + v1.z * v2.z);
+}
+
+t_vec	cross(t_vec v1, t_vec v2)
+{
+	return (vec(v1.y * v2.z - v1.z * v2.y, v1.z * v2.x - v1.x * v2.z, v1.x * v2.y - v1.y * v2.x));
+}
+
+t_vec	scale(t_vec v, double scalar)
+{
+	return (vec(v.x * scalar, v.y * scalar, v.z * scalar));
 }
 
 double	length(t_vec v)

@@ -6,14 +6,14 @@
 /*   By: erian <erian@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/01 09:22:08 by erian             #+#    #+#             */
-/*   Updated: 2025/03/01 09:22:13 by erian            ###   ########.fr       */
+/*   Updated: 2025/03/01 11:12:14 by erian            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef DATA_H
 # define DATA_H
 
-# include "scene_types.h"
+# include "structures.h"
 
 typedef struct s_mlx
 {

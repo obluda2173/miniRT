@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   scene_types.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: erian <erian@student.42>                   +#+  +:+       +#+        */
+/*   By: erian <erian@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/27 18:47:23 by erian             #+#    #+#             */
-/*   Updated: 2025/02/27 18:47:31 by erian            ###   ########.fr       */
+/*   Updated: 2025/03/01 10:51:15 by erian            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,5 +96,11 @@ typedef struct s_scene
 	t_list		*light_lst;
 	t_list		*obj_lst;
 }				t_scene;
+
+typedef struct s_ray
+{
+	t_vec 		origin;
+	t_vec 		direction;
+}				t_ray;
 
 #endif

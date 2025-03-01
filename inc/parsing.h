@@ -6,7 +6,7 @@
 /*   By: erian <erian@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/27 18:48:40 by erian             #+#    #+#             */
-/*   Updated: 2025/03/01 09:26:15 by erian            ###   ########.fr       */
+/*   Updated: 2025/03/01 11:12:03 by erian            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,8 @@
 # include <fcntl.h>
 
 # include "data.h"
-# include "scene_types.h"
 # include "utils.h"
+# include "structures.h"
 # include "get_next_line.h"
 
 // General Parsing

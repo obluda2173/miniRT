@@ -1,31 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   _main.c                                            :+:      :+:    :+:   */
+/*   graphics.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: erian <erian@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/25 11:29:44 by erian             #+#    #+#             */
-/*   Updated: 2025/03/01 10:29:17 by erian            ###   ########.fr       */
+/*   Created: 2025/03/01 09:36:23 by erian             #+#    #+#             */
+/*   Updated: 2025/03/01 09:36:53 by erian            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minirt.h"
-#include "parsing.h"
-#include "graphics.h"
+#ifndef GRAPHICS_H
+# define GRAPHICS_H
 
-int main(int ac, char **av)
-{
-	t_data data;
+# include "data.h"
 
-	if (ac != 2)
-	{
-		ft_putstr_fd("Wrong number of arguments\n", STDERR_FILENO);
-		return (1);
-	}
-	parse_scene(av[1], &data);
-	init_window(&data);
-	mlx_loop(data.mlx->mlx);
-	free_data(&data);
-	return 0;
-}
+void    init_window(t_data *data);
+void    close_window(t_data *data);
+
+#endif

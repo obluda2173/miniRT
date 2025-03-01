@@ -6,7 +6,7 @@
 /*   By: erian <erian@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 16:20:12 by erian             #+#    #+#             */
-/*   Updated: 2025/02/28 12:42:10 by erian            ###   ########.fr       */
+/*   Updated: 2025/03/01 10:30:02 by erian            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,19 +97,18 @@ void extract_objs(int fd, t_data *data)
 {
 	char *line;
 	char **split_line;
-	t_scene *scene = data->scene;
+
+	data->scene = malloc(sizeof(t_scene));
+	if (!data->scene)
+		free_and_exit(data, "Error: Memory allocation failed\n");
+
+	data->error = NULL;
+	data->scene->camera = NULL;
+	data->scene->a_light = NULL;
+	data->scene->light_lst = NULL;
+	data->scene->obj_lst = NULL;
 
 	line = get_next_line(fd);
-
-	scene = malloc(sizeof(t_scene));
-	if (!scene)
-		free_and_exit(data, "Error: Memory allocation failed\n");
-	scene->camera = NULL;
-	scene->a_light = NULL;
-	scene->light_lst = NULL;
-	scene->obj_lst = NULL;
-	data->scene = scene;
-
 	while (line)
 	{
 		split_line = ft_split(line, ' ');
@@ -121,17 +120,17 @@ void extract_objs(int fd, t_data *data)
 			break ;
 		}
 		if (ft_strcmp(split_line[0], "C") == 0)
-			scene->camera = parse_camera(split_line, data);
+			data->scene->camera = parse_camera(split_line, data);
 		if (ft_strcmp(split_line[0], "A") == 0)
-			scene->a_light = parse_a_light(split_line, data);
+			data->scene->a_light = parse_a_light(split_line, data);
 		if (ft_strcmp(split_line[0], "L") == 0)
-			ft_lstadd_back(&scene->light_lst, ft_lstnew(parse_s_light(split_line, data)));
+			ft_lstadd_back(&data->scene->light_lst, ft_lstnew(parse_s_light(split_line, data)));
 		if (ft_strcmp(split_line[0], "pl") == 0)
-			ft_lstadd_back(&scene->obj_lst, ft_lstnew(parse_plane(split_line, data)));
+			ft_lstadd_back(&data->scene->obj_lst, ft_lstnew(parse_plane(split_line, data)));
 		if (ft_strcmp(split_line[0], "sp") == 0)
-			ft_lstadd_back(&scene->obj_lst, ft_lstnew(parse_sphere(split_line, data)));
+			ft_lstadd_back(&data->scene->obj_lst, ft_lstnew(parse_sphere(split_line, data)));
 		if (ft_strcmp(split_line[0], "cy") == 0)
-			ft_lstadd_back(&scene->obj_lst, ft_lstnew(parse_cylinder(split_line, data)));
+			ft_lstadd_back(&data->scene->obj_lst, ft_lstnew(parse_cylinder(split_line, data)));
 		free_split(split_line);
 		line = get_next_line(fd);
 	}

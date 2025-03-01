@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   data.c                                             :+:      :+:    :+:   */
+/*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: erian <erian@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 17:14:32 by erian             #+#    #+#             */
-/*   Updated: 2025/02/28 12:43:08 by erian            ###   ########.fr       */
+/*   Updated: 2025/03/01 10:18:54 by erian            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	free_split(char **array)
 		free(array[i++]);
 	free(array);
 	array = NULL;
-	}
+}
 
 void	free_scene(t_scene *scene)
 {
@@ -44,7 +44,8 @@ void	free_data(t_data *data)
 		return;
 	if (data->scene)
 		free_scene(data->scene);
-	free(data);
+	if (data->mlx)
+		free(data->mlx);
 }
 
 void	free_and_exit(t_data *data, char *error_msg)

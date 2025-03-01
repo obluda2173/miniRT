@@ -11,6 +11,7 @@ MLXFLAGS	=	-L/usr/X11/lib -lX11 -lXext -Llibs/mlx_linux -lm
 
 # Directories and source files
 SRCS_DIR    =   src
+PRSR_DIR	=	src/parser
 OBJ_DIR		=	obj
 SRCS        =   $(wildcard $(SRCS_DIR)/*.c)
 OBJS        =   $(patsubst $(SRCS_DIR)/%.c, $(OBJ_DIR)/%.o, $(SRCS))

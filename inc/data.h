@@ -1,35 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   _main.c                                            :+:      :+:    :+:   */
+/*   data.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: erian <erian@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/25 11:29:44 by erian             #+#    #+#             */
-/*   Updated: 2025/03/01 09:31:59 by erian            ###   ########.fr       */
+/*   Created: 2025/03/01 09:22:08 by erian             #+#    #+#             */
+/*   Updated: 2025/03/01 09:22:13 by erian            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minirt.h"
-#include "parsing.h"
+#ifndef DATA_H
+# define DATA_H
 
-int main(int ac, char **av)
+# include "scene_types.h"
+
+typedef struct s_mlx
 {
-	t_data *data;
+	void	*mlx;
+	void	*win;
+	void	*img;
+	char	*addr;
+	int		bpp;
+	int		line_len;
+	int		endian;
+}			t_mlx;
 
-	data = ft_calloc(sizeof(t_data), 1);
-	
-	if (ac != 2)
-	{
-		ft_putstr_fd("Wrong number of arguments\n", STDERR_FILENO);
-		return (1);
-	}
+typedef struct s_data
+{
+	t_mlx	*mlx;
+	t_scene	*scene;
+	char	*error;
+}			t_data;
 
-	parse_scene(av[1], data);
-
-	printf("success!!!\n");
-
-	free_data(data);
-
-	return 0;
-}
+#endif

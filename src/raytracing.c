@@ -6,7 +6,7 @@
 /*   By: erian <erian@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/01 10:51:38 by erian             #+#    #+#             */
-/*   Updated: 2025/03/01 11:25:06 by erian            ###   ########.fr       */
+/*   Updated: 2025/03/01 11:41:56 by erian            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,4 +32,33 @@ t_ray	generate_ray(t_cam *camera, int x, int y)
 	ray.direction = normalize(ray.direction);
 
 	return (ray);
+}
+
+// ray-sphere intersection
+bool	ray_sphere_intersect(t_ray ray, t_sphere *sphere, double *t)
+{
+	t_vec	oc;
+	double	a;
+	double	b;
+	double	c;
+	double	discriminant;
+	double	t1;
+	double	t2;
+
+	oc = sub(ray.origin, sphere->coordinates);
+	a = dot(ray.direction, ray.direction);
+	b = 2.0 * dot(oc, ray.direction);
+	c = dot(oc, oc) - ((sphere->diameter / 2.0) * (sphere->diameter / 2.0));
+	discriminant = discr(a, b, c);
+	if (discr < 0)
+		return (false);
+	t1 = root_n(a, b, c);
+	t1 = root_p(a, b, c);
+	if (t1 > 0)
+		*t = t1;
+	else if (t2 > 0)
+		*t = t2;
+	else
+		return (false);
+	return (true);
 }

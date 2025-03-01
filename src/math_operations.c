@@ -6,7 +6,7 @@
 /*   By: erian <erian@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/01 11:05:53 by erian             #+#    #+#             */
-/*   Updated: 2025/03/01 11:24:57 by erian            ###   ########.fr       */
+/*   Updated: 2025/03/01 11:39:05 by erian            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,21 @@ double	dot(t_vec v1, t_vec v2)
 double	length(t_vec v)
 {
 	return (sqrt(v.x *v.x + v.y *v.y + v.z *v.z));
+}
+
+double	discr(double a, double b, double c)
+{
+	return (b * b - 4 * a * c);
+}
+
+double	root_n(double a, double b, double c)
+{
+	return (-b - sqrt(discr(a, b, c)) / (2 * a));
+}
+
+double	root_p(double a, double b, double c)
+{
+	return (-b + sqrt(discr(a, b, c)) / (2 * a));
 }
 
 t_vec	normalize(t_vec v)

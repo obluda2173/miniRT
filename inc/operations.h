@@ -6,7 +6,7 @@
 /*   By: erian <erian@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/01 11:06:21 by erian             #+#    #+#             */
-/*   Updated: 2025/03/01 11:39:31 by erian            ###   ########.fr       */
+/*   Updated: 2025/03/01 12:51:52 by erian            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,9 @@
 # define OPERATIONS_H
 
 # include "structures.h"
+# include <math.h>
+
+#define M_PI 3.14159265358979323846
 
 t_vec	vec(double x, double y, double z);
 t_vec	add(t_vec v1, t_vec v2);

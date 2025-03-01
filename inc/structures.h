@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   scene_types.h                                      :+:      :+:    :+:   */
+/*   structures.h                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: erian <erian@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/27 18:47:23 by erian             #+#    #+#             */
-/*   Updated: 2025/03/01 10:51:15 by erian            ###   ########.fr       */
+/*   Updated: 2025/03/01 13:26:23 by erian            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,6 @@ typedef struct s_color
 
 typedef struct s_cam
 {
-	t_obj_type		type;
 	t_vec			coordinates;
 	t_vec			orientation;
 	unsigned int	fov;
@@ -50,14 +49,12 @@ typedef struct s_cam
 
 typedef struct s_a_light
 {
-	t_obj_type	type;
 	double		ratio;
 	t_color		color;
 }			t_a_light;
 
 typedef struct s_s_light
 {
-	t_obj_type	type;
 	t_vec		coordinates;
 	double		ratio;
 	t_color		color;
@@ -65,7 +62,6 @@ typedef struct s_s_light
 
 typedef struct s_plane
 {
-	t_obj_type	type;
 	t_vec		coordinates;
 	t_vec		normal_vector;
 	t_color		color;
@@ -73,7 +69,6 @@ typedef struct s_plane
 
 typedef struct s_sphere
 {
-	t_obj_type	type;
 	t_vec		coordinates;
 	double		diameter;
 	t_color		color;
@@ -81,13 +76,18 @@ typedef struct s_sphere
 
 typedef struct s_cylinder
 {
-	t_obj_type	type;
 	t_vec		coordinates;
 	t_vec		normal_vector;
 	double		diameter;
 	double		height;
 	t_color		color;
 }				t_cylinder;
+
+typedef struct s_obj
+{
+    t_obj_type	type;
+    void		*specific_obj;
+}				t_obj;
 
 typedef struct s_scene
 {

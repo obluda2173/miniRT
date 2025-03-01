@@ -6,7 +6,7 @@
 /*   By: erian <erian@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/01 09:37:01 by erian             #+#    #+#             */
-/*   Updated: 2025/03/01 10:09:15 by erian            ###   ########.fr       */
+/*   Updated: 2025/03/01 13:52:22 by erian            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ int	close_hook(t_data *data)
 	return (0);
 }
 
-void    init_window(t_data *data)
+void	init_window(t_data *data)
 {
 	data->mlx = malloc(sizeof(t_mlx));
 	if (!data->mlx)

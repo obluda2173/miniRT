@@ -6,7 +6,7 @@
 /*   By: erian <erian@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/01 11:05:53 by erian             #+#    #+#             */
-/*   Updated: 2025/03/01 11:39:05 by erian            ###   ########.fr       */
+/*   Updated: 2025/03/01 13:02:55 by erian            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,12 +50,12 @@ double	discr(double a, double b, double c)
 
 double	root_n(double a, double b, double c)
 {
-	return (-b - sqrt(discr(a, b, c)) / (2 * a));
+	return ((-b - sqrt(discr(a, b, c))) / (2 * a));
 }
 
 double	root_p(double a, double b, double c)
 {
-	return (-b + sqrt(discr(a, b, c)) / (2 * a));
+	return ((-b + sqrt(discr(a, b, c))) / (2 * a));
 }
 
 t_vec	normalize(t_vec v)

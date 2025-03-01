@@ -6,7 +6,7 @@
 /*   By: erian <erian@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 11:29:44 by erian             #+#    #+#             */
-/*   Updated: 2025/03/01 10:29:17 by erian            ###   ########.fr       */
+/*   Updated: 2025/03/01 12:59:53 by erian            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ int main(int ac, char **av)
 	}
 	parse_scene(av[1], &data);
 	init_window(&data);
+	render_scene(&data);
 	mlx_loop(data.mlx->mlx);
 	free_data(&data);
 	return 0;

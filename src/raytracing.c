@@ -6,12 +6,39 @@
 /*   By: erian <erian@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/01 10:51:38 by erian             #+#    #+#             */
-/*   Updated: 2025/03/02 13:46:52 by erian            ###   ########.fr       */
+/*   Updated: 2025/03/02 13:56:47 by erian            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
+/*
+
+The generated ray equation:
+
+→P(t) = →O + t * →D
+
+where: 
+→O - origin of the ray (camera position)
+→D - direction of the ray
+t - distance from origin to point
+
+The viewport is a plane in front of the camera. 
+Each pixel (x, y) on the screen corresponds to a point on this plane.
+
+To calculate the ray:
+1. Compute the camera basis vectors:
+	- →w: inverted camera direction (pointing backward)
+	- →u: right vector (perpendicular to both w and world up)
+	- →v: up vector (perpendicular to both w and u)
+2. Compute viewport dimensions:
+	- aspect_ratio: width / height
+	- fov_scale: tan(fov / 2) determines how large the viewport appears
+	- horizontal and vertical span the viewport in world space
+3. Compute the lower-left corner of the viewport.
+4. Compute the ray direction by interpolating between the viewport edges.
+
+*/
 t_ray	generate_ray(t_cam *camera, int x, int y)
 {
 	t_ray	ray;

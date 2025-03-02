@@ -6,7 +6,7 @@
 /*   By: erian <erian@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 16:25:00 by erian             #+#    #+#             */
-/*   Updated: 2025/03/01 16:02:37 by erian            ###   ########.fr       */
+/*   Updated: 2025/03/02 14:55:33 by erian            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,8 @@ t_cam	*parse_camera(char **split_line, t_data *data)
 	t_cam	*cam;
 
 	cam = malloc(sizeof(t_cam));
+	if (!cam)
+		free_and_exit(data, "Error: Memory allocation failed for camera\n");
 	cam->coordinates = parse_vector(split_line[1], data);
 	cam->orientation = parse_vector(split_line[2], data);
 	cam->fov = ft_atoi(split_line[3]);
@@ -57,6 +59,8 @@ t_a_light	*parse_a_light(char **split_line, t_data *data)
 	t_a_light	*a_light;
 
 	a_light = malloc(sizeof(t_a_light));
+	if (!a_light)
+		free_and_exit(data, "Error: Memory allocation failed for ambient light\n");
 	a_light->ratio = ft_atod(split_line[1]);
 	a_light->color = parse_color(split_line[2], data);
 	if (a_light->ratio < 0 || a_light->ratio > 1)
@@ -64,17 +68,25 @@ t_a_light	*parse_a_light(char **split_line, t_data *data)
 	return (a_light);
 }
 
-t_s_light	*parse_s_light(char **split_line, t_data *data)
+t_obj	*parse_s_light(char **split_line, t_data *data)
 {
 	t_s_light	*s_light;
+	t_obj		*obj;
 
 	s_light = malloc(sizeof(t_s_light));
+	if (!s_light)
+		free_and_exit(data, "Error: Memory allocation failed for source light\n");
 	s_light->coordinates = parse_vector(split_line[1], data);
 	s_light->ratio = ft_atod(split_line[2]);
 	s_light->color = parse_color(split_line[3], data);
+	obj = malloc(sizeof(t_obj));
+	if (!obj)
+		free_and_exit(data, "Error: Memory allocation failed for t_object\n");
 	if (s_light->ratio < 0 || s_light->ratio > 1)
 		data->error = "Error: Invalid source light ratio range\n";
-	return (s_light);
+	obj->type = S_LIGHT;
+	obj->specific_obj = s_light;
+	return (obj);
 }
 
 t_obj	*parse_plane(char **split_line, t_data *data)

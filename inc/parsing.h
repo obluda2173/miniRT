@@ -6,7 +6,7 @@
 /*   By: erian <erian@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/27 18:48:40 by erian             #+#    #+#             */
-/*   Updated: 2025/03/01 13:45:19 by erian            ###   ########.fr       */
+/*   Updated: 2025/03/02 14:55:47 by erian            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ void		*get_specific_obj(t_list *obj_lst, t_obj_type type);
 
 // Object Parsing
 t_a_light	*parse_a_light(char **split_line, t_data *data);
-t_s_light	*parse_s_light(char **split_line, t_data *data);
+t_obj	*parse_s_light(char **split_line, t_data *data);
 t_cam		*parse_camera(char **split_line, t_data *data);
 t_obj       *parse_plane(char **split_line, t_data *data);
 t_obj       *parse_sphere(char **split_line, t_data *data);

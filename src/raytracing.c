@@ -6,7 +6,7 @@
 /*   By: erian <erian@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/01 10:51:38 by erian             #+#    #+#             */
-/*   Updated: 2025/03/02 14:37:26 by erian            ###   ########.fr       */
+/*   Updated: 2025/03/02 15:08:41 by erian            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,10 +145,13 @@ void	render_scene(t_data *data)
 	t_ray		ray;
 	t_sphere	*sphere;
 	t_a_light	*a_light;
+	t_s_light	*s_light;
 	int			color;
+	t_vec		hit_point, normal;
 
 	sphere = (t_sphere *)get_specific_obj(data->scene->obj_lst, SPHERE);
 	a_light = (t_a_light *)data->scene->a_light;
+	s_light = (t_s_light *)get_specific_obj(data->scene->light_lst, S_LIGHT);
 	if (!sphere)
 	{
 		ft_putstr_fd("Error: Sphere not found\n", STDERR_FILENO);
@@ -164,11 +167,18 @@ void	render_scene(t_data *data)
 			
 			if (ray_sphere_intersect(ray, sphere, &t))
 			{
+				// Compute hit point and normal
+				hit_point = add(ray.origin, scale(ray.direction, t));
+				normal = normalize(sub(hit_point, sphere->coordinates));
+
+				// Apply lighting (ambient + light source)
 				color = apply_ambient_light(sphere->color, a_light);
+				color = apply_light_source(int_to_color(color), s_light, hit_point, normal);
+				
 				mlx_pixel_put(data->mlx->mlx, data->mlx->win, x, y, color);
 			}
 			else
-				mlx_pixel_put(data->mlx->mlx, data->mlx->win, x, y, 0xFFFFFF);
+				mlx_pixel_put(data->mlx->mlx, data->mlx->win, x, y, 0x000000);
 			x++;
 		}
 		y++;

@@ -54,7 +54,7 @@ $(OBJ_DIR)/%.o: $(SRCS_DIR)/%.c | $(OBJ_DIR)
 	$(CC) $(CCFLAGS) $(INC) -c $< -o $@
 
 $(OBJ_DIR):
-	mkdir -p $(OBJ_DIR)
+	@mkdir -p $(OBJ_DIR)
 
 clean:
 			$(RM) $(OBJS)

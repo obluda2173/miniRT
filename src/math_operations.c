@@ -6,7 +6,7 @@
 /*   By: erian <erian@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/01 11:05:53 by erian             #+#    #+#             */
-/*   Updated: 2025/03/01 16:07:30 by erian            ###   ########.fr       */
+/*   Updated: 2025/03/02 10:36:17 by erian            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ t_vec	scale(t_vec v, double scalar)
 
 double	length(t_vec v)
 {
-	return (sqrt(v.x *v.x + v.y *v.y + v.z *v.z));
+	return (sqrt(v.x * v.x + v.y * v.y + v.z * v.z));
 }
 
 double	discr(double a, double b, double c)
@@ -70,7 +70,7 @@ double	root_p(double a, double b, double c)
 t_vec	normalize(t_vec v)
 {
 	double	len;
-	
+
 	len = length(v);
 	if (len == 0)
 		return (vec(0, 0, 0));

@@ -1,30 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   graphics.h                                         :+:      :+:    :+:   */
+/*   light.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: erian <erian@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/01 09:36:23 by erian             #+#    #+#             */
-/*   Updated: 2025/03/02 14:41:57 by erian            ###   ########.fr       */
+/*   Created: 2025/03/02 14:38:21 by erian             #+#    #+#             */
+/*   Updated: 2025/03/02 14:41:28 by erian            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef GRAPHICS_H
-# define GRAPHICS_H
+#ifndef LIGHT_H
+# define LIGHT_H
 
-# include <mlx.h>
+# include <math.h>
 
 # include "data.h"
-# include "utils.h"
-# include "light.h"
 
-# define ESC		65307
-# define WIN_WIDTH	1024
-# define WIN_HEIGHT	720
-
-void	init_window(t_data *data);
-void	close_window(t_data *data);	
-void	render_scene(t_data *data);
+int color_to_int(t_color color);
+int	apply_ambient_light(t_color object_color, t_a_light *ambient);
 
 #endif

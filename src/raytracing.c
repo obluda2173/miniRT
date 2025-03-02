@@ -6,7 +6,7 @@
 /*   By: erian <erian@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/01 10:51:38 by erian             #+#    #+#             */
-/*   Updated: 2025/03/02 13:56:47 by erian            ###   ########.fr       */
+/*   Updated: 2025/03/02 14:37:26 by erian            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,13 +139,16 @@ bool	ray_sphere_intersect(t_ray ray, t_sphere *sphere, double *t)
 
 void	render_scene(t_data *data)
 {
-	int	x;
-	int y;
-	double	t;
-	t_ray	ray;
+	int			x;
+	int			y;
+	double		t;
+	t_ray		ray;
 	t_sphere	*sphere;
+	t_a_light	*a_light;
+	int			color;
 
 	sphere = (t_sphere *)get_specific_obj(data->scene->obj_lst, SPHERE);
+	a_light = (t_a_light *)data->scene->a_light;
 	if (!sphere)
 	{
 		ft_putstr_fd("Error: Sphere not found\n", STDERR_FILENO);
@@ -160,9 +163,12 @@ void	render_scene(t_data *data)
 			ray = generate_ray(data->scene->camera, x, y);
 			
 			if (ray_sphere_intersect(ray, sphere, &t))
-				mlx_pixel_put(data->mlx->mlx, data->mlx->win, x, y, 0xFFFFFF);
+			{
+				color = apply_ambient_light(sphere->color, a_light);
+				mlx_pixel_put(data->mlx->mlx, data->mlx->win, x, y, color);
+			}
 			else
-				mlx_pixel_put(data->mlx->mlx, data->mlx->win, x, y, 0x000000);
+				mlx_pixel_put(data->mlx->mlx, data->mlx->win, x, y, 0xFFFFFF);
 			x++;
 		}
 		y++;

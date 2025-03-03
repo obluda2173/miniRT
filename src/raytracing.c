@@ -6,7 +6,7 @@
 /*   By: erian <erian@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/01 10:51:38 by erian             #+#    #+#             */
-/*   Updated: 2025/03/03 14:43:57 by erian            ###   ########.fr       */
+/*   Updated: 2025/03/03 15:10:00 by erian            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,28 @@ t_ray generate_ray(t_cam *camera, int x, int y)
 	return (ray);
 }
 
+int process_lights(t_scene *scene, t_vec hit_point, t_vec normal, t_color base_color, int col)
+{
+	t_list *light_lst = scene->light_lst;
+	while (light_lst)
+	{
+		t_obj *light_obj = light_lst->content;
+		if (light_obj->type == S_LIGHT)
+		{
+			t_s_light *light = (t_s_light *)light_obj->specific_obj;
+			if (!is_in_shadow(hit_point, light, scene))
+			{
+				t_color light_contrib = calculate_light(light, hit_point, normal, base_color);
+				t_color current = int_to_color(col);
+				current = color_add(current, light_contrib);
+				col = color_to_int(current);
+			}
+		}
+		light_lst = light_lst->next;
+	}
+	return (col);
+}
+
 int process_pixel(t_data *data, int x, int y)
 {
 	double t;
@@ -83,23 +105,8 @@ int process_pixel(t_data *data, int x, int y)
 	t_color base_color = ((t_sphere *)closest_obj->specific_obj)->color;
 	int col = apply_ambient_light(base_color, data->scene->a_light);
 
-	t_list *light_lst = data->scene->light_lst;
-	while (light_lst)
-	{
-		t_obj *light_obj = light_lst->content;
-		if (light_obj->type == S_LIGHT)
-		{
-			t_s_light *light = (t_s_light *)light_obj->specific_obj;
-			if (!is_in_shadow(hit_point, light, data->scene))
-			{
-				t_color light_contrib = calculate_light(light, hit_point, normal, base_color);
-				t_color current = int_to_color(col);
-				current = color_add(current, light_contrib);
-				col = color_to_int(current);
-			}
-		}
-		light_lst = light_lst->next;
-	}
+	col = process_lights(data->scene, hit_point, normal, base_color, col);
+
 	return (color_to_int(color_clamp(int_to_color(col))));
 }
 

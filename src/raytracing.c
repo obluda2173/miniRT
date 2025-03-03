@@ -6,7 +6,7 @@
 /*   By: erian <erian@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/01 10:51:38 by erian             #+#    #+#             */
-/*   Updated: 2025/03/03 15:10:00 by erian            ###   ########.fr       */
+/*   Updated: 2025/03/03 15:41:57 by erian            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,48 +66,55 @@ t_ray generate_ray(t_cam *camera, int x, int y)
 	return (ray);
 }
 
-int process_lights(t_scene *scene, t_vec hit_point, t_vec normal, t_color base_color, int col)
+int process_lights(t_scene *scene, t_intersection *inter, int color)
 {
-	t_list *light_lst = scene->light_lst;
-	while (light_lst)
-	{
-		t_obj *light_obj = light_lst->content;
-		if (light_obj->type == S_LIGHT)
-		{
-			t_s_light *light = (t_s_light *)light_obj->specific_obj;
-			if (!is_in_shadow(hit_point, light, scene))
-			{
-				t_color light_contrib = calculate_light(light, hit_point, normal, base_color);
-				t_color current = int_to_color(col);
-				current = color_add(current, light_contrib);
-				col = color_to_int(current);
-			}
-		}
-		light_lst = light_lst->next;
-	}
-	return (col);
+    t_list      *light_lst;
+    t_obj       *light_obj;
+    t_s_light   *light;
+    t_color     light_contrib;
+    t_color     current;
+
+    light_lst = scene->light_lst;
+    while (light_lst)
+    {
+        light_obj = light_lst->content;
+        if (light_obj->type == S_LIGHT)
+        {
+            light = (t_s_light *)light_obj->specific_obj;
+            if (!is_in_shadow(inter->hit_point, light, scene))
+            {
+                light_contrib = calculate_light(light, inter->hit_point, inter->normal, inter->base_color);
+                current = int_to_color(color);
+                current = color_add(current, light_contrib);
+                color = color_to_int(current);
+            }
+        }
+        light_lst = light_lst->next;
+    }
+    return (color);
 }
 
 int process_pixel(t_data *data, int x, int y)
 {
-	double t;
-	t_ray ray = generate_ray(data->scene->camera, x, y);
-	t_vec normal;
-	t_obj *closest_obj = find_closest_object(ray, data->scene->obj_lst, &t, &normal);
+    double      t;
+    t_ray       ray = generate_ray(data->scene->camera, x, y);
+    t_vec       normal;
+    t_obj       *closest_obj = find_closest_object(ray, data->scene->obj_lst, &t, &normal);
+	t_intersection inter;
 
-	if (!closest_obj)
-		return (0x000000);
-		
-	t_vec hit_point = add(ray.origin, scale(ray.direction, t));
-	if (dot(normal, ray.direction) > 0)
-		normal = scale(normal, -1);
+    if (!closest_obj)
+        return (0x000000);
 
-	t_color base_color = ((t_sphere *)closest_obj->specific_obj)->color;
-	int col = apply_ambient_light(base_color, data->scene->a_light);
+    inter.hit_point = add(ray.origin, scale(ray.direction, t));
+    if (dot(normal, ray.direction) > 0)
+        normal = scale(normal, -1);
+    inter.normal = normal;
+    inter.base_color = ((t_sphere *)closest_obj->specific_obj)->color;
+    
+    int col = apply_ambient_light(inter.base_color, data->scene->a_light);
+    col = process_lights(data->scene, &inter, col);
 
-	col = process_lights(data->scene, hit_point, normal, base_color, col);
-
-	return (color_to_int(color_clamp(int_to_color(col))));
+    return (color_to_int(color_clamp(int_to_color(col))));
 }
 
 void render_scene(t_data *data)

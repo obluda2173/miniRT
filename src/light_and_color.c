@@ -6,7 +6,7 @@
 /*   By: erian <erian@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/02 14:37:19 by erian             #+#    #+#             */
-/*   Updated: 2025/03/03 14:30:10 by erian            ###   ########.fr       */
+/*   Updated: 2025/03/03 14:44:10 by erian            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,19 +52,6 @@ int apply_ambient_light(t_color object_color, t_a_light *ambient)
 		.r = (object_color.r + ambient->color.r) * ambient->ratio,
 		.g = (object_color.g + ambient->color.g) * ambient->ratio,
 		.b = (object_color.b + ambient->color.b) * ambient->ratio});
-
-	return color_to_int(result);
-}
-
-int apply_light_source(t_color object_color, t_s_light *light, t_vec hit_point, t_vec normal)
-{
-	t_vec light_dir = normalize(sub(light->coordinates, hit_point));
-	double intensity = fmax(dot(normal, light_dir), 0.0) * light->ratio;
-
-	t_color result = color_clamp((t_color){
-		.r = object_color.r * intensity + light->color.r * light->ratio,
-		.g = object_color.g * intensity + light->color.g * light->ratio,
-		.b = object_color.b * intensity + light->color.b * light->ratio});
 
 	return color_to_int(result);
 }

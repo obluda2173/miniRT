@@ -6,12 +6,53 @@
 /*   By: erian <erian@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 13:19:31 by erian             #+#    #+#             */
-/*   Updated: 2025/03/03 13:34:37 by erian            ###   ########.fr       */
+/*   Updated: 2025/03/03 14:22:24 by erian            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
+/*
+
+equation of →P(t) ray:
+→P(t) = →O + t * →D
+
+where: 
+→O - origin of ray
+t - distance from origin to point 
+→D - direction of the ray (vector unit)
+
+equation of a sphere with centre →C and radius R:
+(→P - →C)^2 = R^2
+
+where: 
+→C - centre of sphere
+R - radius of sphere 
+→P - any point on the surface of the sphere
+
+∴ ((→O + t * →D) - →C)^2 = R^2
+
+let →oc = →O - →C (the vector from ray origin to the sphere centre)
+
+((→oc + t * →D) - →C)^2 = R^2
+
+expands:
+
+t^2 * (→D * →D) + 2t * (→oc * →D) + (→oc * →oc - R^2) = 0
+
+which results in a quadratic equation:
+
+at^2 + bt + c = 0
+
+where:
+a = →D * →D
+b = 2 * (→oc * →D)
+c = →oc * →oc - R^2
+
+roots of the equation are distance to the ray-sphere intersection, 
+we are collecting the smallest one since the ray does not penetrate the object
+
+*/
 bool ray_sphere_intersect(t_ray ray, t_sphere *sphere, double *t)
 {
 	t_vec oc = sub(ray.origin, sphere->coordinates);

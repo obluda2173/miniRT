@@ -6,7 +6,7 @@
 /*   By: erian <erian@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/01 10:51:38 by erian             #+#    #+#             */
-/*   Updated: 2025/03/03 11:55:50 by erian            ###   ########.fr       */
+/*   Updated: 2025/03/03 12:41:15 by erian            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ t_ray generate_ray(t_cam *camera, int x, int y)
 
 	// Basis vectors
 	t_vec w = normalize(scale(camera->orientation, -1));
-	t_vec u = normalize(cross(vec(0, 1, 0), w));
+	t_vec u = normalize(cross(w, vec(0, 1, 0)));
 	t_vec v = cross(w, u);
 
 	// Viewport dimensions
@@ -37,7 +37,7 @@ t_ray generate_ray(t_cam *camera, int x, int y)
 	t_vec point_on_viewport = add(lower_left_corner, offset);
 	ray.direction = normalize(sub(point_on_viewport, ray.origin));
 
-	return ray;
+	return (ray);
 }
 
 t_obj *find_closest_object(t_ray ray, t_list *orig_obj_lst, double *closest_t, t_vec *closest_normal)
@@ -62,7 +62,7 @@ t_obj *find_closest_object(t_ray ray, t_list *orig_obj_lst, double *closest_t, t
 		}
 		obj_lst = obj_lst->next;
 	}
-	return closest_obj;
+	return (closest_obj);
 }
 
 bool is_in_shadow(t_vec hit_point, t_s_light *light, t_scene *scene)
@@ -77,21 +77,15 @@ bool is_in_shadow(t_vec hit_point, t_s_light *light, t_scene *scene)
 	double t;
 	t_list *current_obj = scene->obj_lst;
 
-	while (current_obj) {
+	while (current_obj)
+	{
 		t_obj *obj = current_obj->content;
-		if (obj->type == SPHERE) {
-			if (ray_sphere_intersect(shadow_ray, (t_sphere *)obj->specific_obj, &t))
-			{
-				if (t > EPSILON && t < light_distance)
-				{
-					return true;
-				}
-			}
-		}
+		if (obj->type == SPHERE && (ray_sphere_intersect(shadow_ray, (t_sphere *)obj->specific_obj, &t)) && (t > EPSILON && t < light_distance)) 	
+			return (true);
 		// add intersection checks for other object types (planes, cylinders etc.)
 		current_obj = current_obj->next;
 	}
-	return false;
+	return (false);
 }
 
 bool ray_sphere_intersect(t_ray ray, t_sphere *sphere, double *t)
@@ -114,9 +108,8 @@ bool ray_sphere_intersect(t_ray ray, t_sphere *sphere, double *t)
 	else if (t2 > EPSILON)
 		*t = t2;
 	else
-		return false;
-
-	return true;
+		return (false);
+	return (true);
 }
 
 void render_scene(t_data *data)

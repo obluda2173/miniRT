@@ -6,7 +6,7 @@
 /*   By: erian <erian@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/02 14:37:19 by erian             #+#    #+#             */
-/*   Updated: 2025/03/04 12:20:19 by erian            ###   ########.fr       */
+/*   Updated: 2025/03/04 13:15:55 by erian            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,28 +32,30 @@ t_color color_clamp(t_color c)
 
 t_color color_add(t_color a, t_color b)
 {
-	return color_clamp((t_color){
+	return (color_clamp((t_color){
 		.r = a.r + b.r,
 		.g = a.g + b.g,
-		.b = a.b + b.b});
+		.b = a.b + b.b}));
 }
 
 t_color color_scale(t_color c, double factor)
 {
-	return color_clamp((t_color){
+	return (color_clamp((t_color){
 		.r = c.r * factor,
 		.g = c.g * factor,
-		.b = c.b * factor});
+		.b = c.b * factor}));
 }
 
 int apply_ambient_light(t_color object_color, t_a_light *ambient)
 {
-	t_color result = color_clamp((t_color){
+	t_color	result;
+
+	result = color_clamp((t_color){
 		.r = (object_color.r + ambient->color.r) * ambient->ratio,
 		.g = (object_color.g + ambient->color.g) * ambient->ratio,
 		.b = (object_color.b + ambient->color.b) * ambient->ratio});
 
-	return color_to_int(result);
+	return (color_to_int(result));
 }
 
 int apply_source_light(t_scene *scene, t_intersection *inter, int color)
@@ -99,5 +101,5 @@ t_color calculate_light(t_s_light *light, t_vec hit_point, t_vec normal, t_color
 	// double spec = pow(fmax(dot(view_dir, reflect_dir), 0.0), SHININESS);
 	// t_color specular = color_scale(light->color, spec * intensity);
 
-	return diffuse; // add specular later
+	return (diffuse); // add specular later
 }

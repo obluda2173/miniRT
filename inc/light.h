@@ -6,7 +6,7 @@
 /*   By: erian <erian@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/02 14:38:21 by erian             #+#    #+#             */
-/*   Updated: 2025/03/04 12:23:42 by erian            ###   ########.fr       */
+/*   Updated: 2025/03/04 12:25:39 by erian            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@
 # include "data.h"
 # include "operations.h"
 # include "raytracing.h"
-
 
 typedef struct s_intersection
 {

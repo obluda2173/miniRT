@@ -6,7 +6,7 @@
 /*   By: erian <erian@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 13:19:31 by erian             #+#    #+#             */
-/*   Updated: 2025/03/04 11:37:45 by erian            ###   ########.fr       */
+/*   Updated: 2025/03/04 12:42:44 by erian            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,24 +79,28 @@ bool ray_sphere_intersect(t_ray ray, t_sphere *sphere, double *t)
 
 t_obj *find_closest_object(t_ray ray, t_list *orig_obj_lst, double *closest_t, t_vec *closest_normal)
 {
-	t_obj *closest_obj = NULL;
-	t_list *obj_lst = orig_obj_lst;
-	double t;
+	t_obj	*closest_obj;
+	t_list	*obj_lst;
+	t_obj	*obj_node;
+	double	t;
 
+	closest_obj = NULL;
+	obj_lst = orig_obj_lst;
 	*closest_t = INFINITY;
 	while (obj_lst)
 	{
-		t_obj *current = obj_lst->content;
-		if (current->type == SPHERE)
+		obj_node = obj_lst->content;
+		if (obj_node->type == SPHERE)
 		{
-			t_sphere *sphere = (t_sphere *)current->specific_obj;
+			t_sphere *sphere = (t_sphere *)obj_node->specific_obj;
 			if (ray_sphere_intersect(ray, sphere, &t) && t < *closest_t)
 			{
 				*closest_t = t;
-				closest_obj = current;
+				closest_obj = obj_node;
 				*closest_normal = normalize(sub(add(ray.origin, scale(ray.direction, t)), sphere->coordinates));
 			}
 		}
+		// add other objects
 		obj_lst = obj_lst->next;
 	}
 	return (closest_obj);

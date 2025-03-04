@@ -6,12 +6,13 @@
 /*   By: erian <erian@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 16:25:00 by erian             #+#    #+#             */
-/*   Updated: 2025/03/02 14:55:33 by erian            ###   ########.fr       */
+/*   Updated: 2025/03/04 12:27:04 by erian            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parsing.h"
 
+// not currently used
 void	*get_specific_obj(t_list *obj_lst, t_obj_type type)
 {
 	t_list	*tmp_obj_lst;
@@ -27,6 +28,7 @@ void	*get_specific_obj(t_list *obj_lst, t_obj_type type)
 	return (NULL);
 }
 
+// not currently used
 t_obj_type get_obj_type(t_list *obj_lst)
 {
 	t_obj	*obj;

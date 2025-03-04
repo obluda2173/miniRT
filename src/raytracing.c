@@ -6,7 +6,7 @@
 /*   By: erian <erian@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/01 10:51:38 by erian             #+#    #+#             */
-/*   Updated: 2025/03/04 12:19:53 by erian            ###   ########.fr       */
+/*   Updated: 2025/03/04 13:20:01 by erian            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,25 +68,32 @@ t_ray generate_ray(t_cam *camera, int x, int y)
 
 int process_pixel(t_data *data, int x, int y)
 {
-    double      t;
-    t_ray       ray = generate_ray(data->scene->camera, x, y);
-    t_vec       normal;
-    t_obj       *closest_obj = find_closest_object(ray, data->scene->obj_lst, &t, &normal);
-	t_intersection inter;
+	double			t;
+	t_ray			ray;
+	t_vec			normal;
+	t_obj			*closest_obj;
+	t_intersection	inter;
+	int				color;
 
-    if (!closest_obj)
-        return (0x000000);
+	ray = generate_ray(data->scene->camera, x, y);
+	closest_obj = find_closest_object(ray, data->scene->obj_lst, &t, &normal);
 
-    inter.hit_point = add(ray.origin, scale(ray.direction, t));
-    if (dot(normal, ray.direction) > 0)
-        normal = scale(normal, -1);
-    inter.normal = normal;
-    inter.base_color = ((t_sphere *)closest_obj->specific_obj)->color;
-    
-    int col = apply_ambient_light(inter.base_color, data->scene->a_light);
-    col = apply_source_light(data->scene, &inter, col);
+	if (!closest_obj)
+		return (0x000000);
 
-    return (color_to_int(color_clamp(int_to_color(col))));
+	inter.hit_point = add(ray.origin, scale(ray.direction, t));
+	if (dot(normal, ray.direction) > 0)
+		normal = scale(normal, -1);
+	inter.normal = normal;
+	
+	if (closest_obj->type == SPHERE)
+		inter.base_color = ((t_sphere *)closest_obj->specific_obj)->color;
+	// to do other objects
+
+	color = apply_ambient_light(inter.base_color, data->scene->a_light);
+	color = apply_source_light(data->scene, &inter, color);
+
+	return (color);
 }
 
 void render_scene(t_data *data)

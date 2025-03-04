@@ -6,7 +6,7 @@
 /*   By: erian <erian@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/02 14:37:19 by erian             #+#    #+#             */
-/*   Updated: 2025/03/04 13:15:55 by erian            ###   ########.fr       */
+/*   Updated: 2025/03/04 13:29:22 by erian            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,6 @@ int apply_ambient_light(t_color object_color, t_a_light *ambient)
 int apply_source_light(t_scene *scene, t_intersection *inter, int color)
 {
 	t_list		*light_lst;
-	t_obj		*light_obj;
 	t_s_light	*light;
 	t_color		light_contrib;
 	t_color		current;
@@ -69,17 +68,13 @@ int apply_source_light(t_scene *scene, t_intersection *inter, int color)
 	light_lst = scene->light_lst;
 	while (light_lst)
 	{
-		light_obj = light_lst->content;
-		if (light_obj->type == S_LIGHT)
+		light = (t_s_light *)light_lst->content;
+		if (!is_in_shadow(inter->hit_point, light, scene))
 		{
-			light = (t_s_light *)light_obj->specific_obj;
-			if (!is_in_shadow(inter->hit_point, light, scene))
-			{
-				light_contrib = calculate_light(light, inter->hit_point, inter->normal, inter->base_color);
-				current = int_to_color(color);
-				current = color_add(current, light_contrib);
-				color = color_to_int(current);
-			}
+			light_contrib = calculate_light(light, inter->hit_point, inter->normal, inter->base_color);
+			current = int_to_color(color);
+			current = color_add(current, light_contrib);
+			color = color_to_int(current);
 		}
 		light_lst = light_lst->next;
 	}

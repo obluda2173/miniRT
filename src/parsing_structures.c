@@ -6,7 +6,7 @@
 /*   By: erian <erian@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 16:25:00 by erian             #+#    #+#             */
-/*   Updated: 2025/03/04 12:27:04 by erian            ###   ########.fr       */
+/*   Updated: 2025/03/04 13:27:01 by erian            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,10 +70,9 @@ t_a_light	*parse_a_light(char **split_line, t_data *data)
 	return (a_light);
 }
 
-t_obj	*parse_s_light(char **split_line, t_data *data)
+t_s_light	*parse_s_light(char **split_line, t_data *data)
 {
 	t_s_light	*s_light;
-	t_obj		*obj;
 
 	s_light = malloc(sizeof(t_s_light));
 	if (!s_light)
@@ -81,14 +80,9 @@ t_obj	*parse_s_light(char **split_line, t_data *data)
 	s_light->coordinates = parse_vector(split_line[1], data);
 	s_light->ratio = ft_atod(split_line[2]);
 	s_light->color = parse_color(split_line[3], data);
-	obj = malloc(sizeof(t_obj));
-	if (!obj)
-		free_and_exit(data, "Error: Memory allocation failed for t_object\n");
 	if (s_light->ratio < 0 || s_light->ratio > 1)
 		data->error = "Error: Invalid source light ratio range\n";
-	obj->type = S_LIGHT;
-	obj->specific_obj = s_light;
-	return (obj);
+	return (s_light);
 }
 
 t_obj	*parse_plane(char **split_line, t_data *data)

@@ -6,7 +6,7 @@
 /*   By: erian <erian@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 17:14:32 by erian             #+#    #+#             */
-/*   Updated: 2025/03/02 15:23:24 by erian            ###   ########.fr       */
+/*   Updated: 2025/03/04 13:27:41 by erian            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,8 +35,6 @@ void free_specific_object(t_obj *obj)
 		free((t_plane *)obj->specific_obj);
 	else if (obj->type == CYLINDER)
 		free((t_cylinder *)obj->specific_obj);
-	else if (obj->type == S_LIGHT)
-		free((t_s_light *)obj->specific_obj);
 	free(obj);
 }
 
@@ -48,7 +46,7 @@ void	free_scene(t_scene *scene)
 		free(scene->camera);
 	if (scene->a_light)
 		free(scene->a_light);
-	ft_lstclear(&scene->light_lst, (void (*)(void *))free_specific_object);
+	ft_lstclear(&scene->light_lst, free);
 	ft_lstclear(&scene->obj_lst, (void (*)(void *))free_specific_object);
 	free(scene);
 }

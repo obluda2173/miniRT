@@ -6,7 +6,7 @@
 /*   By: erian <erian@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/02 14:37:19 by erian             #+#    #+#             */
-/*   Updated: 2025/03/04 13:42:11 by erian            ###   ########.fr       */
+/*   Updated: 2025/03/04 14:23:09 by erian            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,6 @@ int apply_source_light(t_scene *scene, t_intersection *inter, int color)
 	t_list		*light_lst;
 	t_s_light	*light;
 	t_color		light_contrib;
-	t_color		current;
 
 	light_lst = scene->light_lst;
 	while (light_lst)
@@ -72,9 +71,7 @@ int apply_source_light(t_scene *scene, t_intersection *inter, int color)
 		if (!is_in_shadow(inter->hit_point, light, scene))
 		{
 			light_contrib = calculate_light(light, inter->hit_point, inter->normal, inter->base_color);
-			current = int_to_color(color);
-			current = color_add(current, light_contrib);
-			color = color_to_int(current);
+			color = color_to_int(color_add(int_to_color(color), light_contrib));
 		}
 		light_lst = light_lst->next;
 	}
@@ -84,14 +81,12 @@ int apply_source_light(t_scene *scene, t_intersection *inter, int color)
 t_color	calculate_light(t_s_light *light, t_vec hit_point, t_vec normal, t_color obj_color)
 {
 	t_vec	light_dir;
-	double	intensity;
 	double	diff;
 	t_color	diffuse;
 
 	light_dir = normalize(sub(light->coordinates, hit_point));
-	intensity = light->ratio;
 	diff = fmax(dot(normal, light_dir), 0.0);
-	diffuse = color_scale(obj_color, diff * intensity);
+	diffuse = color_scale(obj_color, diff * light->ratio);
 
 	// specular lighting (to be added later)
 	// t_vec view_dir = normalize(sub(camera->position, hit_point));

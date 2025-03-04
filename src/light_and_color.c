@@ -6,7 +6,7 @@
 /*   By: erian <erian@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/02 14:37:19 by erian             #+#    #+#             */
-/*   Updated: 2025/03/04 13:29:22 by erian            ###   ########.fr       */
+/*   Updated: 2025/03/04 13:42:11 by erian            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,14 +81,17 @@ int apply_source_light(t_scene *scene, t_intersection *inter, int color)
 	return (color);
 }
 
-t_color calculate_light(t_s_light *light, t_vec hit_point, t_vec normal, t_color obj_color)
+t_color	calculate_light(t_s_light *light, t_vec hit_point, t_vec normal, t_color obj_color)
 {
-	t_vec light_dir = normalize(sub(light->coordinates, hit_point));
-	double intensity = light->ratio;
+	t_vec	light_dir;
+	double	intensity;
+	double	diff;
+	t_color	diffuse;
 
-	// diffuse lighting
-	double diff = fmax(dot(normal, light_dir), 0.0);
-	t_color diffuse = color_scale(obj_color, diff * intensity);
+	light_dir = normalize(sub(light->coordinates, hit_point));
+	intensity = light->ratio;
+	diff = fmax(dot(normal, light_dir), 0.0);
+	diffuse = color_scale(obj_color, diff * intensity);
 
 	// specular lighting (to be added later)
 	// t_vec view_dir = normalize(sub(camera->position, hit_point));
@@ -96,5 +99,5 @@ t_color calculate_light(t_s_light *light, t_vec hit_point, t_vec normal, t_color
 	// double spec = pow(fmax(dot(view_dir, reflect_dir), 0.0), SHININESS);
 	// t_color specular = color_scale(light->color, spec * intensity);
 
-	return (diffuse); // add specular later
+	return (diffuse); // add specular later (MAYBE...)
 }

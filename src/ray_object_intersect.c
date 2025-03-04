@@ -6,7 +6,7 @@
 /*   By: erian <erian@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 13:19:31 by erian             #+#    #+#             */
-/*   Updated: 2025/03/04 12:42:44 by erian            ###   ########.fr       */
+/*   Updated: 2025/03/04 13:47:03 by erian            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,21 +106,24 @@ t_obj *find_closest_object(t_ray ray, t_list *orig_obj_lst, double *closest_t, t
 	return (closest_obj);
 }
 
-bool is_in_shadow(t_vec hit_point, t_s_light *light, t_scene *scene)
+bool	is_in_shadow(t_vec hit_point, t_s_light *light, t_scene *scene)
 {
-	t_ray shadow_ray;
-	t_vec light_dir = sub(light->coordinates, hit_point);
-	double light_distance = length(light_dir);
+	t_ray	shadow_ray;
+	t_vec	light_dir;
+	double	light_distance;
+	double	t;
+	t_list	*current_obj;
+	t_obj	*obj;
 
+	light_dir = sub(light->coordinates, hit_point);
+	light_distance = length(light_dir);
 	shadow_ray.origin = add(hit_point, scale(normalize(light_dir), EPSILON));
 	shadow_ray.direction = normalize(light_dir);
-
-	double t;
-	t_list *current_obj = scene->obj_lst;
+	current_obj = scene->obj_lst;
 
 	while (current_obj)
 	{
-		t_obj *obj = current_obj->content;
+		obj = current_obj->content;
 		if (obj->type == SPHERE && (ray_sphere_intersect(shadow_ray, (t_sphere *)obj->specific_obj, &t)) && (t > EPSILON && t < light_distance)) 	
 			return (true);
 		// add intersection checks for other object types (planes, cylinders etc.)

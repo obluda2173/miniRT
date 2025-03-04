@@ -6,7 +6,7 @@
 /*   By: erian <erian@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 13:19:31 by erian             #+#    #+#             */
-/*   Updated: 2025/03/04 13:47:03 by erian            ###   ########.fr       */
+/*   Updated: 2025/03/04 16:14:44 by erian            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,44 @@ bool ray_sphere_intersect(t_ray ray, t_sphere *sphere, double *t)
 	else
 		return (false);
 	return (true);
+}
+
+/*
+
+equation of →P(t) ray:
+→P(t) = →O + t * →D
+
+equation of a plane:
+→n * (→P - →A) = 0
+
+where:
+→n - normal vector of the plane
+→A - any point on the plane
+→P - any point on the plane
+
+substitute ray equation into the plane equation:
+
+→n * (→O + t * →D - →A) = 0
+
+→n * (→O - →A + t * →D) = 0
+
+→n * (→O - →A) + t * →n * →D = 0
+
+t = - →n * (→O - →A) / →n * →D
+
+if the denominator is not zero, the ray intersects the plane
+
+*/
+bool ray_plane_intersect(t_ray ray, t_plane *plane, double *t)
+{
+	double denom = dot(plane->normal_vector, ray.direction);
+	if (fabs(denom) > EPSILON)
+	{
+		t_vec p0l0 = sub(plane->coordinates, ray.origin);
+		*t = dot(p0l0, plane->normal_vector) / denom;
+		return (*t >= 0);
+	}
+	return (false);
 }
 
 t_obj *find_closest_object(t_ray ray, t_list *orig_obj_lst, double *closest_t, t_vec *closest_normal)

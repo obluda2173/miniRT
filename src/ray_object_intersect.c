@@ -6,7 +6,7 @@
 /*   By: erian <erian@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 13:19:31 by erian             #+#    #+#             */
-/*   Updated: 2025/03/04 16:18:51 by erian            ###   ########.fr       */
+/*   Updated: 2025/03/04 16:46:21 by erian            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,12 +60,12 @@ bool ray_sphere_intersect(t_ray ray, t_sphere *sphere, double *t)
 	double b = 2.0 * dot(oc, ray.direction);
 	double c = dot(oc, oc) - ((sphere->diameter / 2.0) * (sphere->diameter / 2.0));
 	double discriminant = discr(a, b, c);
+	double t1 = root_n(a, b, c);
+	double t2 = root_p(a, b, c);
 
 	if (discriminant < 0)
 		return false;
 
-	double t1 = root_n(a, b, c);
-	double t2 = root_p(a, b, c);
 	if (t1 > EPSILON && t2 > EPSILON)
 		*t = fmin(t1, t2);
 	else if (t1 > EPSILON)
@@ -105,11 +105,14 @@ if the denominator is not zero, the ray intersects the plane
 */
 bool ray_plane_intersect(t_ray ray, t_plane *plane, double *t)
 {
-	double denom = dot(plane->normal_vector, ray.direction);
-	if (fabs(denom) > EPSILON)
+	double	denominator;
+	t_vec	origin_to_plane;
+
+	denominator = dot(plane->normal_vector, ray.direction);
+	if (fabs(denominator) > EPSILON)
 	{
-		t_vec p0l0 = sub(plane->coordinates, ray.origin);
-		*t = dot(p0l0, plane->normal_vector) / denom;
+		origin_to_plane = sub(plane->coordinates, ray.origin);
+		*t = dot(origin_to_plane, plane->normal_vector) / denominator;
 		return (*t >= 0);
 	}
 	return (false);

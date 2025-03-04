@@ -6,7 +6,7 @@
 /*   By: erian <erian@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/02 14:37:19 by erian             #+#    #+#             */
-/*   Updated: 2025/03/03 14:44:10 by erian            ###   ########.fr       */
+/*   Updated: 2025/03/04 12:20:19 by erian            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,34 @@ int apply_ambient_light(t_color object_color, t_a_light *ambient)
 		.b = (object_color.b + ambient->color.b) * ambient->ratio});
 
 	return color_to_int(result);
+}
+
+int apply_source_light(t_scene *scene, t_intersection *inter, int color)
+{
+	t_list		*light_lst;
+	t_obj		*light_obj;
+	t_s_light	*light;
+	t_color		light_contrib;
+	t_color		current;
+
+	light_lst = scene->light_lst;
+	while (light_lst)
+	{
+		light_obj = light_lst->content;
+		if (light_obj->type == S_LIGHT)
+		{
+			light = (t_s_light *)light_obj->specific_obj;
+			if (!is_in_shadow(inter->hit_point, light, scene))
+			{
+				light_contrib = calculate_light(light, inter->hit_point, inter->normal, inter->base_color);
+				current = int_to_color(color);
+				current = color_add(current, light_contrib);
+				color = color_to_int(current);
+			}
+		}
+		light_lst = light_lst->next;
+	}
+	return (color);
 }
 
 t_color calculate_light(t_s_light *light, t_vec hit_point, t_vec normal, t_color obj_color)

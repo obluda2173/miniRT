@@ -6,7 +6,7 @@
 /*   By: erian <erian@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/01 10:51:38 by erian             #+#    #+#             */
-/*   Updated: 2025/03/03 15:41:57 by erian            ###   ########.fr       */
+/*   Updated: 2025/03/04 12:19:53 by erian            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,34 +66,6 @@ t_ray generate_ray(t_cam *camera, int x, int y)
 	return (ray);
 }
 
-int process_lights(t_scene *scene, t_intersection *inter, int color)
-{
-    t_list      *light_lst;
-    t_obj       *light_obj;
-    t_s_light   *light;
-    t_color     light_contrib;
-    t_color     current;
-
-    light_lst = scene->light_lst;
-    while (light_lst)
-    {
-        light_obj = light_lst->content;
-        if (light_obj->type == S_LIGHT)
-        {
-            light = (t_s_light *)light_obj->specific_obj;
-            if (!is_in_shadow(inter->hit_point, light, scene))
-            {
-                light_contrib = calculate_light(light, inter->hit_point, inter->normal, inter->base_color);
-                current = int_to_color(color);
-                current = color_add(current, light_contrib);
-                color = color_to_int(current);
-            }
-        }
-        light_lst = light_lst->next;
-    }
-    return (color);
-}
-
 int process_pixel(t_data *data, int x, int y)
 {
     double      t;
@@ -112,7 +84,7 @@ int process_pixel(t_data *data, int x, int y)
     inter.base_color = ((t_sphere *)closest_obj->specific_obj)->color;
     
     int col = apply_ambient_light(inter.base_color, data->scene->a_light);
-    col = process_lights(data->scene, &inter, col);
+    col = apply_source_light(data->scene, &inter, col);
 
     return (color_to_int(color_clamp(int_to_color(col))));
 }

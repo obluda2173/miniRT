@@ -6,7 +6,7 @@
 /*   By: erian <erian@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 13:19:31 by erian             #+#    #+#             */
-/*   Updated: 2025/03/04 16:14:44 by erian            ###   ########.fr       */
+/*   Updated: 2025/03/04 16:18:51 by erian            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,6 +138,16 @@ t_obj *find_closest_object(t_ray ray, t_list *orig_obj_lst, double *closest_t, t
 				*closest_normal = normalize(sub(add(ray.origin, scale(ray.direction, t)), sphere->coordinates));
 			}
 		}
+		if (obj_node->type == PLANE)
+		{
+			t_plane *plane = (t_plane *)obj_node->specific_obj;
+			if (ray_plane_intersect(ray, plane, &t) && t < *closest_t)
+			{
+				*closest_t = t;
+				closest_obj = obj_node;
+				*closest_normal = plane->normal_vector;
+			}
+		}
 		// add other objects
 		obj_lst = obj_lst->next;
 	}
@@ -163,6 +173,8 @@ bool	is_in_shadow(t_vec hit_point, t_s_light *light, t_scene *scene)
 	{
 		obj = current_obj->content;
 		if (obj->type == SPHERE && (ray_sphere_intersect(shadow_ray, (t_sphere *)obj->specific_obj, &t)) && (t > EPSILON && t < light_distance)) 	
+			return (true);
+		if (obj->type == PLANE && (ray_plane_intersect(shadow_ray, (t_plane *)obj->specific_obj, &t)) && (t > EPSILON && t < light_distance))
 			return (true);
 		// add intersection checks for other object types (planes, cylinders etc.)
 		current_obj = current_obj->next;

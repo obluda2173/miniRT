@@ -6,7 +6,7 @@
 /*   By: erian <erian@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/01 10:51:38 by erian             #+#    #+#             */
-/*   Updated: 2025/03/04 13:20:01 by erian            ###   ########.fr       */
+/*   Updated: 2025/03/04 16:17:26 by erian            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,6 +88,8 @@ int process_pixel(t_data *data, int x, int y)
 	
 	if (closest_obj->type == SPHERE)
 		inter.base_color = ((t_sphere *)closest_obj->specific_obj)->color;
+	if (closest_obj->type == PLANE)
+		inter.base_color = ((t_plane *)closest_obj->specific_obj)->color;
 	// to do other objects
 
 	color = apply_ambient_light(inter.base_color, data->scene->a_light);

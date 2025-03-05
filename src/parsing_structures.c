@@ -6,36 +6,11 @@
 /*   By: erian <erian@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 16:25:00 by erian             #+#    #+#             */
-/*   Updated: 2025/03/04 13:27:01 by erian            ###   ########.fr       */
+/*   Updated: 2025/03/05 14:17:22 by erian            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parsing.h"
-
-// not currently used
-void	*get_specific_obj(t_list *obj_lst, t_obj_type type)
-{
-	t_list	*tmp_obj_lst;
-
-	tmp_obj_lst = obj_lst;
-	while (tmp_obj_lst)
-	{
-		t_obj *obj = (t_obj *)tmp_obj_lst->content;
-		if (obj->type == type)
-			return obj->specific_obj;
-		tmp_obj_lst = tmp_obj_lst->next;
-	}
-	return (NULL);
-}
-
-// not currently used
-t_obj_type get_obj_type(t_list *obj_lst)
-{
-	t_obj	*obj;
-
-	obj = (t_obj *)obj_lst->content;
-	return (obj->type);
-}
 
 t_cam	*parse_camera(char **split_line, t_data *data)
 {

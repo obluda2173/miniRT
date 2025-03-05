@@ -6,7 +6,7 @@
 /*   By: erian <erian@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 13:19:31 by erian             #+#    #+#             */
-/*   Updated: 2025/03/04 16:46:21 by erian            ###   ########.fr       */
+/*   Updated: 2025/03/05 11:44:50 by erian            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ R - radius of sphere
 
 let →oc = →O - →C (the vector from ray origin to the sphere centre)
 
-((→oc + t * →D) - →C)^2 = R^2
+(→oc + t * →D)^2 = R^2
 
 expands:
 
@@ -64,7 +64,7 @@ bool ray_sphere_intersect(t_ray ray, t_sphere *sphere, double *t)
 	double t2 = root_p(a, b, c);
 
 	if (discriminant < 0)
-		return false;
+		return (false);
 
 	if (t1 > EPSILON && t2 > EPSILON)
 		*t = fmin(t1, t2);

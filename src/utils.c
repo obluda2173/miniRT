@@ -6,7 +6,7 @@
 /*   By: erian <erian@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 17:14:32 by erian             #+#    #+#             */
-/*   Updated: 2025/03/04 13:27:41 by erian            ###   ########.fr       */
+/*   Updated: 2025/03/05 13:01:55 by erian            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,8 +57,6 @@ void	free_data(t_data *data)
 		return;
 	if (data->scene)
 		free_scene(data->scene);
-	if (data->mlx)
-		free(data->mlx);
 }
 
 void	free_and_exit(t_data *data, char *error_msg)

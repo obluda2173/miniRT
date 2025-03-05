@@ -6,7 +6,7 @@
 /*   By: erian <erian@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/27 18:48:40 by erian             #+#    #+#             */
-/*   Updated: 2025/03/04 13:29:47 by erian            ###   ########.fr       */
+/*   Updated: 2025/03/05 14:46:06 by erian            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,5 +42,13 @@ t_cam		*parse_camera(char **split_line, t_data *data);
 t_obj       *parse_plane(char **split_line, t_data *data);
 t_obj       *parse_sphere(char **split_line, t_data *data);
 t_obj       *parse_cylinder(char **split_line, t_data *data);
+
+// Parsing Robust Check
+bool	a_check(char **array, t_data *data);
+bool	c_check(char **array, t_data *data);
+bool	l_check(char **array, t_data *data);
+bool	sp_check(char **array, t_data *data);
+bool	pl_check(char **array, t_data *data);
+bool    cy_check(char **array, t_data *data);
 
 #endif

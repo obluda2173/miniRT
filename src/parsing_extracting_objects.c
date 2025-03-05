@@ -6,7 +6,7 @@
 /*   By: erian <erian@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 16:20:12 by erian             #+#    #+#             */
-/*   Updated: 2025/03/01 15:59:32 by erian            ###   ########.fr       */
+/*   Updated: 2025/03/05 15:09:39 by erian            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,39 +20,6 @@ size_t	array_size(char **array)
 	while (array[i])
 		i++;
 	return (i);
-}
-
-bool	is_valid_number(char *str)
-{
-	size_t	i;
-
-	i = 0;
-	while (str[i])
-	{
-		if (!ft_isdigit(str[i]) && str[i] != '.' && str[i] != ',' && str[i] != '-' && str[i] != '\n')
-			return (false);
-		i++;
-	}
-	return (true);
-}
-
-bool	is_valid_line(char **split_line)
-{
-	if (array_size(split_line) == 0)
-		return (false);
-	if (ft_strcmp(split_line[0], "A") == 0 && array_size(split_line) == 3 && is_valid_number(split_line[1]) && is_valid_number(split_line[2]))
-		return (true);
-	if (ft_strcmp(split_line[0], "L") == 0 && array_size(split_line) == 4 && is_valid_number(split_line[1]) && is_valid_number(split_line[2]) && is_valid_number(split_line[3]))
-		return (true);
-	if (ft_strcmp(split_line[0], "C") == 0 && array_size(split_line) == 4 && is_valid_number(split_line[1]) && is_valid_number(split_line[2]) && is_valid_number(split_line[3]))
-		return (true);
-	if (ft_strcmp(split_line[0], "pl") == 0 && array_size(split_line) == 4 && is_valid_number(split_line[1]) && is_valid_number(split_line[2]) && is_valid_number(split_line[3]))
-		return (true);
-	if (ft_strcmp(split_line[0], "sp") == 0 && array_size(split_line) == 4 && is_valid_number(split_line[1]) && is_valid_number(split_line[2]) && is_valid_number(split_line[3]))
-		return (true);
-	if (ft_strcmp(split_line[0], "cy") == 0 && array_size(split_line) == 6 && is_valid_number(split_line[1]) && is_valid_number(split_line[2]) && is_valid_number(split_line[3]) && is_valid_number(split_line[4]) && is_valid_number(split_line[5]))
-		return (true);
-	return (false);
 }
 
 t_color	parse_color(char *str, t_data *data)
@@ -111,25 +78,21 @@ void extract_objs(int fd, t_data *data)
 	line = get_next_line(fd);
 	while (line)
 	{
-		split_line = ft_split(line, ' ');
+		char *line_trimmed = ft_strtrim(line, "\n");
+		split_line = ft_split(line_trimmed, ' ');
+		free(line_trimmed);
 		free(line);
-		if (!is_valid_line(split_line))
-		{
-			free_split(split_line);
-			data->error = "Error: Invalid line format\n";
-			break ;
-		}
-		if (ft_strcmp(split_line[0], "C") == 0)
+		if (ft_strcmp(split_line[0], "C") == 0 && c_check(split_line, data))
 			data->scene->camera = parse_camera(split_line, data);
-		else if (ft_strcmp(split_line[0], "A") == 0)
+		else if (ft_strcmp(split_line[0], "A") == 0 && a_check(split_line, data))
 			data->scene->a_light = parse_a_light(split_line, data);
-		else if (ft_strcmp(split_line[0], "L") == 0)
+		else if (ft_strcmp(split_line[0], "L") == 0 && l_check(split_line, data))
 			ft_lstadd_back(&data->scene->light_lst, ft_lstnew(parse_s_light(split_line, data)));
-		else if (ft_strcmp(split_line[0], "pl") == 0)
+		else if (ft_strcmp(split_line[0], "pl") == 0 && pl_check(split_line, data))
 			ft_lstadd_back(&data->scene->obj_lst, ft_lstnew(parse_plane(split_line, data)));
-		else if (ft_strcmp(split_line[0], "sp") == 0)
+		else if (ft_strcmp(split_line[0], "sp") == 0 && sp_check(split_line, data))
 			ft_lstadd_back(&data->scene->obj_lst, ft_lstnew(parse_sphere(split_line, data)));
-		else if (ft_strcmp(split_line[0], "cy") == 0)
+		else if (ft_strcmp(split_line[0], "cy") == 0 && cy_check(split_line, data))
 			ft_lstadd_back(&data->scene->obj_lst, ft_lstnew(parse_cylinder(split_line, data)));
 		free_split(split_line);
 		line = get_next_line(fd);

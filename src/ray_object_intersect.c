@@ -3,56 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   ray_object_intersect.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: erian <erian@student.42.fr>                +#+  +:+       +#+        */
+/*   By: erian <erian@student.42>                   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 13:19:31 by erian             #+#    #+#             */
-/*   Updated: 2025/03/05 11:44:50 by erian            ###   ########.fr       */
+/*   Updated: 2025/03/05 20:45:04 by erian            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
-/*
-
-equation of →P(t) ray:
-→P(t) = →O + t * →D
-
-where: 
-→O - origin of ray
-t - distance from origin to point 
-→D - direction of the ray (vector unit)
-
-equation of a sphere with centre →C and radius R:
-(→P - →C)^2 = R^2
-
-where: 
-→C - centre of sphere
-R - radius of sphere 
-→P - any point on the surface of the sphere
-
-∴ ((→O + t * →D) - →C)^2 = R^2
-
-let →oc = →O - →C (the vector from ray origin to the sphere centre)
-
-(→oc + t * →D)^2 = R^2
-
-expands:
-
-t^2 * (→D * →D) + 2t * (→oc * →D) + (→oc * →oc - R^2) = 0
-
-which results in a quadratic equation:
-
-at^2 + bt + c = 0
-
-where:
-a = →D * →D
-b = 2 * (→oc * →D)
-c = →oc * →oc - R^2
-
-roots of the equation are distance to the ray-sphere intersection, 
-we are collecting the smallest one since the ray does not penetrate the object
-
-*/
 bool ray_sphere_intersect(t_ray ray, t_sphere *sphere, double *t)
 {
 	t_vec oc = sub(ray.origin, sphere->coordinates);
@@ -77,32 +36,6 @@ bool ray_sphere_intersect(t_ray ray, t_sphere *sphere, double *t)
 	return (true);
 }
 
-/*
-
-equation of →P(t) ray:
-→P(t) = →O + t * →D
-
-equation of a plane:
-→n * (→P - →A) = 0
-
-where:
-→n - normal vector of the plane
-→A - any point on the plane
-→P - any point on the plane
-
-substitute ray equation into the plane equation:
-
-→n * (→O + t * →D - →A) = 0
-
-→n * (→O - →A + t * →D) = 0
-
-→n * (→O - →A) + t * →n * →D = 0
-
-t = - →n * (→O - →A) / →n * →D
-
-if the denominator is not zero, the ray intersects the plane
-
-*/
 bool ray_plane_intersect(t_ray ray, t_plane *plane, double *t)
 {
 	double	denominator;
@@ -179,7 +112,7 @@ bool	is_in_shadow(t_vec hit_point, t_s_light *light, t_scene *scene)
 			return (true);
 		if (obj->type == PLANE && (ray_plane_intersect(shadow_ray, (t_plane *)obj->specific_obj, &t)) && (t > EPSILON && t < light_distance))
 			return (true);
-		// add intersection checks for other object types (planes, cylinders etc.)
+		// add other objects
 		current_obj = current_obj->next;
 	}
 	return (false);

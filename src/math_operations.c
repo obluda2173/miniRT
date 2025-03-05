@@ -6,7 +6,7 @@
 /*   By: erian <erian@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/01 11:05:53 by erian             #+#    #+#             */
-/*   Updated: 2025/03/02 10:36:17 by erian            ###   ########.fr       */
+/*   Updated: 2025/03/05 16:31:51 by erian            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,4 +75,15 @@ t_vec	normalize(t_vec v)
 	if (len == 0)
 		return (vec(0, 0, 0));
 	return (vec(v.x / len, v.y / len, v.z / len));
+}
+
+t_vec	reflect(t_vec v, t_vec normal)
+{
+	double	dot_product;
+
+	dot_product = dot(v, normal);
+	return ((t_vec){
+		.x = v.x - 2 * dot_product * normal.x,
+		.y = v.y - 2 * dot_product * normal.y,
+		.z = v.z - 2 * dot_product * normal.z});
 }

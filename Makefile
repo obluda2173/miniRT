@@ -74,6 +74,11 @@ fclean:		clean
 
 re:			fclean all
 
+compile_commands:
+	cmake -S . -B build -DBUILD_TEST=ON -DBUILD_MINIRT=ON -DCMAKE_EXPORT_COMPILE_COMMANDS=ON && \
+	rm -f compile_commands.json
+	mv build/compile_commands.json ./compile_commands.json
+
 # **************************************************************************** #
 # PHONY                                                                        #
 # **************************************************************************** #

@@ -1,5 +1,6 @@
 #include "minirt.h"
 #include "operations.h"
+#include "raytracing.h"
 #include "structures.h"
 
 /*
@@ -15,8 +16,37 @@ A = <a_part | a_part>
 C = <c_part | c_part> - r^2
 
 */
+bool check_between_caps(t_ray ray, t_cylinder cy, double t)
 {
-	bool
+	t_vec p1 = cy.coordinates;
+	t_vec p2 = add(cy.coordinates, scale(normalize(cy.axis_vector), cy.height));
+
+	t_vec q = add(ray.origin, scale(ray.direction, t));
+	if (dot(cy.axis_vector, sub(q, p1)) <= 0)
+		return false;
+	if (dot(cy.axis_vector, sub(q, p2)) <= 0)
+		return false;
+	return true;
+}
+
+bool check_inside_bottom_cap(t_ray ray, t_cylinder cy, double t) {
+	t_vec q = add(ray.origin, scale(ray.direction, t));
+	double d = dot(sub(q, cy.coordinates), sub(q, cy.coordinates));
+	if (d < ((cy.diameter * cy.diameter) / 4))
+		return true;
+	return false;
+}
+
+bool ray_caps_intersection(t_ray ray, t_cylinder cy, double *t) {
+	t_plane bottom_cap_plane = {cy.coordinates, normalize(cy.axis_vector), cy.color};
+	t_plane top_cap_plane = {cy.coordinates, normalize(cy.axis_vector), cy.color};
+	double bottom_t;
+	double top_t;
+	if (ray_plane_intersect(ray, &bottom_cap_plane, &bottom_t)) {
+
+	};
+	ray_plane_intersect(ray, &top_cap_plane, &top_t);
+
 
 }
 
@@ -36,29 +66,39 @@ bool ray_inf_cylinder_intersect(t_ray ray, t_cylinder cy, double *t) {
 
 	double t1 = root_n(a, b, c);
 	double t2 = root_p(a, b, c);
-	t_vec p1 = cy.coordinates;
-	t_vec p2 = add(cy.coordinates, scale(normalize(cy.axis_vector), cy.height));
 
 	if (t1 > EPSILON && t2 > EPSILON) {
-		bool t1_valid = check_validity()
-	}
-	if (t1 < EPSILON && t2 < EPSILON)
+		bool t1_valid = check_between_caps(ray, cy, t1);
+		bool t2_valid = check_between_caps(ray, cy, t2);
+		if (t1_valid && t2_valid) {
+			*t = fmin(t1, t2);
+			return true;
+		}
+		if (t1_valid) {
+			*t = t1;
+			return true;
+		}
+		if (t2_valid) {
+			*t = t2;
+			return true;
+		}
 		return false;
-	if (t1 > EPSILON) {
-		bool t1_valid = true;
-		t_vec q_1 = add(ray.origin, scale(ray.direction, t1));
-		if (dot(cy.axis_vector, sub(q_1, p1)) <= 0)
-			t1_valid = false;
-		if (dot(cy.axis_vector, sub(q_1, p2)) >= 0)
-			t1_valid = false;
 	}
-
-}
-
-bool ray_cylinder_intersect(t_ray ray, t_cylinder cy, double *t) {
-	double t_inf_cy;
-
-	bool valid_inf_cy_found = ray_inf_cylinder_intersect(ray, cy, &t_inf_cy);
-
-
+	if (t1 > EPSILON) {
+		bool t1_valid = check_between_caps(ray, cy, t1);
+		if (t1_valid) {
+			*t = t1;
+			return true;
+		}
+		return false;
+	}
+	if (t2 > EPSILON) {
+		bool t2_valid = check_between_caps(ray, cy, t2);
+		if (t2_valid) {
+			*t = t2;
+			return true;
+		}
+		return false;
+	}
+	return false;
 }

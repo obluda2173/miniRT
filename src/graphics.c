@@ -6,7 +6,7 @@
 /*   By: erian <erian@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/01 09:37:01 by erian             #+#    #+#             */
-/*   Updated: 2025/03/01 16:06:59 by erian            ###   ########.fr       */
+/*   Updated: 2025/03/05 13:01:38 by erian            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ void	close_window(t_data *data)
 		mlx_destroy_display(data->mlx->mlx);
 		free(data->mlx->mlx);
 	}
+	free(data->mlx);
 	free_data(data);
 	exit(0);
 }

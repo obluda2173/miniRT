@@ -111,16 +111,16 @@ t_obj	*parse_cylinder(char **split_line, t_data *data)
 	if (!cylinder)
 		free_and_exit(data, "Error: Memory allocation failed for cylinder\n");
 	cylinder->coordinates = parse_vector(split_line[1], data);
-	cylinder->normal_vector = parse_vector(split_line[2], data);
+	cylinder->axis_vector = parse_vector(split_line[2], data);
 	cylinder->diameter = ft_atod(split_line[3]);
 	cylinder->height = ft_atod(split_line[4]);
 	cylinder->color = parse_color(split_line[5], data);
 	obj = malloc(sizeof(t_obj));
 	if (!obj)
 		free_and_exit(data, "Error: Memory allocation failed for t_object\n");
-	if (cylinder->normal_vector.x < -1 || cylinder->normal_vector.x > 1
-		|| cylinder->normal_vector.y < -1 || cylinder->normal_vector.y > 1
-		|| cylinder->normal_vector.z < -1 || cylinder->normal_vector.z > 1)
+	if (cylinder->axis_vector.x < -1 || cylinder->axis_vector.x > 1
+		|| cylinder->axis_vector.y < -1 || cylinder->axis_vector.y > 1
+		|| cylinder->axis_vector.z < -1 || cylinder->axis_vector.z > 1)
 		data->error = "Error: Invalid cylinder normalized vector range\n";
 	obj->type = CYLINDER;
 	obj->specific_obj = cylinder;

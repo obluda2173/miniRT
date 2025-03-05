@@ -60,11 +60,12 @@ bool ray_sphere_intersect(t_ray ray, t_sphere *sphere, double *t)
 	double b = 2.0 * dot(oc, ray.direction);
 	double c = dot(oc, oc) - ((sphere->diameter / 2.0) * (sphere->diameter / 2.0));
 	double discriminant = discr(a, b, c);
+	if (discriminant < 0)
+		return (false);
+
 	double t1 = root_n(a, b, c);
 	double t2 = root_p(a, b, c);
 
-	if (discriminant < 0)
-		return (false);
 
 	if (t1 > EPSILON && t2 > EPSILON)
 		*t = fmin(t1, t2);

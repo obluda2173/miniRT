@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   raytracing.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: erian <erian@student.42>                   +#+  +:+       +#+        */
+/*   By: erian <erian@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/01 10:51:38 by erian             #+#    #+#             */
-/*   Updated: 2025/03/05 20:44:11 by erian            ###   ########.fr       */
+/*   Updated: 2025/03/06 10:06:51 by erian            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,10 +59,10 @@ int process_pixel(t_data *data, int x, int y)
 		inter.base_color = ((t_sphere *)closest_obj->specific_obj)->color;
 	if (closest_obj->type == PLANE)
 	{
-		if (((int)floor(inter.hit_point.x * 2) % 2) == ((int)floor(inter.hit_point.z * 2) % 2))
+		if (((int)floor(inter.hit_point.x * 2) + (int)floor(inter.hit_point.z * 2)) % 2 == 0)
 			inter.base_color = ((t_plane *)closest_obj->specific_obj)->color;
 		else
-			inter.base_color = color_scale(((t_plane *)closest_obj->specific_obj)->color, 0.5);
+			inter.base_color = color_scale(((t_plane *)closest_obj->specific_obj)->color, 0.8);
 	}
 	// to do other objects
 

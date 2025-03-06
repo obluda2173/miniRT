@@ -26,7 +26,8 @@ t_cam	*parse_camera(char **split_line, t_data *data)
 		|| cam->orientation.y < -1 || cam->orientation.y > 1
 		|| cam->orientation.z < -1 || cam->orientation.z > 1)
 		data->error = "Error: Invalid orientation vector range\n";
-	if (cam->fov < 0 || cam->fov > 180)
+	/* if (cam->fov < 0 || cam->fov > 180) */
+	if (cam->fov > 180)
 		data->error = "Error: Invalid fov range\n";
 	return (cam);
 }

@@ -7,7 +7,8 @@ NAME		=	minirt
 CC			=	@cc
 RM			=	@rm -fr
 CCFLAGS		=	-Wall -Werror -Wextra -Iinclude/mlx
-MLXFLAGS	=	-L/usr/X11/lib -lX11 -lXext -Llibs/mlx_linux -lm
+# MLXFLAGS	=	-L/usr/X11/lib -lX11 -lXext -Llibs/mlx_linux -lm
+MLXFLAGS	=	-L/usr/X11/lib -lX11 -lXext -lm -Lminilibx-linux -lmlx_Linux
 
 # Directories and source files
 SRCS_DIR    =   src
@@ -16,7 +17,7 @@ OBJ_DIR		=	obj
 SRCS        =   $(wildcard $(SRCS_DIR)/*.c)
 OBJS        =   $(patsubst $(SRCS_DIR)/%.c, $(OBJ_DIR)/%.o, $(SRCS))
 
-INC			=	-Ilibft -Iget_next_line -Iinc
+INC			=	-Ilibft -Iget_next_line -Iinc -Iminilibx-linux
 
 # Libraries
 LIBS		=	libft/libft.a \

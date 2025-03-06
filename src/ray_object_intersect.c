@@ -11,6 +11,8 @@
 /* ************************************************************************** */
 
 #include "minirt.h"
+#include "raytracing.h"
+#include "structures.h"
 
 bool ray_sphere_intersect(t_ray ray, t_sphere *sphere, double *t)
 {
@@ -19,11 +21,12 @@ bool ray_sphere_intersect(t_ray ray, t_sphere *sphere, double *t)
 	double b = 2.0 * dot(oc, ray.direction);
 	double c = dot(oc, oc) - ((sphere->diameter / 2.0) * (sphere->diameter / 2.0));
 	double discriminant = discr(a, b, c);
+	if (discriminant < 0)
+		return (false);
+
 	double t1 = root_n(a, b, c);
 	double t2 = root_p(a, b, c);
 
-	if (discriminant < 0)
-		return (false);
 
 	if (t1 > EPSILON && t2 > EPSILON)
 		*t = fmin(t1, t2);
@@ -64,6 +67,20 @@ t_obj *find_closest_object(t_ray ray, t_list *orig_obj_lst, double *closest_t, t
 	while (obj_lst)
 	{
 		obj_node = obj_lst->content;
+		if (obj_node->type == CYLINDER) {
+			t_cylinder *cy = (t_cylinder *)obj_node->specific_obj;
+			t_cy_inter *cy_inter = ray_inter_cylinder(ray, *cy);
+			if (cy_inter)
+			{
+				if(cy_inter->t < *closest_t)
+				{
+					*closest_t = cy_inter->t;
+					closest_obj = obj_node;
+					*closest_normal = calc_normal_cy(ray, cy, cy_inter);
+				}
+				free(cy_inter);
+			}
+		}
 		if (obj_node->type == SPHERE)
 		{
 			t_sphere *sphere = (t_sphere *)obj_node->specific_obj;
@@ -108,11 +125,22 @@ bool	is_in_shadow(t_vec hit_point, t_s_light *light, t_scene *scene)
 	while (current_obj)
 	{
 		obj = current_obj->content;
-		if (obj->type == SPHERE && (ray_sphere_intersect(shadow_ray, (t_sphere *)obj->specific_obj, &t)) && (t > EPSILON && t < light_distance)) 	
+		if (obj->type == SPHERE && (ray_sphere_intersect(shadow_ray, (t_sphere *)obj->specific_obj, &t)) && (t > EPSILON && t < light_distance))
 			return (true);
 		if (obj->type == PLANE && (ray_plane_intersect(shadow_ray, (t_plane *)obj->specific_obj, &t)) && (t > EPSILON && t < light_distance))
 			return (true);
-		// add other objects
+		if (obj->type == CYLINDER) {
+			t_cylinder *cy = (t_cylinder *)obj->specific_obj;
+			t_cy_inter *cy_inter = ray_inter_cylinder(shadow_ray, *cy);
+			if (cy_inter) {
+				if (cy_inter->t < light_distance) {
+					free(cy_inter);
+					return true;
+				}
+				free(cy_inter);
+			}
+		}
+		// add intersection checks for other object types (planes, cylinders etc.)
 		current_obj = current_obj->next;
 	}
 	return (false);

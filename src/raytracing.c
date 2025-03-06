@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "minirt.h"
+#include "structures.h"
 
 t_ray generate_ray(t_cam *camera, int x, int y)
 {
@@ -62,11 +63,13 @@ int process_pixel(t_data *data, int x, int y)
 	if (dot(normal, ray.direction) > 0)
 		normal = scale(normal, -1);
 	inter.normal = normal;
-	
+
 	if (closest_obj->type == SPHERE)
 		inter.base_color = ((t_sphere *)closest_obj->specific_obj)->color;
 	if (closest_obj->type == PLANE)
 		inter.base_color = apply_checkerboard(&inter, ((t_plane *)closest_obj->specific_obj)->color);
+	if (closest_obj->type == CYLINDER)
+		inter.base_color = ((t_cylinder *)closest_obj->specific_obj)->color;
 	// to do other objects
 
 	color = apply_ambient_light(inter.base_color, data->scene->a_light);

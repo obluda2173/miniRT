@@ -6,11 +6,12 @@
 /*   By: erian <erian@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 11:43:48 by erian             #+#    #+#             */
-/*   Updated: 2025/03/01 15:52:30 by erian            ###   ########.fr       */
+/*   Updated: 2025/03/06 17:28:43 by erian            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parsing.h"
+#include "graphics.h"
 
 static bool is_valid_filename(char *file_name)
 {
@@ -34,6 +35,10 @@ void parse_scene(char *filename, t_data *data)
 		ft_putstr_fd("Error: Cannot open file\n", STDERR_FILENO);
 		exit(EXIT_FAILURE);
 	}
+	data->mlx = malloc(sizeof(t_mlx));
+	if (!data->mlx)
+		free_and_exit(data, "Error: Failed to allocate MLX struct\n");
+	data->mlx->mlx = mlx_init();
 	extract_objs(fd, data);
 	close(fd);
 }

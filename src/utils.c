@@ -6,11 +6,13 @@
 /*   By: erian <erian@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 17:14:32 by erian             #+#    #+#             */
-/*   Updated: 2025/03/05 13:01:55 by erian            ###   ########.fr       */
+/*   Updated: 2025/03/06 18:01:54 by erian            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parsing.h"
+#include "graphics.h"
+
 
 void	free_split(char **array)
 {
@@ -32,7 +34,13 @@ void free_specific_object(t_obj *obj)
 	if (obj->type == SPHERE)
 		free((t_sphere *)obj->specific_obj);
 	else if (obj->type == PLANE)
+	{
+		free(((t_plane *)obj->specific_obj)->texture->data);
+		free(((t_plane *)obj->specific_obj)->normal_map->data);
+		free(((t_plane *)obj->specific_obj)->texture);
+		free(((t_plane *)obj->specific_obj)->normal_map);
 		free((t_plane *)obj->specific_obj);
+	}
 	else if (obj->type == CYLINDER)
 		free((t_cylinder *)obj->specific_obj);
 	free(obj);
@@ -57,6 +65,17 @@ void	free_data(t_data *data)
 		return;
 	if (data->scene)
 		free_scene(data->scene);
+	if (data->mlx)
+	{
+		if (data->mlx->win)
+			mlx_destroy_window(data->mlx->mlx, data->mlx->win);
+		if (data->mlx->mlx)
+		{
+			mlx_destroy_display(data->mlx->mlx);
+			free(data->mlx->mlx);
+		}
+		free(data->mlx);
+	}
 }
 
 void	free_and_exit(t_data *data, char *error_msg)

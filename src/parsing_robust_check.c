@@ -6,11 +6,32 @@
 /*   By: erian <erian@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 13:09:50 by erian             #+#    #+#             */
-/*   Updated: 2025/03/05 15:12:20 by erian            ###   ########.fr       */
+/*   Updated: 2025/03/06 17:11:09 by erian            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parsing.h"
+
+bool	valid_xpm(char *str)
+{
+	int		i;
+	char	**xpm;
+
+	i = -1;
+	while (str[++i])
+	{
+		if (!ft_isprint(str[i]) || ft_str_chr_count(str, '.') != 1)
+			return (false);
+	}
+	xpm = ft_split(str, '.');
+	if (!xpm || array_size(xpm) != 2 || ft_strcmp(xpm[1], "xpm") != 0)
+	{
+		free_split(xpm);
+		return (false);
+	}
+	free_split(xpm);
+	return (true);
+}
 
 static bool	valid_rgb(char *str)
 {
@@ -182,7 +203,7 @@ bool	sp_check(char **array, t_data *data)
 
 bool	pl_check(char **array, t_data *data)
 {
-	if (array_size(array) != 4)
+	if (array_size(array) != 4 && array_size(array) != 6)
 	{
 		data->error = "Error: Invalid line format\n";
 		return (false);
@@ -201,6 +222,14 @@ bool	pl_check(char **array, t_data *data)
 	{
 		data->error = "Error: Invalid color format\n";
 		return (false);
+	}
+	if (array_size(array) == 6)
+	{
+		if (!valid_xpm(array[4]) || !valid_xpm(array[5]))
+		{
+			data->error = "Error: Invalid texture format\n";
+			return (false);
+		}
 	}
 	return (true);
 }

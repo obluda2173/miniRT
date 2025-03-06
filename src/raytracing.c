@@ -6,7 +6,7 @@
 /*   By: erian <erian@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/01 10:51:38 by erian             #+#    #+#             */
-/*   Updated: 2025/03/06 12:02:43 by erian            ###   ########.fr       */
+/*   Updated: 2025/03/06 17:58:15 by erian            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ int process_pixel(t_data *data, int x, int y)
 	t_obj			*closest_obj;
 	t_intersection	inter;
 	int				color;
+	double			u, v;
 
 	ray = generate_ray(data->scene->camera, x, y);
 	closest_obj = find_closest_object(ray, data->scene->obj_lst, &t, &normal);
@@ -67,7 +68,20 @@ int process_pixel(t_data *data, int x, int y)
 	if (closest_obj->type == SPHERE)
 		inter.base_color = ((t_sphere *)closest_obj->specific_obj)->color;
 	if (closest_obj->type == PLANE)
-		inter.base_color = apply_checkerboard(&inter, ((t_plane *)closest_obj->specific_obj)->color);
+	{
+        t_plane *plane = (t_plane *)closest_obj->specific_obj;
+        // Compute UV coordinates on the plane.
+        compute_plane_uv(inter.hit_point, plane, &u, &v);
+        // If a texture is provided, sample it; otherwise, use a checkerboard.
+        if (plane->texture)
+            inter.base_color = sample_xpm(plane->texture, u, v);
+        else
+            inter.base_color = apply_checkerboard(&inter, plane->color);
+		
+        // If a normal map is provided, sample it and update the surface normal.
+        if (plane->normal_map)
+            inter.normal = sample_normal_map(plane->normal_map, u, v);
+    }
 	if (closest_obj->type == CYLINDER)
 		inter.base_color = ((t_cylinder *)closest_obj->specific_obj)->color;
 	// to do other objects

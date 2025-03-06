@@ -6,7 +6,7 @@
 /*   By: erian <erian@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/27 18:47:23 by erian             #+#    #+#             */
-/*   Updated: 2025/03/01 13:26:23 by erian            ###   ########.fr       */
+/*   Updated: 2025/03/06 17:06:54 by erian            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,21 @@ typedef enum e_obj_type
 	CYLINDER,	
 	UNDEFINED
 }	t_obj_type;
+
+typedef struct s_tmp
+{
+	char	*data;
+	int		bpp;
+	int		size_line;
+	int		endian;
+}			t_tmp;
+
+typedef struct s_xpm
+{
+	int	*data;
+	int	width;
+	int	height;
+}		t_xpm;
 
 typedef struct s_vec
 {
@@ -65,6 +80,8 @@ typedef struct s_plane
 	t_vec		coordinates;
 	t_vec		normal_vector;
 	t_color		color;
+	t_xpm		*texture;
+	t_xpm		*normal_map;
 }				t_plane;
 
 typedef struct s_sphere

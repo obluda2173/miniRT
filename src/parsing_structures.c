@@ -6,11 +6,45 @@
 /*   By: erian <erian@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 16:25:00 by erian             #+#    #+#             */
-/*   Updated: 2025/03/05 14:17:22 by erian            ###   ########.fr       */
+/*   Updated: 2025/03/06 18:41:17 by erian            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parsing.h"
+#include <mlx.h>
+
+t_xpm	*parse_xpm(char *filedir, t_data *data)
+{
+	t_xpm	*xpm;
+	t_tmp	tmp;
+	void	*img_ptr;
+	int		total_pixels;
+	int		i;
+
+	xpm = malloc(sizeof(t_xpm));
+	if (!xpm)
+		free_and_exit(data, "Error: Memory allocation failed for xpm\n");
+
+	img_ptr = mlx_xpm_file_to_image(data->mlx->mlx, filedir, &xpm->width, &xpm->height);
+	if (!img_ptr)
+		free_and_exit(data, "Error: Failed to load xpm file\n");
+
+	tmp.data = mlx_get_data_addr(img_ptr, &tmp.bpp, &tmp.size_line, &tmp.endian);
+	if (!tmp.data)
+		free_and_exit(data, "Error: Failed to get image data\n");
+
+	total_pixels = xpm->width * xpm->height;
+	xpm->data = malloc(sizeof(int) * total_pixels);
+	if (!xpm->data)
+		free_and_exit(data, "Error: Memory allocation failed for xpm data\n");
+
+	i = -1;
+	while (++i < total_pixels)
+		xpm->data[i] = ((int *)tmp.data)[i];
+
+	mlx_destroy_image(data->mlx->mlx, img_ptr);
+	return (xpm);
+}
 
 t_cam	*parse_camera(char **split_line, t_data *data)
 {
@@ -72,6 +106,11 @@ t_obj	*parse_plane(char **split_line, t_data *data)
 	plane->coordinates = parse_vector(split_line[1], data);
 	plane->normal_vector = parse_vector(split_line[2], data);
 	plane->color = parse_color(split_line[3], data);
+	if (array_size(split_line) == 6)
+	{
+		plane->texture = parse_xpm(split_line[4], data);
+		plane->normal_map = parse_xpm(split_line[5], data);
+	}
 	obj = malloc(sizeof(t_obj));
 	if (!obj)
 		free_and_exit(data, "Error: Memory allocation failed for t_object\n");

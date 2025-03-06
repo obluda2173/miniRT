@@ -113,9 +113,9 @@ bool check_pt_inside_top_cap(t_ray ray, t_cylinder cy, double t) {
 Calculating possible intersection points of ray with caps
 */
 t_list* ray_caps_intersection(t_ray ray, t_cylinder cy, t_list** candidates) {
-	t_plane bottom_cap_plane = {cy.coordinates, cy.axis_vector, cy.color};
+	t_plane bottom_cap_plane = {cy.coordinates, cy.axis_vector, cy.color, NULL, NULL};
 	t_vec p2 = add(cy.coordinates, scale(cy.axis_vector, cy.height));
-	t_plane top_cap_plane = {p2, cy.axis_vector, cy.color};
+	t_plane top_cap_plane = {p2, cy.axis_vector, cy.color, NULL, NULL};
 
 	double t;
 	if (ray_plane_intersect(ray, &bottom_cap_plane, &t)) {

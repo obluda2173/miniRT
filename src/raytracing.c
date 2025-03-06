@@ -6,7 +6,7 @@
 /*   By: erian <erian@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/01 10:51:38 by erian             #+#    #+#             */
-/*   Updated: 2025/03/06 10:06:51 by erian            ###   ########.fr       */
+/*   Updated: 2025/03/06 12:02:43 by erian            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,14 @@ t_ray generate_ray(t_cam *camera, int x, int y)
 	return (ray);
 }
 
+t_color	apply_checkerboard(t_intersection *inter, t_color color)
+{
+	if (((int)floor(inter->hit_point.x * 2) + (int)floor(inter->hit_point.z * 2)) % 2 == 0)
+		return (color);
+	else
+		return (color_scale(color, 0.8));
+}
+
 int process_pixel(t_data *data, int x, int y)
 {
 	double			t;
@@ -58,12 +66,7 @@ int process_pixel(t_data *data, int x, int y)
 	if (closest_obj->type == SPHERE)
 		inter.base_color = ((t_sphere *)closest_obj->specific_obj)->color;
 	if (closest_obj->type == PLANE)
-	{
-		if (((int)floor(inter.hit_point.x * 2) + (int)floor(inter.hit_point.z * 2)) % 2 == 0)
-			inter.base_color = ((t_plane *)closest_obj->specific_obj)->color;
-		else
-			inter.base_color = color_scale(((t_plane *)closest_obj->specific_obj)->color, 0.8);
-	}
+		inter.base_color = apply_checkerboard(&inter, ((t_plane *)closest_obj->specific_obj)->color);
 	// to do other objects
 
 	color = apply_ambient_light(inter.base_color, data->scene->a_light);

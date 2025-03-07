@@ -267,3 +267,33 @@ bool	cy_check(char **array, t_data *data)
 	}
 	return (true);
 }
+
+bool	co_check(char **array, t_data *data)
+{
+	if (array_size(array) != 5)
+	{
+		data->error = "Error: Invalid line format\n";
+		return (false);
+	}
+	if (!valid_range_2(array[1]))
+	{
+		data->error = "Error: Invalid cone coordinates\n";
+		return (false);
+	}
+	if (!valid_range_2(array[2]))
+	{
+		data->error = "Error: Invalid cone orientation\n";
+		return (false);
+	}
+	if (!valid_range_1(array[3]))
+	{
+		data->error = "Error: Invalid cone angle\n";
+		return (false);
+	}
+	if (!valid_rgb(array[4]))
+	{
+		data->error = "Error: Invalid color format\n";
+		return (false);
+	}
+	return (true);
+}

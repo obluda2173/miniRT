@@ -23,6 +23,7 @@ typedef enum e_obj_type
 	PLANE,
 	SPHERE,
 	CYLINDER,
+	CONE,
 	UNDEFINED
 }	t_obj_type;
 
@@ -100,6 +101,13 @@ typedef struct s_cylinder
 	t_color		color;
 }				t_cylinder;
 
+typedef struct s_cone {
+	t_vec apex;
+	t_vec axis;
+	double alpha;
+	t_color color;
+} t_cone;
+
 typedef struct s_obj
 {
 	t_obj_type	type;
@@ -121,5 +129,6 @@ typedef struct s_ray
 	t_vec 		origin;
 	t_vec 		direction;
 }				t_ray;
+
 
 #endif

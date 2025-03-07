@@ -166,3 +166,28 @@ t_obj	*parse_cylinder(char **split_line, t_data *data)
 	obj->specific_obj = cylinder;
 	return (obj);
 }
+
+t_obj	*parse_cone(char **split_line, t_data *data)
+{
+	t_cone	*cone;
+	t_obj		*obj;
+
+	cone = malloc(sizeof(t_cone));
+	if (!cone)
+		free_and_exit(data, "Error: Memory allocation failed for cylinder\n");
+	cone->apex = parse_vector(split_line[1], data);
+	cone->axis = normalize(parse_vector(split_line[2], data));
+	cone->alpha = ft_atod(split_line[3]);
+	if (cone->alpha >= 89 || cone->alpha <= 1) {
+		free(cone);
+		free_and_exit(data, "Error: Not-valid cone angle\n");
+	}
+	cone->color = parse_color(split_line[4], data);
+	obj = malloc(sizeof(t_obj));
+	if (!obj)
+		free_and_exit(data, "Error: Memory allocation failed for t_object\n");
+
+	obj->type = CONE;
+	obj->specific_obj = cone;
+	return (obj);
+}

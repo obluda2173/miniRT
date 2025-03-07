@@ -96,6 +96,8 @@ void	extract_objs(int fd, t_data *data)
 			ft_lstadd_back(&data->scene->obj_lst, ft_lstnew(parse_sphere(split_line, data)));
 		else if (ft_strcmp(split_line[0], "cy") == 0 && cy_check(split_line, data))
 			ft_lstadd_back(&data->scene->obj_lst, ft_lstnew(parse_cylinder(split_line, data)));
+		else if (ft_strcmp(split_line[0], "co") == 0 && co_check(split_line, data))
+			ft_lstadd_back(&data->scene->obj_lst, ft_lstnew(parse_cone(split_line, data)));
 		else
 			data->error = "Error: Invalid object format\n";
 		free_split(split_line);

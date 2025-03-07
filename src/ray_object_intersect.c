@@ -6,13 +6,13 @@
 /*   By: erian <erian@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 13:19:31 by erian             #+#    #+#             */
-/*   Updated: 2025/03/07 13:19:09 by erian            ###   ########.fr       */
+/*   Updated: 2025/03/07 14:13:55 by erian            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
-bool ray_sphere_intersect(t_ray ray, t_sphere *sphere, double *t)
+bool	ray_sphere_intersect(t_ray ray, t_sphere *sphere, double *t)
 {
 	t_vec oc = sub(ray.origin, sphere->coordinates);
 	double a = dot(ray.direction, ray.direction);
@@ -37,7 +37,7 @@ bool ray_sphere_intersect(t_ray ray, t_sphere *sphere, double *t)
 	return (true);
 }
 
-bool ray_plane_intersect(t_ray ray, t_plane *plane, double *t)
+bool	ray_plane_intersect(t_ray ray, t_plane *plane, double *t)
 {
 	double	denominator;
 	t_vec	origin_to_plane;
@@ -52,7 +52,7 @@ bool ray_plane_intersect(t_ray ray, t_plane *plane, double *t)
 	return (false);
 }
 
-t_obj *find_closest_object(t_ray ray, t_list *orig_obj_lst, double *closest_t, t_vec *closest_normal)
+t_obj	*find_closest_object(t_ray ray, t_list *orig_obj_lst, double *closest_t, t_vec *closest_normal)
 {
 	t_obj	*closest_obj;
 	t_list	*obj_lst;
@@ -127,18 +127,20 @@ bool	is_in_shadow(t_vec hit_point, t_s_light *light, t_scene *scene)
 			return (true);
 		if (obj->type == PLANE && (ray_plane_intersect(shadow_ray, (t_plane *)obj->specific_obj, &t)) && (t > EPSILON && t < light_distance))
 			return (true);
-		if (obj->type == CYLINDER) {
+		if (obj->type == CYLINDER)
+		{
 			t_cylinder *cy = (t_cylinder *)obj->specific_obj;
 			t_cy_inter *cy_inter = ray_inter_cylinder(shadow_ray, *cy);
-			if (cy_inter) {
-				if (cy_inter->t < light_distance) {
+			if (cy_inter)
+			{
+				if (cy_inter->t < light_distance)
+				{
 					free(cy_inter);
 					return true;
 				}
 				free(cy_inter);
 			}
 		}
-		// add intersection checks for other object types (planes, cylinders etc.)
 		current_obj = current_obj->next;
 	}
 	return (false);

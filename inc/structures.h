@@ -6,7 +6,7 @@
 /*   By: erian <erian@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/27 18:47:23 by erian             #+#    #+#             */
-/*   Updated: 2025/03/06 17:06:54 by erian            ###   ########.fr       */
+/*   Updated: 2025/03/07 14:06:20 by erian            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,12 +17,12 @@
 
 typedef enum e_obj_type
 {
-	CAMERA,		
-	A_LIGHT,	
-	S_LIGHT,	
-	PLANE,		
-	SPHERE,		
-	CYLINDER,	
+	CAMERA,
+	A_LIGHT,
+	S_LIGHT,
+	PLANE,
+	SPHERE,
+	CYLINDER,
 	UNDEFINED
 }	t_obj_type;
 
@@ -102,8 +102,8 @@ typedef struct s_cylinder
 
 typedef struct s_obj
 {
-    t_obj_type	type;
-    void		*specific_obj;
+	t_obj_type	type;
+	void		*specific_obj;
 }				t_obj;
 
 typedef struct s_scene

@@ -6,14 +6,14 @@
 /*   By: erian <erian@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 11:43:48 by erian             #+#    #+#             */
-/*   Updated: 2025/03/06 17:28:43 by erian            ###   ########.fr       */
+/*   Updated: 2025/03/07 14:12:19 by erian            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parsing.h"
 #include "graphics.h"
 
-static bool is_valid_filename(char *file_name)
+static bool	is_valid_filename(char *file_name)
 {
 	if (!(ft_strlen(file_name) >= 4) || !ft_strnstr(file_name, ".rt", ft_strlen(file_name)))
 	{
@@ -23,9 +23,9 @@ static bool is_valid_filename(char *file_name)
 	return (true);
 }
 
-void parse_scene(char *filename, t_data *data)
+void	parse_scene(char *filename, t_data *data)
 {
-	int fd;
+	int	fd;
 
 	if (!is_valid_filename(filename))
 		exit(EXIT_FAILURE);

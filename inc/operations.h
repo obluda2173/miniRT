@@ -6,7 +6,7 @@
 /*   By: erian <erian@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/01 11:06:21 by erian             #+#    #+#             */
-/*   Updated: 2025/03/05 16:12:30 by erian            ###   ########.fr       */
+/*   Updated: 2025/03/07 14:03:33 by erian            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,8 @@
 
 # include "structures.h"
 
-# define M_PI    3.14159265358979323846
-# define EPSILON 1e-6
+# define M_PI		3.14159265358979323846
+# define EPSILON	1e-6
 
 t_vec	vec(double x, double y, double z);
 t_vec	add(t_vec v1, t_vec v2);

@@ -6,7 +6,7 @@
 /*   By: erian <erian@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 16:20:12 by erian             #+#    #+#             */
-/*   Updated: 2025/03/05 15:09:39 by erian            ###   ########.fr       */
+/*   Updated: 2025/03/07 14:09:06 by erian            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,10 +60,10 @@ t_vec	parse_vector(char *str, t_data *data)
 	return (vec);
 }
 
-void extract_objs(int fd, t_data *data)
+void	extract_objs(int fd, t_data *data)
 {
-	char *line;
-	char **split_line;
+	char	*line;
+	char	**split_line;
 
 	data->scene = malloc(sizeof(t_scene));
 	if (!data->scene)

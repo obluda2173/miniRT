@@ -6,17 +6,17 @@
 /*   By: erian <erian@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/01 10:51:38 by erian             #+#    #+#             */
-/*   Updated: 2025/03/07 13:19:14 by erian            ###   ########.fr       */
+/*   Updated: 2025/03/07 14:14:31 by erian            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
-t_ray generate_ray(t_cam *camera, int x, int y)
+t_ray	generate_ray(t_cam *camera, int x, int y)
 {
-	t_ray ray;
-	double aspect_ratio = (double)WIN_WIDTH / WIN_HEIGHT;
-	double fov_scale = tan(camera->fov / 2.0 * (M_PI / 180.0));
+	t_ray	ray;
+	double	aspect_ratio = (double)WIN_WIDTH / WIN_HEIGHT;
+	double	fov_scale = tan(camera->fov / 2.0 * (M_PI / 180.0));
 
 	t_vec w = normalize(scale(camera->orientation, -1));
 	t_vec u = normalize(cross(w, vec(0, 1, 0)));
@@ -43,7 +43,7 @@ t_color	apply_checkerboard(t_intersection *inter, t_color color)
 		return (color_scale(color, 0.8));
 }
 
-int process_pixel(t_data *data, int x, int y)
+int	process_pixel(t_data *data, int x, int y)
 {
 	double			t;
 	t_ray			ray;
@@ -89,7 +89,7 @@ int process_pixel(t_data *data, int x, int y)
 	return (color);
 }
 
-void render_scene(t_data *data)
+void	render_scene(t_data *data)
 {
 	int	x;
 	int	y;

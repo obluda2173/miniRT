@@ -6,7 +6,7 @@
 /*   By: erian <erian@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 16:25:00 by erian             #+#    #+#             */
-/*   Updated: 2025/03/07 13:18:36 by erian            ###   ########.fr       */
+/*   Updated: 2025/03/07 14:11:58 by erian            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,8 +59,7 @@ t_cam	*parse_camera(char **split_line, t_data *data)
 		|| cam->orientation.y < -1 || cam->orientation.y > 1
 		|| cam->orientation.z < -1 || cam->orientation.z > 1)
 		data->error = "Error: Invalid orientation vector range\n";
-	/* if (cam->fov < 0 || cam->fov > 180) */
-	if (cam->fov > 180)
+	if (cam->fov < EPSILON || cam->fov > 180)
 		data->error = "Error: Invalid fov range\n";
 	return (cam);
 }

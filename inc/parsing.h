@@ -6,7 +6,7 @@
 /*   By: erian <erian@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/27 18:48:40 by erian             #+#    #+#             */
-/*   Updated: 2025/03/07 13:18:52 by erian            ###   ########.fr       */
+/*   Updated: 2025/03/07 14:11:26 by erian            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@
 # include "utils.h"
 # include "structures.h"
 # include "get_next_line.h"
+# include "operations.h"
 
 // General Parsing
 void parse_scene(char *filename, t_data *data);
@@ -34,23 +35,21 @@ t_vec		parse_vector(char *str, t_data *data);
 
 // Object Extraction
 void		extract_objs(int fd, t_data *data);
-t_obj_type	get_obj_type(t_list *obj_lst);
-void		*get_specific_obj(t_list *obj_lst, t_obj_type type);
 
 // Object Parsing
 t_a_light	*parse_a_light(char **split_line, t_data *data);
 t_s_light	*parse_s_light(char **split_line, t_data *data);
 t_cam		*parse_camera(char **split_line, t_data *data);
-t_obj       *parse_plane(char **split_line, t_data *data);
-t_obj       *parse_sphere(char **split_line, t_data *data);
-t_obj       *parse_cylinder(char **split_line, t_data *data);
+t_obj		*parse_plane(char **split_line, t_data *data);
+t_obj		*parse_sphere(char **split_line, t_data *data);
+t_obj		*parse_cylinder(char **split_line, t_data *data);
 
 // Parsing Robust Check
-bool	a_check(char **array, t_data *data);
-bool	c_check(char **array, t_data *data);
-bool	l_check(char **array, t_data *data);
-bool	sp_check(char **array, t_data *data);
-bool	pl_check(char **array, t_data *data);
-bool    cy_check(char **array, t_data *data);
+bool		a_check(char **array, t_data *data);
+bool		c_check(char **array, t_data *data);
+bool		l_check(char **array, t_data *data);
+bool		sp_check(char **array, t_data *data);
+bool		pl_check(char **array, t_data *data);
+bool		cy_check(char **array, t_data *data);
 
 #endif

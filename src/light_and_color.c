@@ -6,7 +6,7 @@
 /*   By: erian <erian@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/02 14:37:19 by erian             #+#    #+#             */
-/*   Updated: 2025/03/05 16:29:14 by erian            ###   ########.fr       */
+/*   Updated: 2025/03/07 14:07:59 by erian            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,6 @@ t_color	calculate_light(t_s_light *light, t_intersection *inter, t_cam *camera)
 	diff = fmax(dot(inter->normal, light_dir), 0.0);
 	diffuse = color_scale(inter->base_color, diff * light->ratio);
 
-	// specular lighting (to be added later)
 	t_vec view_dir = normalize(sub(camera->coordinates, inter->hit_point));
 	t_vec reflect_dir = reflect(scale(light_dir, -1), inter->normal);
 	double spec = pow(fmax(dot(view_dir, reflect_dir), 0.0), SPECULAR_EXP);

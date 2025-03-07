@@ -6,7 +6,7 @@
 /*   By: erian <erian@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 16:20:12 by erian             #+#    #+#             */
-/*   Updated: 2025/03/07 14:09:06 by erian            ###   ########.fr       */
+/*   Updated: 2025/03/07 15:04:32 by erian            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,12 @@ void	extract_objs(int fd, t_data *data)
 	line = get_next_line(fd);
 	while (line)
 	{
+		if ((line && line[0] == '\0') || line[0] == '#' || line[0] == '\n')
+		{
+			free(line);
+			line = get_next_line(fd);
+			continue ;
+		}
 		char *line_trimmed = ft_strtrim(line, "\n");
 		split_line = ft_split(line_trimmed, ' ');
 		free(line_trimmed);

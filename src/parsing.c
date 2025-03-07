@@ -6,7 +6,7 @@
 /*   By: erian <erian@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 11:43:48 by erian             #+#    #+#             */
-/*   Updated: 2025/03/07 14:12:19 by erian            ###   ########.fr       */
+/*   Updated: 2025/03/07 14:53:23 by erian            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ void	parse_scene(char *filename, t_data *data)
 		ft_putstr_fd("Error: Cannot open file\n", STDERR_FILENO);
 		exit(EXIT_FAILURE);
 	}
-	data->mlx = malloc(sizeof(t_mlx));
+	data->mlx = ft_calloc(sizeof(t_mlx), 1);
 	if (!data->mlx)
 		free_and_exit(data, "Error: Failed to allocate MLX struct\n");
 	data->mlx->mlx = mlx_init();

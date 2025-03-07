@@ -6,7 +6,7 @@
 /*   By: erian <erian@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/27 18:47:23 by erian             #+#    #+#             */
-/*   Updated: 2025/03/07 14:06:20 by erian            ###   ########.fr       */
+/*   Updated: 2025/03/07 15:22:58 by erian            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,6 +112,8 @@ typedef struct s_scene
 	t_a_light	*a_light;
 	t_list		*light_lst;
 	t_list		*obj_lst;
+	unsigned int	c_count;
+	unsigned int	a_count;
 }				t_scene;
 
 typedef struct s_ray

@@ -6,7 +6,7 @@
 /*   By: erian <erian@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 13:09:50 by erian             #+#    #+#             */
-/*   Updated: 2025/03/06 17:11:09 by erian            ###   ########.fr       */
+/*   Updated: 2025/03/07 13:32:20 by erian            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,7 +104,6 @@ static bool	valid_range_3(char *str)
 	}
 	return (true);
 }
-
 
 bool	a_check(char **array, t_data *data)
 {

@@ -6,7 +6,7 @@
 /*   By: erian <erian@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 16:20:12 by erian             #+#    #+#             */
-/*   Updated: 2025/03/07 15:47:13 by erian            ###   ########.fr       */
+/*   Updated: 2025/03/07 16:54:35 by erian            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,6 +96,8 @@ void	extract_objs(int fd, t_data *data)
 			ft_lstadd_back(&data->scene->obj_lst, ft_lstnew(parse_sphere(split_line, data)));
 		else if (ft_strcmp(split_line[0], "cy") == 0 && cy_check(split_line, data))
 			ft_lstadd_back(&data->scene->obj_lst, ft_lstnew(parse_cylinder(split_line, data)));
+		else
+			data->error = "Error: Invalid object format\n";
 		free_split(split_line);
 		line = get_next_line(fd);
 	}

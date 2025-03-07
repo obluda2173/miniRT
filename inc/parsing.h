@@ -6,16 +6,18 @@
 /*   By: erian <erian@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/27 18:48:40 by erian             #+#    #+#             */
-/*   Updated: 2025/03/05 14:46:06 by erian            ###   ########.fr       */
+/*   Updated: 2025/03/07 13:18:52 by erian            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PARSING_H
 # define PARSING_H
 
-# include <unistd.h>
+# include <mlx.h>
 # include <stdio.h>
 # include <fcntl.h>
+# include <unistd.h>
+
 
 # include "data.h"
 # include "utils.h"

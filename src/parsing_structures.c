@@ -6,12 +6,11 @@
 /*   By: erian <erian@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 16:25:00 by erian             #+#    #+#             */
-/*   Updated: 2025/03/06 18:41:17 by erian            ###   ########.fr       */
+/*   Updated: 2025/03/07 13:18:36 by erian            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parsing.h"
-#include <mlx.h>
 
 t_xpm	*parse_xpm(char *filedir, t_data *data)
 {
@@ -106,6 +105,8 @@ t_obj	*parse_plane(char **split_line, t_data *data)
 	plane->coordinates = parse_vector(split_line[1], data);
 	plane->normal_vector = parse_vector(split_line[2], data);
 	plane->color = parse_color(split_line[3], data);
+	plane->texture = NULL;
+	plane->normal_map = NULL;
 	if (array_size(split_line) == 6)
 	{
 		plane->texture = parse_xpm(split_line[4], data);

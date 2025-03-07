@@ -6,12 +6,11 @@
 /*   By: erian <erian@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/01 10:51:38 by erian             #+#    #+#             */
-/*   Updated: 2025/03/06 17:58:15 by erian            ###   ########.fr       */
+/*   Updated: 2025/03/07 13:19:14 by erian            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
-#include "structures.h"
 
 t_ray generate_ray(t_cam *camera, int x, int y)
 {
@@ -69,22 +68,20 @@ int process_pixel(t_data *data, int x, int y)
 		inter.base_color = ((t_sphere *)closest_obj->specific_obj)->color;
 	if (closest_obj->type == PLANE)
 	{
-        t_plane *plane = (t_plane *)closest_obj->specific_obj;
-        // Compute UV coordinates on the plane.
-        compute_plane_uv(inter.hit_point, plane, &u, &v);
-        // If a texture is provided, sample it; otherwise, use a checkerboard.
-        if (plane->texture)
-            inter.base_color = sample_xpm(plane->texture, u, v);
-        else
-            inter.base_color = apply_checkerboard(&inter, plane->color);
-		
-        // If a normal map is provided, sample it and update the surface normal.
-        if (plane->normal_map)
-            inter.normal = sample_normal_map(plane->normal_map, u, v);
-    }
+		t_plane *plane = (t_plane *)closest_obj->specific_obj;
+		compute_plane_uv(inter.hit_point, plane, &u, &v);
+		if (plane->texture && plane->normal_map)
+		{
+			inter.base_color = sample_xpm(plane->texture, u, v);
+			inter.normal = sample_normal_map(plane->normal_map, u, v);
+		}
+		else
+			inter.base_color = plane->color;
+		// else
+			// inter.base_color = apply_checkerboard(&inter, plane->color);
+	}
 	if (closest_obj->type == CYLINDER)
 		inter.base_color = ((t_cylinder *)closest_obj->specific_obj)->color;
-	// to do other objects
 
 	color = apply_ambient_light(inter.base_color, data->scene->a_light);
 	color = apply_source_light(data->scene, &inter, color);

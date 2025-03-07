@@ -6,7 +6,7 @@
 /*   By: erian <erian@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 17:14:32 by erian             #+#    #+#             */
-/*   Updated: 2025/03/06 18:01:54 by erian            ###   ########.fr       */
+/*   Updated: 2025/03/07 12:38:46 by erian            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,10 +35,13 @@ void free_specific_object(t_obj *obj)
 		free((t_sphere *)obj->specific_obj);
 	else if (obj->type == PLANE)
 	{
-		free(((t_plane *)obj->specific_obj)->texture->data);
-		free(((t_plane *)obj->specific_obj)->normal_map->data);
-		free(((t_plane *)obj->specific_obj)->texture);
-		free(((t_plane *)obj->specific_obj)->normal_map);
+		if (((t_plane *)obj->specific_obj)->texture && ((t_plane *)obj->specific_obj)->normal_map)
+		{
+			free(((t_plane *)obj->specific_obj)->texture->data);
+			free(((t_plane *)obj->specific_obj)->normal_map->data);
+			free(((t_plane *)obj->specific_obj)->texture);
+			free(((t_plane *)obj->specific_obj)->normal_map);
+		}
 		free((t_plane *)obj->specific_obj);
 	}
 	else if (obj->type == CYLINDER)

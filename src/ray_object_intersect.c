@@ -3,16 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   ray_object_intersect.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: erian <erian@student.42>                   +#+  +:+       +#+        */
+/*   By: erian <erian@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 13:19:31 by erian             #+#    #+#             */
-/*   Updated: 2025/03/05 20:45:04 by erian            ###   ########.fr       */
+/*   Updated: 2025/03/07 13:19:09 by erian            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
-#include "raytracing.h"
-#include "structures.h"
 
 bool ray_sphere_intersect(t_ray ray, t_sphere *sphere, double *t)
 {

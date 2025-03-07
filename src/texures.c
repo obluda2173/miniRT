@@ -6,7 +6,7 @@
 /*   By: erian <erian@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 17:44:49 by erian             #+#    #+#             */
-/*   Updated: 2025/03/06 18:39:26 by erian            ###   ########.fr       */
+/*   Updated: 2025/03/07 12:24:13 by erian            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void compute_plane_uv(t_vec hit_point, t_plane *plane, double *u, double *v)
 {
-	double texture_scale = 15.0;
+	double texture_scale = 20.0;
 
 	t_vec diff = sub(hit_point, plane->coordinates);
 	t_vec up = {0, 1, 0};

@@ -32,7 +32,7 @@ bool		ray_sphere_intersect(t_ray ray, t_sphere *sphere, double *t);
 bool		ray_plane_intersect(t_ray ray, t_plane *plane, double *t);
 t_vec		calc_normal_cy(t_ray ray, t_cylinder *cy, t_cy_inter *cy_inter);
 t_cy_inter	*ray_inter_cylinder(t_ray ray, t_cylinder cy);
-bool ray_inf_cone_intersect(t_ray ray, t_cone cone, double *t);
+bool ray_inf_cone_intersect(t_ray ray, t_cone *cone, double *t);
 t_obj		*find_closest_object(t_ray ray, t_list *orig_obj_lst,
 				double *closest_t, t_vec *closest_normal);
 bool		is_in_shadow(t_vec hit_point, t_s_light *light, t_scene *scene);

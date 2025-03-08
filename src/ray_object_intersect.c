@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "minirt.h"
+#include "operations.h"
 
 bool	ray_sphere_intersect(t_ray ray, t_sphere *sphere, double *t)
 {
@@ -82,14 +83,17 @@ t_obj	*find_closest_object(t_ray ray, t_list *orig_obj_lst, double *closest_t, t
 		if (obj_node->type == CONE)
 		{
 			t_cone *cone = (t_cone *)obj_node->specific_obj;
-			if (ray_inf_cone_intersect(ray, *cone, &t) && t < *closest_t)
+			if (ray_inf_cone_intersect(ray, cone, &t) && t < *closest_t)
 			{
 				*closest_t = t;
 				closest_obj = obj_node;
+
+				t_vec X = sub(ray.origin, cone->apex);
 				t_vec hit_p = add(ray.origin, scale(ray.direction, t));
-				t_vec dp = sub(ray.origin, cone->apex);
-				double m = dot(ray.direction, cone->axis) * t + dot(dp, cone->axis);
-				*closest_normal = normalize(sub(sub(hit_p, cone->apex), scale(cone->axis, m * tan(cone->alpha) * tan(cone->alpha))));
+				t_vec p_minus_c = sub(hit_p, cone->apex);
+				double one_plus_k_squared = (1 + tan(cone->alpha) * tan(cone->alpha));
+				double m = dot(ray.direction, cone->axis) * t + dot(X, cone->axis);
+				*closest_normal = normalize(sub(p_minus_c, scale(cone->axis, one_plus_k_squared * m)));
 			}
 		}
 		if (obj_node->type == SPHERE)
@@ -140,7 +144,7 @@ bool	is_in_shadow(t_vec hit_point, t_s_light *light, t_scene *scene)
 			return (true);
 		if (obj->type == PLANE && (ray_plane_intersect(shadow_ray, (t_plane *)obj->specific_obj, &t)) && (t > EPSILON && t < light_distance))
 			return (true);
-		if (obj->type == CONE && (ray_inf_cone_intersect(shadow_ray, *(t_cone *)obj->specific_obj, &t)) && (t > EPSILON && t < light_distance))
+		if (obj->type == CONE && (ray_inf_cone_intersect(shadow_ray, (t_cone *)obj->specific_obj, &t)) && (t > EPSILON && t < light_distance))
 			return (true);
 		if (obj->type == CYLINDER)
 		{

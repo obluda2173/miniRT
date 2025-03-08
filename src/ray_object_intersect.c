@@ -56,6 +56,24 @@ bool	ray_plane_intersect(t_ray ray, t_plane *plane, double *t)
 	return (false);
 }
 
+typedef struct s_closest_params {
+	double* closest_t;
+	t_vec* closest_normal;
+	t_obj** closest_obj;
+} t_closest_params;
+
+
+void update_t_plane(t_ray ray, t_closest_params closest_params, t_obj *obj_node) {
+	double t;
+	t_plane *plane = (t_plane *)obj_node->specific_obj;
+	if (ray_plane_intersect(ray, plane, &t) && t < *closest_params.closest_t)
+	{
+		*closest_params.closest_t = t;
+		*closest_params.closest_obj = obj_node;
+		*closest_params.closest_normal = plane->normal_vector;
+	}
+}
+
 t_obj	*find_closest_object(t_ray ray, t_list *orig_obj_lst, double *closest_t,
 		t_vec *closest_normal)
 {
@@ -72,7 +90,6 @@ t_obj	*find_closest_object(t_ray ray, t_list *orig_obj_lst, double *closest_t,
 	double		one_plus_k_squared;
 	double		m;
 	t_sphere	*sphere;
-	t_plane		*plane;
 
 	closest_obj = NULL;
 	obj_lst = orig_obj_lst;
@@ -124,15 +141,7 @@ t_obj	*find_closest_object(t_ray ray, t_list *orig_obj_lst, double *closest_t,
 			}
 		}
 		if (obj_node->type == PLANE)
-		{
-			plane = (t_plane *)obj_node->specific_obj;
-			if (ray_plane_intersect(ray, plane, &t) && t < *closest_t)
-			{
-				*closest_t = t;
-				closest_obj = obj_node;
-				*closest_normal = plane->normal_vector;
-			}
-		}
+			update_t_plane(ray, closest_t, closest_normal, &closest_obj, obj_node);
 		obj_lst = obj_lst->next;
 	}
 	return (closest_obj);

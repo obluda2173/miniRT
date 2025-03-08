@@ -6,7 +6,7 @@
 /*   By: erian <erian@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 17:37:54 by kfreyer           #+#    #+#             */
-/*   Updated: 2025/02/28 12:28:20 by erian            ###   ########.fr       */
+/*   Updated: 2025/03/08 10:28:18 by erian            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,6 @@ char	*crud_stash(t_op op, char *new_stash, int fd)
 	free(stash[fd]);
 	stash[fd] = tmp;
 	return (NULL);
-
 }
 
 char	*truncate_stash(int fd)

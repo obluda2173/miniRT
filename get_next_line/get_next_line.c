@@ -6,7 +6,7 @@
 /*   By: erian <erian@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 17:50:49 by kfreyer           #+#    #+#             */
-/*   Updated: 2025/02/28 12:08:36 by erian            ###   ########.fr       */
+/*   Updated: 2025/03/08 10:28:03 by erian            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,11 +19,11 @@ char	*ft_strdup_kay(const char *s)
 	int		len;
 
 	if (!s)
-		return NULL;
+		return (NULL);
 	len = ft_strlen_kay(s);
 	res = malloc((len + 1) * sizeof(char));
 	if (!res)
-		return NULL;
+		return (NULL);
 	res_o = res;
 	while (*s)
 		*res++ = *s++;

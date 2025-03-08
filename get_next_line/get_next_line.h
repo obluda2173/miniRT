@@ -6,7 +6,7 @@
 /*   By: erian <erian@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 17:38:08 by kfreyer           #+#    #+#             */
-/*   Updated: 2025/02/28 12:30:22 by erian            ###   ########.fr       */
+/*   Updated: 2025/03/08 10:28:54 by erian            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
 #  define BUFFER_SIZE 32
 # endif
 
-#  define MAX_FD 1024
+# define MAX_FD 1024
 
 /* type definitions */
 typedef enum _OP
@@ -33,7 +33,7 @@ typedef enum _OP
 	FREE_STASH
 }		t_op;
 
-char *get_next_line(int fd);
+char	*get_next_line(int fd);
 size_t	ft_strlen_kay(const char *s);
 char	*ft_strdup_kay(const char *s);
 char	*ft_get_empty_str(size_t n);
@@ -44,4 +44,4 @@ char	*ft_strchr_kay(const char *s, int c);
 char	*ft_substr_kay(char const *s, unsigned int start, size_t len);
 void	free_stash(int fd);
 
-# endif
+#endif

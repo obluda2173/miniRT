@@ -6,7 +6,7 @@
 /*   By: erian <erian@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 13:19:31 by erian             #+#    #+#             */
-/*   Updated: 2025/03/07 14:13:55 by erian            ###   ########.fr       */
+/*   Updated: 2025/03/08 16:33:32 by erian            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,44 +124,48 @@ t_obj	*find_closest_object(t_ray ray, t_list *orig_obj_lst, double *closest_t, t
 	return (closest_obj);
 }
 
+bool	check_object_intersection(t_ray s_ray, t_obj *obj, double max_t)
+{
+	bool		result;
+	double		t;
+	t_cy_inter	*cy_inter;
+
+	if (obj->type == SPHERE
+		&& ray_sphere_intersect(s_ray, (t_sphere *)obj->specific_obj, &t))
+		return (t > EPSILON && t < max_t);
+	if (obj->type == PLANE
+		&& ray_plane_intersect(s_ray, (t_plane *)obj->specific_obj, &t))
+		return (t > EPSILON && t < max_t);
+	if (obj->type == CONE
+		&& ray_inf_cone_intersect(s_ray, (t_cone *)obj->specific_obj, &t))
+		return (t > EPSILON && t < max_t);
+	if (obj->type == CYLINDER)
+	{
+		cy_inter = ray_inter_cylinder(s_ray, *(t_cylinder *)obj->specific_obj);
+		if (cy_inter)
+		{
+			result = (cy_inter->t < max_t);
+			free(cy_inter);
+			return (result);
+		}
+	}
+	return (false);
+}
+
 bool	is_in_shadow(t_vec hit_point, t_s_light *light, t_scene *scene)
 {
-	t_ray	shadow_ray;
-	t_vec	light_dir;
-	double	light_distance;
-	double	t;
+	t_ray	s_ray;
 	t_list	*current_obj;
-	t_obj	*obj;
+	double	max_t;
 
-	light_dir = sub(light->coordinates, hit_point);
-	light_distance = length(light_dir);
-	shadow_ray.origin = add(hit_point, scale(normalize(light_dir), EPSILON));
-	shadow_ray.direction = normalize(light_dir);
+	s_ray.direction = normalize(sub(light->coordinates, hit_point));
+	s_ray.origin = add(hit_point, scale(normalize(s_ray.direction), EPSILON));
+	max_t = length(s_ray.direction);
 	current_obj = scene->obj_lst;
-
 	while (current_obj)
 	{
-		obj = current_obj->content;
-		if (obj->type == SPHERE && (ray_sphere_intersect(shadow_ray, (t_sphere *)obj->specific_obj, &t)) && (t > EPSILON && t < light_distance))
+		if (check_object_intersection(s_ray, current_obj->content, max_t))
 			return (true);
-		if (obj->type == PLANE && (ray_plane_intersect(shadow_ray, (t_plane *)obj->specific_obj, &t)) && (t > EPSILON && t < light_distance))
-			return (true);
-		if (obj->type == CONE && (ray_inf_cone_intersect(shadow_ray, (t_cone *)obj->specific_obj, &t)) && (t > EPSILON && t < light_distance))
-			return (true);
-		if (obj->type == CYLINDER)
-		{
-			t_cylinder *cy = (t_cylinder *)obj->specific_obj;
-			t_cy_inter *cy_inter = ray_inter_cylinder(shadow_ray, *cy);
-			if (cy_inter)
-			{
-				if (cy_inter->t < light_distance)
-				{
-					free(cy_inter);
-					return true;
-				}
-				free(cy_inter);
-			}
-		}
 		current_obj = current_obj->next;
 	}
 	return (false);

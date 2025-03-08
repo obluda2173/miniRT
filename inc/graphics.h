@@ -6,7 +6,7 @@
 /*   By: erian <erian@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/01 09:36:23 by erian             #+#    #+#             */
-/*   Updated: 2025/03/07 14:07:15 by erian            ###   ########.fr       */
+/*   Updated: 2025/03/08 11:38:56 by erian            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,8 @@
 # include "light.h"
 
 # define ESC			65307
-# define WIN_WIDTH		1024
-# define WIN_HEIGHT		720
+# define WIN_WIDTH		200
+# define WIN_HEIGHT		150
 # define TEXTURE_SCALE	20.0
 
 void	init_window(t_data *data);

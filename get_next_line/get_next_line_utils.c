@@ -6,7 +6,7 @@
 /*   By: erian <erian@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 17:37:54 by kfreyer           #+#    #+#             */
-/*   Updated: 2025/03/08 10:28:18 by erian            ###   ########.fr       */
+/*   Updated: 2025/03/08 12:17:27 by erian            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,16 +58,17 @@ char	*truncate_stash(int fd)
 		return (cur_stash);
 	while (count < ft_strlen_kay(cur_stash))
 	{
-		if (cur_stash[count++] == '\n')
+		if (cur_stash[count] == '\n')
 		{
 			ret = ft_substr_kay(cur_stash, 0, count);
-			if (count == ft_strlen_kay(cur_stash))
+			if (count + 1 == ft_strlen_kay(cur_stash))
 				crud_stash(SET_STASH, NULL, fd);
 			else
-				crud_stash(SET_STASH, cur_stash + count, fd);
+				crud_stash(SET_STASH, cur_stash + count + 1, fd);
 			free(cur_stash);
 			return (ret);
 		}
+		count++;
 	}
 	crud_stash(SET_STASH, NULL, fd);
 	return (cur_stash);

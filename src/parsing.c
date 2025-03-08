@@ -6,16 +6,16 @@
 /*   By: erian <erian@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 11:43:48 by erian             #+#    #+#             */
-/*   Updated: 2025/03/07 14:53:23 by erian            ###   ########.fr       */
+/*   Updated: 2025/03/08 13:16:13 by erian            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parsing.h"
-#include "graphics.h"
+#include "minirt.h"
 
 static bool	is_valid_filename(char *file_name)
 {
-	if (!(ft_strlen(file_name) >= 4) || !ft_strnstr(file_name, ".rt", ft_strlen(file_name)))
+	if (!(ft_strlen(file_name) >= 4)
+		|| !ft_strnstr(file_name, ".rt", ft_strlen(file_name)))
 	{
 		ft_putstr_fd("Error: Wrong file format. Expected .rt\n", STDERR_FILENO);
 		return (false);

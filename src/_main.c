@@ -6,15 +6,15 @@
 /*   By: erian <erian@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 11:29:44 by erian             #+#    #+#             */
-/*   Updated: 2025/03/07 16:55:16 by erian            ###   ########.fr       */
+/*   Updated: 2025/03/08 10:48:12 by erian            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
-int main(int ac, char **av)
+int	main(int ac, char **av)
 {
-	t_data data;
+	t_data	data;
 
 	if (ac != 2)
 	{

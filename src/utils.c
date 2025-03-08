@@ -6,12 +6,11 @@
 /*   By: erian <erian@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 17:14:32 by erian             #+#    #+#             */
-/*   Updated: 2025/03/07 14:15:02 by erian            ###   ########.fr       */
+/*   Updated: 2025/03/08 09:59:09 by erian            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parsing.h"
-#include "graphics.h"
+#include "minirt.h"
 
 void	free_split(char **array)
 {

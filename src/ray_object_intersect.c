@@ -63,14 +63,15 @@ typedef struct s_closest_params {
 } t_closest_params;
 
 
-void update_t_plane(t_ray ray, t_closest_params closest_params, t_obj *obj_node) {
+
+void update_t_plane(t_ray ray, double *closest_t, t_vec  *closest_normal, t_obj **closest_obj, t_obj *obj_node) {
 	double t;
 	t_plane *plane = (t_plane *)obj_node->specific_obj;
-	if (ray_plane_intersect(ray, plane, &t) && t < *closest_params.closest_t)
+	if (ray_plane_intersect(ray, plane, &t) && t < *closest_t)
 	{
-		*closest_params.closest_t = t;
-		*closest_params.closest_obj = obj_node;
-		*closest_params.closest_normal = plane->normal_vector;
+		*closest_t = t;
+		*closest_obj = obj_node;
+		*closest_normal = plane->normal_vector;
 	}
 }
 

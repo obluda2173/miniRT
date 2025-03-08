@@ -6,7 +6,7 @@
 /*   By: erian <erian@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/02 14:38:21 by erian             #+#    #+#             */
-/*   Updated: 2025/03/08 11:08:22 by erian            ###   ########.fr       */
+/*   Updated: 2025/03/08 11:17:00 by erian            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,6 @@ t_color	color_clamp(t_color c);
 
 int		apply_ambient_light(t_color object_color, t_a_light *ambient);
 int		apply_source_light(t_scene *scene, t_intersection *inter, int color);
-t_color	calculate_light(t_s_light *light, t_intersection *inter, t_cam *camera);
 
 void	compute_plane_uv(t_vec hit_point, t_plane *plane, double *u, double *v);
 t_color	sample_xpm(t_xpm *xpm, double u, double v);

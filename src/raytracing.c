@@ -6,7 +6,7 @@
 /*   By: erian <erian@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/01 10:51:38 by erian             #+#    #+#             */
-/*   Updated: 2025/03/07 14:14:31 by erian            ###   ########.fr       */
+/*   Updated: 2025/03/07 18:27:20 by erian            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,12 @@ int	process_pixel(t_data *data, int x, int y)
 		if (plane->texture && plane->normal_map)
 		{
 			inter.base_color = sample_xpm(plane->texture, u, v);
-			inter.normal = sample_normal_map(plane->normal_map, u, v);
+			// inter.normal = sample_normal_map(plane->normal_map, u, v);
+
+			t_vec bump = sample_normal_map(plane->normal_map, u, v);
+			t_vec rot_axis = normalize(cross(plane->normal_vector, bump));
+			double rot_angle = acos(dot(plane->normal_vector, bump));
+			inter.normal = add(add(scale(bump, cos(rot_angle)), scale(cross(rot_axis, bump), sin(rot_angle))), scale(rot_axis, dot(rot_axis, bump) * (1 - cos(rot_angle))));
 		}
 		else
 			inter.base_color = plane->color;

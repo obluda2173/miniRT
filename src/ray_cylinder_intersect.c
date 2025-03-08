@@ -55,17 +55,14 @@ c_part = dp - <dp | v_a> v_a
 A = <a_part | a_part>
 C = <c_part | c_part> - r^2
 */
-t_list	*ray_inf_cylinder_intersect(t_ray ray, t_cylinder cy)
+
+bool	calc_t1_and_t2(double *t1, double *t2, t_ray ray, t_cylinder cy)
 {
-	t_quadratic_coeff coeff;
-	double		r_squared;
-	double		discriminant;
-	double		t1;
-	double		t2;
-	t_list		*candidates;
-	t_vec		dp;
-	t_vec		a_part;
-	t_vec		c_part;
+	t_vec				dp;
+	t_vec				a_part;
+	t_vec				c_part;
+	double				discriminant;
+	t_quadratic_coeff	coeff;
 
 	dp = sub(ray.origin, cy.coordinates);
 	a_part = sub(ray.direction, scale(cy.axis_vector, dot(ray.direction,
@@ -73,13 +70,23 @@ t_list	*ray_inf_cylinder_intersect(t_ray ray, t_cylinder cy)
 	c_part = sub(dp, scale(cy.axis_vector, dot(dp, cy.axis_vector)));
 	coeff.a = dot(a_part, a_part);
 	coeff.b = 2 * dot(a_part, c_part);
-	r_squared = ((cy.diameter / 2) * (cy.diameter / 2));
-	coeff.c = dot(c_part, c_part) - r_squared;
+	coeff.c = dot(c_part, c_part) - ((cy.diameter / 2) * (cy.diameter / 2));
 	discriminant = discr(coeff);
 	if (discriminant < 0)
+		return (false);
+	*t1 = root_n(coeff);
+	*t2 = root_p(coeff);
+	return (true);
+}
+
+t_list	*ray_inf_cylinder_intersect(t_ray ray, t_cylinder cy)
+{
+	double	t1;
+	double	t2;
+	t_list	*candidates;
+
+	if (!calc_t1_and_t2(&t1, &t2, ray, cy))
 		return (NULL);
-	t1 = root_n(coeff);
-	t2 = root_p(coeff);
 	candidates = NULL;
 	if (t1 > EPSILON && check_between_caps(ray, cy, t1))
 		add_t_to_cy_candidates(&candidates, t1, SURFACE);
@@ -115,45 +122,13 @@ t_cy_inter	*ray_inter_cylinder(t_ray ray, t_cylinder cy)
 {
 	t_list		*candidates;
 	t_cy_inter	*cy_inter;
-	t_list		*head;
 
 	cy.axis_vector = normalize(cy.axis_vector);
 	candidates = ray_inf_cylinder_intersect(ray, cy);
 	ray_caps_intersection(ray, cy, &candidates);
 	if (!candidates)
 		return (NULL);
-	cy_inter = malloc(sizeof(t_cy_inter));
-	if (!cy_inter)
-		return (NULL);
-	head = candidates;
-	cy_inter->t = ((t_cy_inter *)head->content)->t;
-	cy_inter->type = ((t_cy_inter *)head->content)->type;
-	head = head->next;
-	while (head)
-	{
-		if (cy_inter->t > ((t_cy_inter *)head->content)->t)
-		{
-			cy_inter->t = ((t_cy_inter *)head->content)->t;
-			cy_inter->type = ((t_cy_inter *)head->content)->type;
-		}
-		head = head->next;
-	}
+	cy_inter = find_smallest_cy_inter_t(candidates);
 	ft_lstclear(&candidates, free);
 	return (cy_inter);
-}
-
-t_vec	calc_normal_cy(t_ray ray, t_cylinder *cy, t_cy_inter *cy_inter)
-{
-	t_vec	hit_p;
-	double	new_t;
-	t_vec	pt;
-
-	if (cy_inter->type == TOP_CAP)
-		return (normalize(cy->axis_vector));
-	if (cy_inter->type == BOTTOM_CAP)
-		return (scale(normalize(cy->axis_vector), -1));
-	hit_p = add(ray.origin, scale(ray.direction, cy_inter->t));
-	new_t = dot(sub(hit_p, cy->coordinates), normalize(cy->axis_vector));
-	pt = add(cy->coordinates, scale(normalize(cy->axis_vector), new_t));
-	return (normalize(sub(hit_p, pt)));
 }

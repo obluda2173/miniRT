@@ -45,6 +45,7 @@ bool		is_in_shadow(t_vec hit_point, t_s_light *light, t_scene *scene);
 bool	check_pt_inside_bottom_cap(t_ray ray, t_cylinder cy, double t);
 bool	check_pt_inside_top_cap(t_ray ray, t_cylinder cy, double t);
 void add_t_to_cy_candidates(t_list **candidates, double t, t_cy_inter_type type);
+t_cy_inter	*find_smallest_cy_inter_t(t_list *candidates);
 t_cy_inter	*ray_inter_cylinder(t_ray ray, t_cylinder cy);
 bool	check_pt_inside_bottom_cap(t_ray ray, t_cylinder cy, double t);
 

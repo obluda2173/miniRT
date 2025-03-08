@@ -6,13 +6,11 @@
 /*   By: erian <erian@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 13:19:31 by erian             #+#    #+#             */
-/*   Updated: 2025/03/08 16:33:32 by erian            ###   ########.fr       */
+/*   Updated: 2025/03/08 16:37:40 by erian            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
-#include "operations.h"
-#include "raytracing.h"
 
 bool	ray_sphere_intersect(t_ray ray, t_sphere *sphere, double *t)
 {
@@ -118,7 +116,6 @@ t_obj	*find_closest_object(t_ray ray, t_list *orig_obj_lst, double *closest_t, t
 				*closest_normal = plane->normal_vector;
 			}
 		}
-		// add other objects
 		obj_lst = obj_lst->next;
 	}
 	return (closest_obj);

@@ -91,7 +91,7 @@ t_obj	*find_closest_object(t_ray ray, t_list *orig_obj_lst, double *closest_t, t
 				t_vec X = sub(ray.origin, cone->apex);
 				t_vec hit_p = add(ray.origin, scale(ray.direction, t));
 				t_vec p_minus_c = sub(hit_p, cone->apex);
-				double one_plus_k_squared = (1 + tan(cone->alpha) * tan(cone->alpha));
+				double one_plus_k_squared = (1 + (tan(cone->alpha) * tan(cone->alpha)));
 				double m = dot(ray.direction, cone->axis) * t + dot(X, cone->axis);
 				*closest_normal = normalize(sub(p_minus_c, scale(cone->axis, one_plus_k_squared * m)));
 			}

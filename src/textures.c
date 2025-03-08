@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   texures.c                                          :+:      :+:    :+:   */
+/*   textures.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: erian <erian@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 17:44:49 by erian             #+#    #+#             */
-/*   Updated: 2025/03/07 13:50:18 by erian            ###   ########.fr       */
+/*   Updated: 2025/03/08 13:26:00 by erian            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,10 @@ void	compute_plane_uv(t_vec hit_point, t_plane *plane, double *u, double *v)
 		up = vec(1, 0, 0);
 	tangent = normalize(cross(up, plane->normal_vector));
 	bitangent = normalize(cross(plane->normal_vector, tangent));
-	*u = dot(diff, tangent) / TEXTURE_SCALE - floor(dot(diff, tangent) / TEXTURE_SCALE);
-	*v = dot(diff, bitangent) / TEXTURE_SCALE - floor(dot(diff, bitangent) / TEXTURE_SCALE);
+	*u = (dot(diff, tangent) / TEXTURE_SCALE)
+		- floor(dot(diff, tangent) / TEXTURE_SCALE);
+	*v = (dot(diff, bitangent) / TEXTURE_SCALE)
+		- floor(dot(diff, bitangent) / TEXTURE_SCALE);
 }
 
 t_color	sample_xpm(t_xpm *xpm, double u, double v)
@@ -36,7 +38,7 @@ t_color	sample_xpm(t_xpm *xpm, double u, double v)
 
 	x = (int)(u * xpm->width) % xpm->width;
 	y = (int)(v * xpm->height) % xpm->height;
-	if (x < 0) 
+	if (x < 0)
 		x += xpm->width;
 	if (y < 0)
 		y += xpm->height;
@@ -47,7 +49,7 @@ t_vec	sample_normal_map(t_xpm *normal_map, double u, double v)
 {
 	int		x;
 	int		y;
-	int 	color;
+	int		color;
 	t_vec	n;
 
 	x = (int)(u * normal_map->width) % normal_map->width;

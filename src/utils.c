@@ -6,7 +6,7 @@
 /*   By: erian <erian@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 17:14:32 by erian             #+#    #+#             */
-/*   Updated: 2025/03/08 09:59:09 by erian            ###   ########.fr       */
+/*   Updated: 2025/03/08 13:27:00 by erian            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,15 +25,16 @@ void	free_split(char **array)
 	array = NULL;
 }
 
-void free_specific_object(t_obj *obj)
+void	free_specific_object(t_obj *obj)
 {
 	if (!obj)
-		return;
+		return ;
 	if (obj->type == SPHERE)
 		free((t_sphere *)obj->specific_obj);
 	else if (obj->type == PLANE)
 	{
-		if (((t_plane *)obj->specific_obj)->texture && ((t_plane *)obj->specific_obj)->normal_map)
+		if (((t_plane *)obj->specific_obj)->texture
+			&& ((t_plane *)obj->specific_obj)->normal_map)
 		{
 			free(((t_plane *)obj->specific_obj)->texture->data);
 			free(((t_plane *)obj->specific_obj)->normal_map->data);
@@ -50,7 +51,7 @@ void free_specific_object(t_obj *obj)
 void	free_scene(t_scene *scene)
 {
 	if (!scene)
-		return;
+		return ;
 	if (scene->camera)
 		free(scene->camera);
 	if (scene->a_light)
@@ -63,7 +64,7 @@ void	free_scene(t_scene *scene)
 void	free_data(t_data *data)
 {
 	if (!data)
-		return;
+		return ;
 	if (data->scene)
 		free_scene(data->scene);
 	if (data->mlx)

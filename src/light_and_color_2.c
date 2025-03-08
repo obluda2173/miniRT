@@ -1,65 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   light_and_color.c                                  :+:      :+:    :+:   */
+/*   light_and_color_2.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: erian <erian@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/02 14:37:19 by erian             #+#    #+#             */
-/*   Updated: 2025/03/08 10:56:01 by erian            ###   ########.fr       */
+/*   Updated: 2025/03/08 11:09:25 by erian            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "light.h"
 
-t_color	color(int r, int g, int b)
-{
-	return ((t_color){r, g, b});
-}
-
-int	color_to_int(t_color color)
-{
-	return ((color.r << 16) | (color.g << 8) | color.b);
-}
-
-t_color	int_to_color(int integer)
-{
-	return ((t_color){(integer >> 16) & 0xFF,
-		(integer >> 8) & 0xFF, integer & 0xFF});
-}
-
-t_color	color_clamp(t_color c)
-{
-	return ((t_color){
-		.r = fmax(0, fmin(c.r, 255)),
-		.g = fmax(0, fmin(c.g, 255)),
-		.b = fmax(0, fmin(c.b, 255))});
-}
-
-t_color	color_add(t_color a, t_color b)
-{
-	return (color_clamp((t_color){
-			.r = a.r + b.r,
-			.g = a.g + b.g,
-			.b = a.b + b.b}));
-}
-
-t_color	color_scale(t_color c, double factor)
-{
-	return (color_clamp((t_color){
-			.r = c.r * factor,
-			.g = c.g * factor,
-			.b = c.b * factor}));
-}
-
 int	apply_ambient_light(t_color object_color, t_a_light *ambient)
 {
 	t_color	result;
 
-	result = color_clamp(color(
-				(object_color.r + ambient->color.r) * ambient->ratio,
-				(object_color.g + ambient->color.g) * ambient->ratio,
-				(object_color.b + ambient->color.b) * ambient->ratio));
+	result = color_clamp((t_color){
+			(object_color.r + ambient->color.r) * ambient->ratio,
+			(object_color.g + ambient->color.g) * ambient->ratio,
+			(object_color.b + ambient->color.b) * ambient->ratio});
 	return (color_to_int(result));
 }
 

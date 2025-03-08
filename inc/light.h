@@ -6,7 +6,7 @@
 /*   By: erian <erian@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/02 14:38:21 by erian             #+#    #+#             */
-/*   Updated: 2025/03/08 10:20:48 by erian            ###   ########.fr       */
+/*   Updated: 2025/03/08 11:08:22 by erian            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ t_color	int_to_color(int integer);
 t_color	color_add(t_color a, t_color b);
 t_color	color_scale(t_color c, double factor);
 t_color	color_clamp(t_color c);
+
 int		apply_ambient_light(t_color object_color, t_a_light *ambient);
 int		apply_source_light(t_scene *scene, t_intersection *inter, int color);
 t_color	calculate_light(t_s_light *light, t_intersection *inter, t_cam *camera);

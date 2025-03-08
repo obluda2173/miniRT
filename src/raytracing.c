@@ -6,44 +6,56 @@
 /*   By: erian <erian@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/01 10:51:38 by erian             #+#    #+#             */
-/*   Updated: 2025/03/07 18:27:20 by erian            ###   ########.fr       */
+/*   Updated: 2025/03/08 14:58:13 by erian            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
-t_ray	generate_ray(t_cam *camera, int x, int y)
+void	init_cam_settings(t_cam *camera, t_cam_settings *cam_set)
 {
-	t_ray	ray;
-	double	aspect_ratio = (double)WIN_WIDTH / WIN_HEIGHT;
-	double	fov_scale = tan(camera->fov / 2.0 * (M_PI / 180.0));
+	t_vec	w;
+	t_vec	u;
+	t_vec	v;
+	double	aspect_ratio;
+	double	fov_scale;
 
-	t_vec w = normalize(scale(camera->orientation, -1));
-	t_vec u = normalize(cross(w, vec(0, 1, 0)));
-	t_vec v = cross(w, u);
-
-	t_vec horizontal = scale(u, 2.0 * aspect_ratio * fov_scale);
-	t_vec vertical = scale(v, 2.0 * fov_scale);
-	t_vec lower_left_corner = sub(sub(sub(camera->coordinates, scale(horizontal, 0.5)), scale(vertical, 0.5)), w);
-
-	ray.origin = camera->coordinates;
-	t_vec offset = add(scale(horizontal, ((double)x + 0.5) / WIN_WIDTH),
-						scale(vertical, ((double)y + 0.5) / WIN_HEIGHT));
-	t_vec point_on_viewport = add(lower_left_corner, offset);
-	ray.direction = normalize(sub(point_on_viewport, ray.origin));
-
-	return (ray);
+	aspect_ratio = (double)WIN_WIDTH / WIN_HEIGHT;
+	fov_scale = tan(camera->fov / 2.0 * (M_PI / 180.0));
+	w = normalize(scale(camera->orientation, -1));
+	u = normalize(cross(w, vec(0, 1, 0)));
+	v = cross(w, u);
+	cam_set->horizontal = scale(u, 2.0 * aspect_ratio * fov_scale);
+	cam_set->vertical = scale(v, 2.0 * fov_scale);
+	cam_set->lower_left_corner = sub(sub(sub(camera->coordinates,
+					scale(cam_set->horizontal, 0.5)),
+				scale(cam_set->vertical, 0.5)), w);
 }
 
+t_ray	generate_ray(t_cam *camera, t_cam_settings cam_set, int x, int y)
+{
+	t_ray	ray;
+	t_vec	offset;
+	t_vec	point_on_viewport;
+
+	ray.origin = camera->coordinates;
+	offset = add(scale(cam_set.horizontal, ((double)x + 0.5) / WIN_WIDTH),
+			scale(cam_set.vertical, ((double)y + 0.5) / WIN_HEIGHT));
+	point_on_viewport = add(cam_set.lower_left_corner, offset);
+	ray.direction = normalize(sub(point_on_viewport, ray.origin));
+	return (ray);
+}
+// specific_obj, inter, 
 t_color	apply_checkerboard(t_intersection *inter, t_color color)
 {
-	if (((int)floor(inter->hit_point.x * 2) + (int)floor(inter->hit_point.z * 2)) % 2 == 0)
+	if (((int)floor(inter->hit_point.x * 2)
+			+ (int)floor(inter->hit_point.z * 2)) % 2 == 0)
 		return (color);
 	else
 		return (color_scale(color, 0.8));
 }
 
-int	process_pixel(t_data *data, int x, int y)
+int	process_pixel(t_data *data, t_cam_settings cam_set, int x, int y)
 {
 	double			t;
 	t_ray			ray;
@@ -53,7 +65,7 @@ int	process_pixel(t_data *data, int x, int y)
 	int				color;
 	double			u, v;
 
-	ray = generate_ray(data->scene->camera, x, y);
+	ray = generate_ray(data->scene->camera, cam_set, x, y);
 	closest_obj = find_closest_object(ray, data->scene->obj_lst, &t, &normal);
 
 	if (!closest_obj)
@@ -98,17 +110,19 @@ int	process_pixel(t_data *data, int x, int y)
 
 void	render_scene(t_data *data)
 {
-	int	x;
-	int	y;
-	int	pixel_color;
+	int				x;
+	int				y;
+	int				pixel_color;
+	t_cam_settings	cam_set;
 
+	init_cam_settings(data->scene->camera, &cam_set);
 	y = -1;
 	while (++y < WIN_HEIGHT)
 	{
 		x = -1;
 		while (++x < WIN_WIDTH)
 		{
-			pixel_color = process_pixel(data, x, y);
+			pixel_color = process_pixel(data, cam_set, x, y);
 			mlx_pixel_put(data->mlx->mlx, data->mlx->win, x, y, pixel_color);
 		}
 	}

@@ -6,7 +6,7 @@
 /*   By: erian <erian@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/27 18:47:23 by erian             #+#    #+#             */
-/*   Updated: 2025/03/08 10:25:56 by erian            ###   ########.fr       */
+/*   Updated: 2025/03/08 14:42:24 by erian            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,5 +130,12 @@ typedef struct s_ray
 	t_vec		origin;
 	t_vec		direction;
 }				t_ray;
+
+typedef struct s_cam_settings
+{
+	t_vec	horizontal;
+	t_vec	vertical;
+	t_vec	lower_left_corner;
+}				t_cam_settings;
 
 #endif

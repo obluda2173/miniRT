@@ -115,9 +115,10 @@ bool	is_in_shadow(t_vec hit_point, t_s_light *light, t_scene *scene)
 	t_list	*current_obj;
 	double	max_t;
 
-	s_ray.direction = sub(light->coordinates, hit_point);
+	s_ray.direction = normalize(sub(light->coordinates, hit_point));
 	s_ray.origin = add(hit_point, scale(normalize(s_ray.direction), EPSILON));
-	max_t = length(s_ray.direction);
+
+	max_t = length(sub(light->coordinates, hit_point));
 	current_obj = scene->obj_lst;
 	while (current_obj)
 	{

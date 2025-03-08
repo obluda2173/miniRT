@@ -11,6 +11,7 @@ d2 = <dp | v_a>
 A = cos(alpha)^2 * <a_part | a_part> - sin(alpha)^2 * d1^2
 */
 bool ray_inf_cone_intersect(t_ray ray, t_cone cone, double *t) {
+	
 	t_vec dp = sub(ray.origin, cone.apex);
 	t_vec a_part = sub(ray.direction, scale(cone.apex, dot(ray.direction, cone.apex)));
 	t_vec c_part = sub(dp, scale(cone.apex, dot(dp, cone.apex)));

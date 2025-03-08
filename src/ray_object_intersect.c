@@ -79,6 +79,19 @@ t_obj	*find_closest_object(t_ray ray, t_list *orig_obj_lst, double *closest_t, t
 				free(cy_inter);
 			}
 		}
+		if (obj_node->type == CONE)
+		{
+			t_cone *cone = (t_cone *)obj_node->specific_obj;
+			if (ray_inf_cone_intersect(ray, *cone, &t) && t < *closest_t)
+			{
+				*closest_t = t;
+				closest_obj = obj_node;
+				t_vec hit_p = add(ray.origin, scale(ray.direction, t));
+				t_vec dp = sub(ray.origin, cone->apex);
+				double m = dot(ray.direction, cone->axis) * t + dot(dp, cone->axis);
+				*closest_normal = normalize(sub(sub(hit_p, cone->apex), scale(cone->axis, m * tan(cone->alpha) * tan(cone->alpha))));
+			}
+		}
 		if (obj_node->type == SPHERE)
 		{
 			t_sphere *sphere = (t_sphere *)obj_node->specific_obj;
@@ -126,6 +139,8 @@ bool	is_in_shadow(t_vec hit_point, t_s_light *light, t_scene *scene)
 		if (obj->type == SPHERE && (ray_sphere_intersect(shadow_ray, (t_sphere *)obj->specific_obj, &t)) && (t > EPSILON && t < light_distance))
 			return (true);
 		if (obj->type == PLANE && (ray_plane_intersect(shadow_ray, (t_plane *)obj->specific_obj, &t)) && (t > EPSILON && t < light_distance))
+			return (true);
+		if (obj->type == CONE && (ray_inf_cone_intersect(shadow_ray, *(t_cone *)obj->specific_obj, &t)) && (t > EPSILON && t < light_distance))
 			return (true);
 		if (obj->type == CYLINDER)
 		{

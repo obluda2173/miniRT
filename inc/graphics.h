@@ -20,8 +20,8 @@
 # include "light.h"
 
 # define ESC			65307
-# define WIN_WIDTH		1080
-# define WIN_HEIGHT		720
+# define WIN_WIDTH		1024
+# define WIN_HEIGHT		768
 # define TEXTURE_SCALE	20.0
 
 void	init_window(t_data *data);

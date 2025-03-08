@@ -45,6 +45,8 @@ void	free_specific_object(t_obj *obj)
 	}
 	else if (obj->type == CYLINDER)
 		free((t_cylinder *)obj->specific_obj);
+	else if (obj->type == CONE)
+		free((t_cone *)obj->specific_obj);
 	free(obj);
 }
 

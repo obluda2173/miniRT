@@ -87,6 +87,8 @@ int	process_pixel(t_data *data, int x, int y)
 	}
 	if (closest_obj->type == CYLINDER)
 		inter.base_color = ((t_cylinder *)closest_obj->specific_obj)->color;
+	if (closest_obj->type == CONE)
+		inter.base_color = ((t_cone *)closest_obj->specific_obj)->color;
 
 	color = apply_ambient_light(inter.base_color, data->scene->a_light);
 	color = apply_source_light(data->scene, &inter, color);

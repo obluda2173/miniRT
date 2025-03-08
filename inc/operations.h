@@ -16,6 +16,7 @@
 # include <math.h>
 
 # include "structures.h"
+#include "raytracing.h"
 
 # define M_PI		3.14159265358979323846
 # define EPSILON	1e-6
@@ -30,9 +31,9 @@ t_vec	scale(t_vec v, double scalar);
 // math_operations_2.c
 double	dot(t_vec v1, t_vec v2);
 double	length(t_vec v);
-double	discr(double a, double b, double c);
-double	root_n(double a, double b, double c);
-double	root_p(double a, double b, double c);
+double	discr(t_quadratic_coeff coeff);
+double	root_n(t_quadratic_coeff coeff);
+double	root_p(t_quadratic_coeff coeff);
 
 // math_operations_3.c
 t_vec	normalize(t_vec v);

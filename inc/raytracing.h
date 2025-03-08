@@ -28,6 +28,12 @@ typedef struct s_cy_inter
 	t_cy_inter_type	type;
 }					t_cy_inter;
 
+typedef struct s_quadratic_coeff {
+	double a;
+	double b;
+	double c;
+} t_quadratic_coeff;
+
 bool		ray_sphere_intersect(t_ray ray, t_sphere *sphere, double *t);
 bool		ray_plane_intersect(t_ray ray, t_plane *plane, double *t);
 t_vec		calc_normal_cy(t_ray ray, t_cylinder *cy, t_cy_inter *cy_inter);

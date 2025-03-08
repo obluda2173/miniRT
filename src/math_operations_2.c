@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "operations.h"
+#include "raytracing.h"
 
 t_vec	scale(t_vec v, double scalar)
 {
@@ -22,17 +23,17 @@ double	length(t_vec v)
 	return (sqrt(v.x * v.x + v.y * v.y + v.z * v.z));
 }
 
-double	discr(double a, double b, double c)
+double	discr(t_quadratic_coeff coeff)
 {
-	return (b * b - 4 * a * c);
+	return (coeff.b * coeff.b - 4 * coeff.a * coeff.c);
 }
 
-double	root_n(double a, double b, double c)
+double	root_n(t_quadratic_coeff coeff)
 {
-	return ((-b - sqrt(discr(a, b, c))) / (2 * a));
+	return ((-coeff.b - sqrt(discr(coeff))) / (2 * coeff.a));
 }
 
-double	root_p(double a, double b, double c)
+double	root_p(t_quadratic_coeff coeff)
 {
-	return ((-b + sqrt(discr(a, b, c))) / (2 * a));
+	return ((-coeff.b + sqrt(discr(coeff))) / (2 * coeff.a));
 }

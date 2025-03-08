@@ -12,19 +12,21 @@
 
 #include "minirt.h"
 #include "operations.h"
+#include "raytracing.h"
 
 bool	ray_sphere_intersect(t_ray ray, t_sphere *sphere, double *t)
 {
+	t_quadratic_coeff coeff;
 	t_vec oc = sub(ray.origin, sphere->coordinates);
-	double a = dot(ray.direction, ray.direction);
-	double b = 2.0 * dot(oc, ray.direction);
-	double c = dot(oc, oc) - ((sphere->diameter / 2.0) * (sphere->diameter / 2.0));
-	double discriminant = discr(a, b, c);
+	coeff.a = dot(ray.direction, ray.direction);
+	coeff.b = 2.0 * dot(oc, ray.direction);
+	coeff.c = dot(oc, oc) - ((sphere->diameter / 2.0) * (sphere->diameter / 2.0));
+	double discriminant = discr(coeff);
 	if (discriminant < 0)
 		return (false);
 
-	double t1 = root_n(a, b, c);
-	double t2 = root_p(a, b, c);
+	double t1 = root_n(coeff);
+	double t2 = root_p(coeff);
 
 
 	if (t1 > EPSILON && t2 > EPSILON)

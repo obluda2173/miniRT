@@ -1,3 +1,4 @@
+#include "raytracing.h"
 #include "structures.h"
 #include "operations.h"
 
@@ -11,19 +12,20 @@ d2 = <dp | v_a>
 A = cos(alpha)^2 * <a_part | a_part> - sin(alpha)^2 * d1^2
 */
 bool ray_inf_cone_intersect(t_ray ray, t_cone *cone, double *t) {
+	t_quadratic_coeff coeff;
 	t_vec X = sub(ray.origin, cone->apex);
 	double one_plus_k_squared = (1 + (tan(cone->alpha) * tan(cone->alpha)));
 
-	double a = dot(ray.direction, ray.direction) -  one_plus_k_squared * dot(ray.direction, cone->axis) * dot(ray.direction, cone->axis);
-	double b = 2 * (dot(ray.direction, X) -  one_plus_k_squared * dot(ray.direction, cone->axis) * dot(X, cone->axis));
-	double c = dot(X, X) - one_plus_k_squared * dot(X, cone->axis) * dot(X, cone->axis);
+	coeff.a = dot(ray.direction, ray.direction) -  one_plus_k_squared * dot(ray.direction, cone->axis) * dot(ray.direction, cone->axis);
+	coeff.b = 2 * (dot(ray.direction, X) -  one_plus_k_squared * dot(ray.direction, cone->axis) * dot(X, cone->axis));
+	coeff.c = dot(X, X) - one_plus_k_squared * dot(X, cone->axis) * dot(X, cone->axis);
 
-	double discriminant = discr(a, b, c);
+	double discriminant = discr(coeff);
 	if (discriminant < 0)
 		return NULL;
 
-	double t1 = root_n(a, b, c);
-	double t2 = root_p(a, b, c);
+	double t1 = root_n(coeff);
+	double t2 = root_p(coeff);
 
 	if (t1 > EPSILON && t2 > EPSILON)
 		*t = fmin(t1, t2);

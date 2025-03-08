@@ -57,10 +57,8 @@ C = <c_part | c_part> - r^2
 */
 t_list	*ray_inf_cylinder_intersect(t_ray ray, t_cylinder cy)
 {
+	t_quadratic_coeff coeff;
 	double		r_squared;
-	double		c;
-	double		a;
-	double		b;
 	double		discriminant;
 	double		t1;
 	double		t2;
@@ -73,15 +71,15 @@ t_list	*ray_inf_cylinder_intersect(t_ray ray, t_cylinder cy)
 	a_part = sub(ray.direction, scale(cy.axis_vector, dot(ray.direction,
 					cy.axis_vector)));
 	c_part = sub(dp, scale(cy.axis_vector, dot(dp, cy.axis_vector)));
-	a = dot(a_part, a_part);
-	b = 2 * dot(a_part, c_part);
+	coeff.a = dot(a_part, a_part);
+	coeff.b = 2 * dot(a_part, c_part);
 	r_squared = ((cy.diameter / 2) * (cy.diameter / 2));
-	c = dot(c_part, c_part) - r_squared;
-	discriminant = discr(a, b, c);
+	coeff.c = dot(c_part, c_part) - r_squared;
+	discriminant = discr(coeff);
 	if (discriminant < 0)
 		return (NULL);
-	t1 = root_n(a, b, c);
-	t2 = root_p(a, b, c);
+	t1 = root_n(coeff);
+	t2 = root_p(coeff);
 	candidates = NULL;
 	if (t1 > EPSILON && check_between_caps(ray, cy, t1))
 		add_t_to_cy_candidates(&candidates, t1, SURFACE);

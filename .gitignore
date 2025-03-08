@@ -2,3 +2,6 @@
 *.o
 /compile_commands.json
 /.cache/
+/minirt
+/libft/libft.a
+/get_next_line/gnl.a

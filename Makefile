@@ -6,8 +6,8 @@ NAME		=	minirt
 # Compiler and flags
 CC			=	@cc
 RM			=	@rm -fr
-CCFLAGS		=	-Wall -Werror -Wextra -Iinclude/mlx
-MLXFLAGS	=	-L/usr/X11/lib -lX11 -lXext -Llibs/mlx_linux -lm
+CCFLAGS		=	-Wall -Werror -Wextra
+MLXFLAGS	=	-L/usr/X11/lib -lX11 -lXext -lmlx -lm
 
 # Directories and source files
 SRCS_DIR    =   src
@@ -23,12 +23,11 @@ SRCS        =   src/_main.c src/graphics.c src/light_and_color_1.c src/light_and
 				src/raytracing.c src/textures.c src/utils.c
 OBJS        =   $(patsubst $(SRCS_DIR)/%.c, $(OBJ_DIR)/%.o, $(SRCS))
 
-INC			=	-Ilibft -Iget_next_line -Iinc
+INC			=	-Ilibft -Iget_next_line -Iinc -Iminilibx-linux
 
 # Libraries
 LIBS		=	libft/libft.a \
-				get_next_line/gnl.a \
-				minilibx-linux/libmlx.a
+				get_next_line/gnl.a
 
 # **************************************************************************** #
 # COLOURS                                                                      #
@@ -53,7 +52,6 @@ all:		$(NAME)
 $(NAME):	$(OBJS)
 			@make bonus -sC libft
 			@make -sC get_next_line
-			@make --no-print-directory -sC minilibx-linux
 			$(CC) $(CCFLAGS) $(OBJS) $(INC) $(LIBS) -o $(NAME) $(MLXFLAGS)
 			$(SUCCESS)
 
@@ -67,7 +65,6 @@ clean:
 			$(RM) $(OBJS)
 			@make --no-print-directory -sC libft clean
 			@make --no-print-directory -sC get_next_line clean
-			@make --no-print-directory -sC minilibx-linux clean
 			@$(RM) obj
 			$(S_OBJS)
 
@@ -75,9 +72,8 @@ fclean:		clean
 			$(RM) $(NAME)
 			@make --no-print-directory -sC libft fclean
 			@make --no-print-directory -sC get_next_line fclean
-			@$(RM) minilibx-linux/libmlx.a
 			@$(RM) obj
-			rm -rf build
+			@rm -rf build
 			$(S_NAME)
 
 re:			fclean all

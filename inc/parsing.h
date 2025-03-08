@@ -6,7 +6,7 @@
 /*   By: erian <erian@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/27 18:48:40 by erian             #+#    #+#             */
-/*   Updated: 2025/03/08 10:21:38 by erian            ###   ########.fr       */
+/*   Updated: 2025/03/08 12:27:58 by erian            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,5 +52,12 @@ bool		sp_check(char **array, t_data *data);
 bool		pl_check(char **array, t_data *data);
 bool		cy_check(char **array, t_data *data);
 bool		co_check(char **array, t_data *data);
+
+// utils
+bool	valid_xpm(char *str);
+bool	valid_rgb(char *str);
+bool	valid_range_1(char *str);
+bool	valid_range_2(char *str);
+bool    valid_range_3(char *str);
 
 #endif

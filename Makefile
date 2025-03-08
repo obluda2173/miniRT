@@ -13,7 +13,14 @@ MLXFLAGS	=	-L/usr/X11/lib -lX11 -lXext -Llibs/mlx_linux -lm
 SRCS_DIR    =   src
 PRSR_DIR	=	src/parser
 OBJ_DIR		=	obj
-SRCS        =   $(wildcard $(SRCS_DIR)/*.c)
+SRCS        =   src/_main.c src/graphics.c src/light_and_color_1.c src/light_and_color_2.c \
+				src/math_operations_1.c src/math_operations_2.c src/math_operations_3.c \
+				src/parsing.c src/parsing_extracting_objects.c src/parsing_robust_check_1.c \
+				src/parsing_robust_check_2.c src/parsing_robust_check_3.c \
+				src/parsing_structures_1.c src/parsing_structures_2.c \
+				src/ray_cone_intersection.c src/ray_cylinder_intersect_1.c \
+				src/ray_cylinder_intersect.c src/ray_object_intersect.c \
+				src/raytracing.c src/textures.c src/utils.c
 OBJS        =   $(patsubst $(SRCS_DIR)/%.c, $(OBJ_DIR)/%.o, $(SRCS))
 
 INC			=	-Ilibft -Iget_next_line -Iinc

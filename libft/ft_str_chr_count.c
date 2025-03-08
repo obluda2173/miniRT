@@ -6,7 +6,7 @@
 /*   By: erian <erian@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 13:16:31 by erian             #+#    #+#             */
-/*   Updated: 2025/03/05 13:18:05 by erian            ###   ########.fr       */
+/*   Updated: 2025/03/08 10:44:55 by erian            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 size_t	ft_str_chr_count(char *str, char c)
 {
-	size_t  i;
-	size_t  count;
+	size_t	i;
+	size_t	count;
 
 	i = 0;
 	count = 0;

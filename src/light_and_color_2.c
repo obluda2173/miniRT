@@ -16,10 +16,10 @@ int	apply_ambient_light(t_color object_color, t_a_light *ambient)
 {
 	t_color	result;
 
-	result = color_clamp((t_color){
-			(object_color.r + ambient->color.r) * ambient->ratio,
-			(object_color.g + ambient->color.g) * ambient->ratio,
-			(object_color.b + ambient->color.b) * ambient->ratio});
+	result = color_clamp((t_color){(object_color.r + ambient->color.r)
+			* ambient->ratio, (object_color.g + ambient->color.g)
+			* ambient->ratio, (object_color.b + ambient->color.b)
+			* ambient->ratio});
 	return (color_to_int(result));
 }
 
@@ -31,7 +31,9 @@ t_color	calculate_diffuse(t_s_light *light, t_intersection *inter)
 
 	light_dir = normalize(sub(light->coordinates, inter->hit_point));
 	diff = fmax(dot(inter->normal, light_dir), 0.0);
-	diffuse = color_scale(inter->base_color, diff * light->ratio);
+	diffuse = color_scale(color_add(color_scale(inter->base_color, diff
+					* light->ratio), color_scale(light->color, diff
+					* light->ratio)), 0.5);
 	return (diffuse);
 }
 

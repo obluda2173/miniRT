@@ -57,6 +57,8 @@ t_vec	parse_vector(char *str, t_data *data)
 	vec.x = ft_atod(xyz[0]);
 	vec.y = ft_atod(xyz[1]);
 	vec.z = ft_atod(xyz[2]);
+	if (vec.x == -INFINITY || vec.y == -INFINITY || vec.z == -INFINITY)
+		data->error = "Error: Invalid vector value\n";
 	free_split(xyz);
 	return (vec);
 }

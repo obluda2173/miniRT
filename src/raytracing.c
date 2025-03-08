@@ -73,28 +73,27 @@ t_color	handle_pl(t_intersection *inter, t_plane *plane)
 
 int	process_pixel(t_data *data, t_cam_settings cam_set, int x, int y)
 {
-	double			t;
 	t_ray			ray;
-	t_vec			normal;
-	t_obj			*cl_obj;
 	t_intersection	inter;
+	t_cl cl;
 
 	ray = generate_ray(data->scene->camera, cam_set, x, y);
-	cl_obj = find_closest_object(ray, data->scene->obj_lst, &t, &normal);
-	if (!cl_obj)
+	/* cl_obj = find_closest_object(ray, data->scene->obj_lst, &t, &normal); */
+	cl = find_closest_object(ray, data->scene->obj_lst);
+	if (!cl.obj)
 		return (0x000000);
-	inter.hit_point = add(ray.origin, scale(ray.direction, t));
-	if (dot(normal, ray.direction) > 0)
-		normal = scale(normal, -1);
-	inter.normal = normal;
-	if (cl_obj->type == SPHERE)
-		inter.base_color = ((t_sphere *)cl_obj->specific_obj)->color;
-	else if (cl_obj->type == PLANE)
-		inter.base_color = handle_pl(&inter, (t_plane *)cl_obj->specific_obj);
-	else if (cl_obj->type == CYLINDER)
-		inter.base_color = ((t_cylinder *)cl_obj->specific_obj)->color;
-	else if (cl_obj->type == CONE)
-		inter.base_color = ((t_cone *)cl_obj->specific_obj)->color;
+	inter.hit_point = add(ray.origin, scale(ray.direction, cl.t));
+	if (dot(cl.normal, ray.direction) > 0)
+		cl.normal = scale(cl.normal, -1);
+	inter.normal = cl.normal;
+	if (cl.obj->type == SPHERE)
+		inter.base_color = ((t_sphere *)cl.obj->specific_obj)->color;
+	else if (cl.obj->type == PLANE)
+		inter.base_color = handle_pl(&inter, (t_plane *)cl.obj->specific_obj);
+	else if (cl.obj->type == CYLINDER)
+		inter.base_color = ((t_cylinder *)cl.obj->specific_obj)->color;
+	else if (cl.obj->type == CONE)
+		inter.base_color = ((t_cone *)cl.obj->specific_obj)->color;
 	return (apply_source_light(data->scene, &inter,
 			apply_ambient_light(inter.base_color, data->scene->a_light)));
 }

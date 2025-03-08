@@ -64,21 +64,19 @@ typedef struct s_closest_params {
 
 
 
-void update_t_plane(t_ray ray, double *closest_t, t_vec  *closest_normal, t_obj **closest_obj, t_obj *obj_node) {
+void update_t_plane(t_ray ray, t_cl *cl, t_obj *obj_node) {
 	double t;
 	t_plane *plane = (t_plane *)obj_node->specific_obj;
-	if (ray_plane_intersect(ray, plane, &t) && t < *closest_t)
+	if (ray_plane_intersect(ray, plane, &t) && t < cl->t)
 	{
-		*closest_t = t;
-		*closest_obj = obj_node;
-		*closest_normal = plane->normal_vector;
+		cl->t = t;
+		cl->obj = obj_node;
+		cl->normal = plane->normal_vector;
 	}
 }
 
-t_obj	*find_closest_object(t_ray ray, t_list *orig_obj_lst, double *closest_t,
-		t_vec *closest_normal)
+t_cl	find_closest_object(t_ray ray, t_list *orig_obj_lst)
 {
-	t_obj		*closest_obj;
 	t_list		*obj_lst;
 	t_obj		*obj_node;
 	double		t;
@@ -91,10 +89,11 @@ t_obj	*find_closest_object(t_ray ray, t_list *orig_obj_lst, double *closest_t,
 	double		one_plus_k_squared;
 	double		m;
 	t_sphere	*sphere;
+	t_cl cl;
 
-	closest_obj = NULL;
+	cl.obj = NULL;
+	cl.t = INFINITY;
 	obj_lst = orig_obj_lst;
-	*closest_t = INFINITY;
 	while (obj_lst)
 	{
 		obj_node = obj_lst->content;
@@ -104,11 +103,11 @@ t_obj	*find_closest_object(t_ray ray, t_list *orig_obj_lst, double *closest_t,
 			cy_inter = ray_inter_cylinder(ray, *cy);
 			if (cy_inter)
 			{
-				if (cy_inter->t < *closest_t)
+				if (cy_inter->t < cl.t)
 				{
-					*closest_t = cy_inter->t;
-					closest_obj = obj_node;
-					*closest_normal = calc_normal_cy(ray, cy, cy_inter);
+					cl.t = cy_inter->t;
+					cl.obj = obj_node;
+					cl.normal = calc_normal_cy(ray, cy, cy_inter);
 				}
 				free(cy_inter);
 			}
@@ -116,36 +115,36 @@ t_obj	*find_closest_object(t_ray ray, t_list *orig_obj_lst, double *closest_t,
 		if (obj_node->type == CONE)
 		{
 			cone = (t_cone *)obj_node->specific_obj;
-			if (ray_inf_cone_intersect(ray, cone, &t) && t < *closest_t)
+			if (ray_inf_cone_intersect(ray, cone, &t) && t < cl.t)
 			{
-				*closest_t = t;
-				closest_obj = obj_node;
+				cl.t = t;
+				cl.obj = obj_node;
 				X = sub(ray.origin, cone->apex);
 				hit_p = add(ray.origin, scale(ray.direction, t));
 				p_minus_c = sub(hit_p, cone->apex);
 				one_plus_k_squared = (1 + (tan(cone->alpha)
 							* tan(cone->alpha)));
 				m = dot(ray.direction, cone->axis) * t + dot(X, cone->axis);
-				*closest_normal = normalize(sub(p_minus_c, scale(cone->axis,
+				cl.normal = normalize(sub(p_minus_c, scale(cone->axis,
 								one_plus_k_squared * m)));
 			}
 		}
 		if (obj_node->type == SPHERE)
 		{
 			sphere = (t_sphere *)obj_node->specific_obj;
-			if (ray_sphere_intersect(ray, sphere, &t) && t < *closest_t)
+			if (ray_sphere_intersect(ray, sphere, &t) && t < cl.t)
 			{
-				*closest_t = t;
-				closest_obj = obj_node;
-				*closest_normal = normalize(sub(add(ray.origin,
+				cl.t = t;
+				cl.obj = obj_node;
+				cl.normal = normalize(sub(add(ray.origin,
 								scale(ray.direction, t)), sphere->coordinates));
 			}
 		}
 		if (obj_node->type == PLANE)
-			update_t_plane(ray, closest_t, closest_normal, &closest_obj, obj_node);
+			update_t_plane(ray, &cl, obj_node);
 		obj_lst = obj_lst->next;
 	}
-	return (closest_obj);
+	return cl;
 }
 
 bool	check_object_intersection(t_ray s_ray, t_obj *obj, double max_t)

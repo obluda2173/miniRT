@@ -34,11 +34,17 @@ typedef struct s_quadratic_coeff {
 	double c;
 } t_quadratic_coeff;
 
+typedef struct s_cl {
+	double t;
+	t_vec normal;
+	t_obj *obj;
+} t_cl;
+
+
 bool		ray_sphere_intersect(t_ray ray, t_sphere *sphere, double *t);
 bool		ray_plane_intersect(t_ray ray, t_plane *plane, double *t);
 t_vec		calc_normal_cy(t_ray ray, t_cylinder *cy, t_cy_inter *cy_inter);
-t_obj		*find_closest_object(t_ray ray, t_list *orig_obj_lst,
-				double *closest_t, t_vec *closest_normal);
+t_cl	find_closest_object(t_ray ray, t_list *orig_obj_lst);
 bool		is_in_shadow(t_vec hit_point, t_s_light *light, t_scene *scene);
 
 /* cylinder */

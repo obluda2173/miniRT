@@ -5,7 +5,24 @@
 #include "structures.h"
 
 
-bool check_between_caps(t_ray ray, t_cylinder cy, double t);
+/*
+p1 ... center of the cylinder (center of bottom cap)
+p2 ... center of the cylinder at the other end (center of top cap)
+q  ... candidate point lying surface of infinite cylinder
+q is inbetween the caps if
+<v_a | q-p_1> > 0 && <v_a, q-p_2> < 0
+*/
+bool check_between_caps(t_ray ray, t_cylinder cy, double t)
+{
+	t_vec p1 = cy.coordinates;	/* check */
+	t_vec p2 = add(cy.coordinates, scale(cy.axis_vector, cy.height)); /* check */
+
+	t_vec q = add(ray.origin, scale(ray.direction, t));
+	
+	if (dot(cy.axis_vector, sub(q, p1)) > 0 && dot(cy.axis_vector, sub(q, p2)) < 0)
+		return true;
+	return false;
+}
 
 /*
 cylinder around line p_a + t * v_a
@@ -62,24 +79,6 @@ t_list* ray_inf_cylinder_intersect(t_ray ray, t_cylinder cy) {
 	return candidates;
 }
 
-/*
-p1 ... center of the cylinder (center of bottom cap)
-p2 ... center of the cylinder at the other end (center of top cap)
-q  ... candidate point lying surface of infinite cylinder
-q is inbetween the caps if
-<v_a | q-p_1> > 0 && <v_a, q-p_2> < 0
-*/
-bool check_between_caps(t_ray ray, t_cylinder cy, double t)
-{
-	t_vec p1 = cy.coordinates;	/* check */
-	t_vec p2 = add(cy.coordinates, scale(cy.axis_vector, cy.height)); /* check */
-
-	t_vec q = add(ray.origin, scale(ray.direction, t));
-	
-	if (dot(cy.axis_vector, sub(q, p1)) > 0 && dot(cy.axis_vector, sub(q, p2)) < 0)
-		return true;
-	return false;
-}
 
 /*
 ||q - p1||_2^2 < r_2

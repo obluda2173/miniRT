@@ -6,7 +6,7 @@
 /*   By: erian <erian@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/27 18:48:40 by erian             #+#    #+#             */
-/*   Updated: 2025/03/07 14:11:26 by erian            ###   ########.fr       */
+/*   Updated: 2025/03/08 10:21:38 by erian            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@
 # include <fcntl.h>
 # include <unistd.h>
 
-
 # include "data.h"
 # include "utils.h"
 # include "structures.h"
@@ -26,7 +25,7 @@
 # include "operations.h"
 
 // General Parsing
-void parse_scene(char *filename, t_data *data);
+void		parse_scene(char *filename, t_data *data);
 
 // Parsing Helpers
 size_t		array_size(char **array);
@@ -43,7 +42,7 @@ t_cam		*parse_camera(char **split_line, t_data *data);
 t_obj		*parse_plane(char **split_line, t_data *data);
 t_obj		*parse_sphere(char **split_line, t_data *data);
 t_obj		*parse_cylinder(char **split_line, t_data *data);
-t_obj	*parse_cone(char **split_line, t_data *data);
+t_obj		*parse_cone(char **split_line, t_data *data);
 
 // Parsing Robust Check
 bool		a_check(char **array, t_data *data);
@@ -52,6 +51,6 @@ bool		l_check(char **array, t_data *data);
 bool		sp_check(char **array, t_data *data);
 bool		pl_check(char **array, t_data *data);
 bool		cy_check(char **array, t_data *data);
-bool	co_check(char **array, t_data *data);
+bool		co_check(char **array, t_data *data);
 
 #endif

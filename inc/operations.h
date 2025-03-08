@@ -6,7 +6,7 @@
 /*   By: erian <erian@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/01 11:06:21 by erian             #+#    #+#             */
-/*   Updated: 2025/03/07 14:03:33 by erian            ###   ########.fr       */
+/*   Updated: 2025/03/08 10:21:03 by erian            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,5 @@ double	root_n(double a, double b, double c);
 double	root_p(double a, double b, double c);
 t_vec	normalize(t_vec v);
 t_vec	reflect(t_vec v, t_vec normal);
-
 
 #endif

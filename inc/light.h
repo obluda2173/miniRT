@@ -6,16 +6,16 @@
 /*   By: erian <erian@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/02 14:38:21 by erian             #+#    #+#             */
-/*   Updated: 2025/03/07 14:02:49 by erian            ###   ########.fr       */
+/*   Updated: 2025/03/08 10:20:48 by erian            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef LIGHT_H
 # define LIGHT_H
 
-# include	"data.h"
-# include	"operations.h"
-# include	"raytracing.h"
+# include "data.h"
+# include "operations.h"
+# include "raytracing.h"
 
 # define SPECULAR_EXP 21
 

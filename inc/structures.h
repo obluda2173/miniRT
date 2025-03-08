@@ -6,12 +6,12 @@
 /*   By: erian <erian@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/27 18:47:23 by erian             #+#    #+#             */
-/*   Updated: 2025/03/07 15:22:58 by erian            ###   ########.fr       */
+/*   Updated: 2025/03/08 10:25:56 by erian            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef SCENE_TYPES_H
-# define SCENE_TYPES_H
+#ifndef STRUCTURES_H
+# define STRUCTURES_H
 
 # include "libft.h"
 
@@ -101,12 +101,13 @@ typedef struct s_cylinder
 	t_color		color;
 }				t_cylinder;
 
-typedef struct s_cone {
-	t_vec apex;
-	t_vec axis;
-	double alpha;
-	t_color color;
-} t_cone;
+typedef struct s_cone
+{
+	t_vec	apex;
+	t_vec	axis;
+	double	alpha;
+	t_color	color;
+}			t_cone;
 
 typedef struct s_obj
 {
@@ -116,19 +117,18 @@ typedef struct s_obj
 
 typedef struct s_scene
 {
-	t_cam		*camera;
-	t_a_light	*a_light;
-	t_list		*light_lst;
-	t_list		*obj_lst;
+	t_cam			*camera;
+	t_a_light		*a_light;
+	t_list			*light_lst;
+	t_list			*obj_lst;
 	unsigned int	c_count;
 	unsigned int	a_count;
-}				t_scene;
+}					t_scene;
 
 typedef struct s_ray
 {
-	t_vec 		origin;
-	t_vec 		direction;
+	t_vec		origin;
+	t_vec		direction;
 }				t_ray;
-
 
 #endif

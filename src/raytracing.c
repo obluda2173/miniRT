@@ -28,8 +28,8 @@ void	init_cam_settings(t_cam *camera, t_cam_settings *cam_set)
 	cam_set->horizontal = scale(u, 2.0 * aspect_ratio * fov_scale);
 	cam_set->vertical = scale(v, 2.0 * fov_scale);
 	cam_set->lower_left_corner = sub(sub(sub(camera->coordinates,
-					scale(cam_set->horizontal, 0.5)),
-				scale(cam_set->vertical, 0.5)), w);
+					scale(cam_set->horizontal, 0.5)), scale(cam_set->vertical,
+					0.5)), w);
 }
 
 t_ray	generate_ray(t_cam *camera, t_cam_settings cam_set, int x, int y)
@@ -65,8 +65,8 @@ t_color	handle_pl(t_intersection *inter, t_plane *plane)
 					scale(cross(rot_axis, bump), sin(rot_angle))),
 				scale(rot_axis, dot(rot_axis, bump) * (1 - cos(rot_angle))));
 	}
-	else if (((int)floor(inter->hit_point.x * 2)
-			+ (int)floor(inter->hit_point.z * 2)) % 2 == 0)
+	else if (((int)floor(inter->hit_point.x * 2) + (int)floor(inter->hit_point.z
+				* 2)) % 2 == 0)
 		return (color_scale(plane->color, 0.5));
 	return (plane->color);
 }
@@ -75,10 +75,9 @@ int	process_pixel(t_data *data, t_cam_settings cam_set, int x, int y)
 {
 	t_ray			ray;
 	t_intersection	inter;
-	t_cl cl;
+	t_cl			cl;
 
 	ray = generate_ray(data->scene->camera, cam_set, x, y);
-	/* cl_obj = find_closest_object(ray, data->scene->obj_lst, &t, &normal); */
 	cl = find_closest_object(ray, data->scene->obj_lst);
 	if (!cl.obj)
 		return (0x000000);

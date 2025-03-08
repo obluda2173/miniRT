@@ -13,13 +13,12 @@
 #ifndef OPERATIONS_H
 # define OPERATIONS_H
 
+# include "raytracing.h"
+# include "structures.h"
 # include <math.h>
 
-# include "structures.h"
-#include "raytracing.h"
-
-# define M_PI		3.14159265358979323846
-# define EPSILON	1e-6
+# define M_PI 3.14159265358979323846
+# define EPSILON 1e-6
 
 // math_operations_1.c
 t_vec	vec(double x, double y, double z);

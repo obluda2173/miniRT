@@ -13,16 +13,15 @@
 #ifndef PARSING_H
 # define PARSING_H
 
-# include <mlx.h>
-# include <stdio.h>
-# include <fcntl.h>
-# include <unistd.h>
-
 # include "data.h"
-# include "utils.h"
-# include "structures.h"
 # include "get_next_line.h"
 # include "operations.h"
+# include "structures.h"
+# include "utils.h"
+# include <fcntl.h>
+# include <mlx.h>
+# include <stdio.h>
+# include <unistd.h>
 
 // General Parsing
 void		parse_scene(char *filename, t_data *data);
@@ -57,10 +56,10 @@ bool		cy_check(char **array, t_data *data);
 bool		co_check(char **array, t_data *data);
 
 // utils
-bool	valid_xpm(char *str);
-bool	valid_rgb(char *str);
-bool	valid_range_1(char *str);
-bool	valid_range_2(char *str);
-bool    valid_range_3(char *str);
+bool		valid_xpm(char *str);
+bool		valid_rgb(char *str);
+bool		valid_range_1(char *str);
+bool		valid_range_2(char *str);
+bool		valid_range_3(char *str);
 
 #endif

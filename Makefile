@@ -19,7 +19,7 @@ SRCS        =   src/_main.c src/graphics.c src/light_and_color_1.c src/light_and
 				src/parsing_robust_check_2.c src/parsing_robust_check_3.c \
 				src/parsing_structures_1.c src/parsing_structures_2.c \
 				src/ray_cone_intersection.c src/ray_cylinder_intersect_1.c \
-				src/ray_cylinder_intersect.c src/ray_object_intersect.c \
+				src/ray_cylinder_intersect.c src/ray_object_intersect.c src/ray_object_intersect_1.c \
 				src/raytracing.c src/textures.c src/utils.c
 OBJS        =   $(patsubst $(SRCS_DIR)/%.c, $(OBJ_DIR)/%.o, $(SRCS))
 
@@ -77,6 +77,7 @@ fclean:		clean
 			@make --no-print-directory -sC get_next_line fclean
 			@$(RM) minilibx-linux/libmlx.a
 			@$(RM) obj
+			rm -rf build
 			$(S_NAME)
 
 re:			fclean all

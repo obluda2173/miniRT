@@ -1,6 +1,6 @@
 # miniRT
 
-miniRT is a simple yet efficient raytracer built as part of the 42 curriculum. It adheres to the MiniLibX framework and renders basic 3D scenes defined in .rt files. This project serves as an introduction to raytracing, covering key concepts like ray-object intersection, shading, and lighting models.
+**miniRT** is a simple yet efficient raytracer built as part of the 42 curriculum. It adheres to the MiniLibX framework and renders basic 3D scenes defined in .rt files. This project serves as an introduction to raytracing, covering key concepts like ray-object intersection, shading, and lighting models.
 
 ## Features
 - Basic Shapes: Supports spheres, planes, cylinders and cones.

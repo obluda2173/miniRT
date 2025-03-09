@@ -45,3 +45,6 @@ co -1,-1,-1 1,1,1 25 0,255,255 # Cone (pos, axis, angle, color)
 - Ensures .rt files follow correct syntax.
 - Handles invalid or missing scene components.
 - Normalizes vectors and checks ranges for FOV, brightness, and colors.
+
+
+P.S. It was a pleasure to work again with [Kay](https://github.com/Keisn1) on another "challenging" project 😁

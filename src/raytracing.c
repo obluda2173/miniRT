@@ -6,7 +6,7 @@
 /*   By: erian <erian@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/01 10:51:38 by erian             #+#    #+#             */
-/*   Updated: 2025/03/10 14:59:26 by erian            ###   ########.fr       */
+/*   Updated: 2025/03/10 15:23:39 by erian            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,10 @@ void	init_cam_settings(t_cam *camera, t_cam_settings *cam_set)
 	aspect_ratio = (double)WIN_WIDTH / WIN_HEIGHT;
 	fov_scale = tan(camera->fov / 2.0 * (M_PI / 180.0));
 	w = normalize(scale(camera->orientation, -1));
-	u = normalize(cross(w, vec(0, 1, 0)));
+	if (fabs(w.y) > 0 && w.x == 0 && w.z == 0)
+		u = normalize(cross(w, vec(0, 0, 1)));
+	else
+		u = normalize(cross(w, vec(0, 1, 0)));
 	v = cross(w, u);
 	cam_set->horizontal = scale(u, 2.0 * aspect_ratio * fov_scale);
 	cam_set->vertical = scale(v, 2.0 * fov_scale);

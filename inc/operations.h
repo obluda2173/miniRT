@@ -6,7 +6,7 @@
 /*   By: erian <erian@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/01 11:06:21 by erian             #+#    #+#             */
-/*   Updated: 2025/03/08 11:28:57 by erian            ###   ########.fr       */
+/*   Updated: 2025/03/10 14:59:16 by erian            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 
 # define M_PI 3.14159265358979323846
 # define EPSILON 1e-6
+# define BOARD_SIZE 42 
 
 // math_operations_1.c
 t_vec	vec(double x, double y, double z);

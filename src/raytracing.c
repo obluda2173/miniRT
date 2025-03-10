@@ -6,7 +6,7 @@
 /*   By: erian <erian@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/01 10:51:38 by erian             #+#    #+#             */
-/*   Updated: 2025/03/08 15:46:48 by erian            ###   ########.fr       */
+/*   Updated: 2025/03/10 14:59:26 by erian            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,8 +65,7 @@ t_color	handle_pl(t_intersection *inter, t_plane *plane)
 					scale(cross(rot_axis, bump), sin(rot_angle))),
 				scale(rot_axis, dot(rot_axis, bump) * (1 - cos(rot_angle))));
 	}
-	else if (((int)floor(inter->hit_point.x * 2) + (int)floor(inter->hit_point.z
-				* 2)) % 2 == 0)
+	else if (((int)floor(u * BOARD_SIZE) + (int)floor(v * BOARD_SIZE)) % 2 == 0)
 		return (color_scale(plane->color, 0.5));
 	return (plane->color);
 }

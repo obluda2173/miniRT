@@ -6,7 +6,7 @@
 /*   By: erian <erian@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 13:19:31 by erian             #+#    #+#             */
-/*   Updated: 2025/03/08 16:37:40 by erian            ###   ########.fr       */
+/*   Updated: 2025/03/10 14:01:21 by erian            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,7 +117,6 @@ bool	is_in_shadow(t_vec hit_point, t_s_light *light, t_scene *scene)
 
 	s_ray.direction = normalize(sub(light->coordinates, hit_point));
 	s_ray.origin = add(hit_point, scale(normalize(s_ray.direction), EPSILON));
-
 	max_t = length(sub(light->coordinates, hit_point));
 	current_obj = scene->obj_lst;
 	while (current_obj)

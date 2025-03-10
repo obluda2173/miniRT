@@ -6,7 +6,7 @@
 /*   By: erian <erian@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 16:25:00 by erian             #+#    #+#             */
-/*   Updated: 2025/03/08 13:11:55 by erian            ###   ########.fr       */
+/*   Updated: 2025/03/10 14:01:06 by erian            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,10 +96,7 @@ t_obj	*parse_cone(char **split_line, t_data *data)
 	cone->axis = normalize(parse_vector(split_line[2], data));
 	cone->alpha = ft_atod(split_line[3]);
 	if (cone->alpha > 89 || cone->alpha < 1)
-	{
-		free(cone);
-		free_and_exit(data, "Error: Not-valid cone angle\n");
-	}
+		data->error = "Error: Invalid cone angle\n";
 	cone->alpha = (cone->alpha / 180) * M_PI;
 	cone->color = parse_color(split_line[4], data);
 	obj = malloc(sizeof(t_obj));

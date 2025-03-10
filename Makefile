@@ -43,6 +43,7 @@ COLOR		=	\033[0m
 SUCCESS		=	@echo "$(GREEN)miniRT compiled successfully$(COLOR)"
 S_OBJS		=	@echo "$(BLUE)cleaning of objects completed$(COLOR)"
 S_NAME		=	@echo "$(CYAN)full clean completed$(COLOR)"
+S_BONUS		=	@echo "$(YELLOW)bonus activated$(COLOR)"
 
 # **************************************************************************** #
 # RULES                                                                        #
@@ -78,7 +79,10 @@ fclean:		clean
 
 re:			fclean all
 
+bonus:		$(NAME)
+			$(S_BONUS)
+
 # **************************************************************************** #
 # PHONY                                                                        #
 # **************************************************************************** #
-.PHONY:		all clean fclean re
+.PHONY:		all clean fclean re bonus

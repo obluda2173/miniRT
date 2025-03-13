@@ -82,7 +82,7 @@ re:			fclean all
 bonus:		$(NAME)
 			$(S_BONUS)
 
-leakcheck:	$(NAME)
+invalidcheck:	$(NAME)
 			./valgrind_runner.sh
 
 # **************************************************************************** #
